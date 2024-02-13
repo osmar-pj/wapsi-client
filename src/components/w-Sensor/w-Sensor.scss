@@ -1,0 +1,146 @@
+.Sensor-circle {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+
+  .is-menu-open &{
+    animation: letter-flicker 0.45s linear;
+    animation-delay: 1s;
+    transition-delay: .5s;
+  }
+  
+  .circle-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 7em;
+    height: 7em;
+    svg {
+      position: absolute;
+      width: 7em;
+      height: 7em;
+      z-index: 1;
+      display: block;
+     
+      @include md {
+        width: 8.6em;
+        height: 8.6em;
+      }
+    }
+    p {
+      z-index: 2;
+      line-height: 1rem;
+    }
+    h3 {
+      z-index: 2;
+      line-height: 1rem;
+      font-weight: 700;
+      text-align: center;
+      padding: 6px 0 1px 0;
+      @include md {
+        line-height: 1.5rem;
+        font-size: clamp(9px, 8vw, 22px);
+      }
+    }
+
+    span {
+      font-size: clamp(4px, 8vw, 8px);
+      line-height: 0.5rem;
+      @include md {
+        font-size: clamp(5.5px, 8vw, 11px);
+        line-height: 0.8rem;
+      }
+    }
+
+    @include md {
+      width: 8.6em;
+      height: 8.6em;
+    }
+  }
+
+  @include md {
+  }
+}
+
+.top {
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.right {
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+}
+
+.bottom {
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.left {
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+}
+
+.green {
+  svg {
+    fill: #0bb97d;
+      display: block;
+      .fil2 {
+        fill: #0A423B;
+      }
+  }
+  h3, span {
+    color:  #0bb97d;
+  }
+}
+
+.yellow {
+  svg {
+    fill: #B9A50C;
+      display: block;
+      .fil2 {
+        fill: #42410a;
+      }
+  }
+  h3, span {
+    color:  #B9A50C;
+  }
+}
+
+.red {
+  svg {
+    fill: #FF1437;
+      display: block;
+      .fil2 {
+        fill: #6B0D1B;
+      }
+  }
+  h3, span {
+    color:  #FF1437;
+  }
+  animation: error .25s ease-in-out infinite;
+}
+
+
+@keyframes error {
+  0% {
+    transform: scale(.95);
+  }
+  50% {
+    transform: scale(1); 
+  }
+  100% {
+    transform: scale(.95); 
+  }
+}

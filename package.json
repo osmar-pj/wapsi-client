@@ -1,0 +1,38 @@
+{
+  "name": "winex",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "export": "next build && next export",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@cubejs-client/core": "^0.33.12",
+    "@next/font": "^13.4.19",
+    "@reduxjs/toolkit": "^1.9.5",
+    "@splidejs/react-splide": "^0.7.12",
+    "@tanstack/react-table": "^8.10.7",
+    "chart.js": "^4.3.0",
+    "chartjs-adapter-date-fns": "^3.0.0",
+    "chartjs-plugin-annotation": "^3.0.1",
+    "date-fns": "^2.30.0",
+    "flatpickr": "^4.6.13",
+    "js-cookie": "^3.0.5",
+    "jsonwebtoken": "^9.0.1",
+    "moment": "^2.29.4",
+    "next": "^13.4.5",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-fast-marquee": "^1.6.2",
+    "react-image-marker": "^1.2.0",
+    "react-redux": "^8.1.1",
+    "react-select": "^5.7.4",
+    "redux": "^4.2.1",
+    "rxjs": "^7.8.1",
+    "sass": "^1.63.4",
+    "socket.io-client": "^4.6.2"
+  }
+}

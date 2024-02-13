@@ -1,0 +1,208 @@
+.L-Home {
+  padding: 10vh 8vw 10vh 8vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+  .w-Login {
+    .Login-title {
+      display: flex;
+      h2 {
+        background-color: var(--red);
+        box-shadow: 0 4px 8px 3px rgba(0, 0, 0, 0.15),
+          0 1px 3px rgba(0, 0, 0, 0.3);
+        color: var(--black-light-1);
+        padding: 0.1rem 0.5rem;
+        font-weight: 600;
+      }
+    }
+    .Login-content {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      background-color: #0a0a1f;
+      box-shadow: 0 4px 8px 3px rgba(0, 0, 0, 0.15),
+          0 1px 3px rgba(0, 0, 0, 0.3);
+      border: 1px solid #0a0a1f;
+      padding: 0.5rem 1rem;
+      position: relative;
+      z-index: 1;
+      .svg,
+      .rect {
+        display: none;
+        @include md {
+          display: block;
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          fill: transparent;
+          z-index: -1;
+        }
+      }
+      .rect {
+        stroke: var(--red);
+        stroke-width: 1px;
+        stroke-dasharray: 200;
+        animation: animate 20s linear infinite;
+        opacity: .8;  
+      }
+
+      .cd,
+      .cd2,
+      .cd3,
+      .cd4 {
+        @include md {
+          position: absolute;
+          width: 10px;
+          height: 10px;
+          background-color: var(--red);
+          opacity: .2;
+        }
+      }
+      .cd {
+        top: -15px;
+        left: -15px;
+      }
+      .cd2 {
+        top: -15px;
+        right: -15px;
+      }
+      .cd3 {
+        bottom: -15px;
+        left: -15px;
+      }
+      .cd4 {
+        bottom: -15px;
+        right: -15px;
+      }
+
+      label {
+        color: var(--grey);
+        font-size: clamp(5px, 8vw, 10px);
+        white-space: pre-line;
+        padding-right: 2rem;
+        padding-bottom: 0.5rem;
+        width: 200px;
+        @include md {
+          width: 100px;
+          font-size: clamp(7px, 8vw, 14px);
+        }
+      }
+
+      .L-c-dig {
+        display: flex;
+        gap: 0.5rem;
+        .inputs {
+          border: 1px solid var(--black-light-1);
+          padding: 1px;
+          .input {
+            width: 26px;
+            height: 50px;
+            border: 0;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            outline: none;
+
+            background-color: #b90c26;
+            border: 0.5px solid #290b10;
+            text-align: center;
+            color: var(--white);
+            font-size: clamp(6px, 8vw, 20px);
+
+            @include md {
+              font-size: clamp(8px, 8vw, 30px);
+              letter-spacing: 0.07em;
+
+              height: 60px;
+            }
+
+            &:focus {
+              color: var(--white);
+            }
+          }
+
+          .input[type="text"].input:required:invalid {
+            background-color: #5d0b1e;
+          }
+        }
+        button {
+          cursor: pointer;
+          background-color: var(--black-light-1);
+          padding: 0 0.5rem;
+          height: 54px;
+          display: grid;
+          place-items: center;
+          transition: 0.35s ease-in-out all;
+          svg {
+            fill: var(--grey);
+            width: 1rem;
+          }
+          &:hover {
+            background-color: var(--red);
+            svg {
+              fill: var(--black-light-1);
+            }
+          }
+          @include md {
+            height: 64px;
+          }
+        }
+      }
+
+      @include md {
+        flex-direction: row;
+      }
+    }
+    .Login-access {
+      position: absolute;
+      width: 100%;
+      background-color: #000e1b;
+      text-align: center;
+      margin-top: 1rem;
+      padding: 1rem 0;
+      left: 0;
+      color: var(--white);
+      font-weight: normal;
+      font-size: clamp(5px, 8vw, 11px);
+      transition: ease-in-out 0.35s all;
+      strong {
+        font-weight: normal;
+      }
+      @include md {
+        padding: 1rem;
+      }
+    }
+  }
+
+  @include md {
+    padding: 10vh 10vw;
+  }
+}
+
+.L-red {
+  color: #b90c26;
+}
+
+.L-green {
+  color: var(--red);
+}
+
+.btnsP {
+  background-color: #5d0b1e;
+}
+
+.btn-s {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  button {
+    background-color: var(--black-light-1);
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 5px;
+  }
+}

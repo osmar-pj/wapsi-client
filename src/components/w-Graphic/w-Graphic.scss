@@ -1,0 +1,70 @@
+
+
+.D-c-graphic {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  gap: 1.5rem;
+  width: 100%;
+
+  .D-c-select {
+    display: flex;
+    justify-content: space-between;
+    height: auto;
+    .select-two {
+      .select {
+        min-width: 100px;
+        font-size: clamp(4px, 8vw, 9px);
+        cursor: pointer;
+        @include md {
+          min-width: 120px;
+          font-size: clamp(4.5px, 8vw, 12px);
+        }
+      }
+
+      input {
+        height: auto;
+      }
+    }
+
+    .select-separ {
+      width: 25%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      
+      z-index: 2;
+      .background{
+        width: 100%;
+        height: 1px;
+        background: rgba(10, 66, 60, 0.4);
+      }
+      .triangle {
+        display: block;
+        width: 0;
+        height: 0;
+        border-bottom: 4px solid transparent;
+        border-top: 4px solid transparent;
+        border-left: 4px solid rgba(10, 66, 60, 0.4);
+        transform-origin: 50% 0;
+    }
+    }
+  }
+}
+
+.graf-char {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: auto;
+
+  canvas {
+    width: 100% ;
+    left: 0;
+    top: 0;
+  }
+  @include md {
+    height: 60vh;
+  }
+}
+

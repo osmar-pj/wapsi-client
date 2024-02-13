@@ -1,0 +1,111 @@
+.popupOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid rgba(10, 66, 60, 0.4);
+  z-index: 3;
+}
+
+.popupContent {
+  max-width: 300px;
+  width: 100%;
+  background-color: #0a0a1f;
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: inset 0 1px 2px #0a0a1f, 0 20px 25px -5px rgba(0,0,0,.8), 0 10px 10px -5px rgba(0,0,0,.9);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  .Form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    .F-c-header {
+      display: flex;
+      gap: 1rem;
+      svg {
+        width: 1rem;
+        fill: var(--red);
+      }
+      h2 {
+        color: var(--white);
+        font-size: clamp(6.5px, 8vw, 15px);
+        @include md{
+          font-size: clamp(6.5px, 8vw, 15px);
+        }
+      }
+      span {
+        position: absolute;
+        color: var(--grey);
+        font-size: 22px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: 0.3s ease-in;
+        top: 20px;
+        right: 25px;
+        place-items: center;
+        &:hover {
+          color: var(--red);
+          transform: scale(1.5);
+        }
+      }
+    }
+    .F-c-main {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      .select-g {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 0.2rem;
+        label {
+          color: var(--grey);
+          font-size: 12px;
+        }
+      }
+      .updt-input {
+        width: 100%;
+        display: flex;
+        gap: 1rem;
+      }
+    }
+    .F-c-footer {
+      display: flex;
+      gap: 1rem;
+    }
+  }
+  @include md {
+    max-width: 360px;
+    padding: 2rem;
+  }
+}
+
+.td-user {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  .t-name{
+    h5{
+      color: var(--grey);
+    }
+  }
+}
+
+.btns {
+  display: flex;
+  justify-content: center;
+  button {
+    svg {
+      width: 1rem;
+      fill: var(--grey);
+    }
+  }
+}

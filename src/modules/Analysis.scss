@@ -1,0 +1,160 @@
+.w-Analysis{
+  padding: 10vh 4vw 4vh 4vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .5rem;
+  .D-c-analysis {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    gap: 1.5rem;
+    margin-top: 1rem;
+    
+  }
+}
+
+
+
+.graf-A {
+  display: grid;
+  place-items: center;
+  height: auto;
+  width: 100%;
+  position: relative;
+  flex: 1 1;
+  @include md {
+    height: 70vh;
+  }
+  canvas {
+    width: 100%;
+    left: 0;
+    top: 0;
+  }
+}
+
+
+.Details-title {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .D-title-name {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    div {
+      padding: 0.4rem;
+      background-color: rgba(10, 66, 60, 0.4);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+
+      svg {
+        height: 0.7rem;
+        fill: var(--red);
+        @include md {
+          height: 1rem;
+        }
+      }
+      @include md {
+        padding: 0.5rem;
+      }
+    }
+    h4 {
+      color: var(--white);
+    }
+    h5 {
+      color: var(--grey);
+    }
+  }
+  .D-title-more {
+    svg {
+      height: 0.8rem;
+      fill: var(--grey);
+    }
+  }
+}
+
+.leyend {
+  width: 100%;
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  .i-leyend {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    .i-leyend-circle {
+      height: 10px;
+      width: 10px;
+      border-radius: 50%;
+    }
+    span {
+      color: var(--white);
+      font-size: clamp(5px, 8vw, 10px);
+      @include md {
+        font-size: clamp(5px, 8vw, 11px);
+      }
+    }
+  }
+}
+
+.ley-green {
+  background-color: #0bb97d;
+}
+
+.ley-yellow {
+  background-color: #b9a50c;
+}
+.ley-red {
+  background-color: #FF1437;
+}
+
+.select-analysis {
+  .select {
+    max-width: 100px;
+    font-size: clamp(4px, 8vw, 9px);
+    cursor: pointer;
+    @include md {
+      max-width: 150px;
+      font-size: clamp(4.5px, 8vw, 12px);
+    }
+  }
+
+  input {
+    height: auto;
+  }
+}
+
+.graf-dates {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: .5rem;
+  border: 1px solid var(--grey-light);
+  border-radius: 10px;
+  padding: 1rem;
+  .graf-dates-pro {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    h2 {
+      color: var(--white);
+      font-size: clamp(5px, 8vw, 23px);
+      line-height: 1.3rem;
+      strong {
+        font-weight: normal;
+        font-size: clamp(5px, 8vw, 12px);
+      }
+    }
+    span {
+      color: var(--grey);
+      font-size: clamp(5px, 8vw, 10px);
+      padding-bottom:1rem;
+    }
+  }
+}

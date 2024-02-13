@@ -1,0 +1,157 @@
+.D-c-notification {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  h2 {
+    text-align: left;
+    color: var(--white);
+    font-weight: normal;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    @include lg {
+    }
+  }
+
+  table {
+    width: 100%;
+    color: var(--white);
+    font-size: clamp(5px, 8vw, 9px);
+    letter-spacing: 0.03em;
+    line-height: 0.7rem;
+    font-weight: normal;
+    border-collapse: collapse;
+
+    tr:first-of-type td:first-child {
+      border-radius: 10px 0 0 10px;
+    }
+
+    tr:first-child td:last-child {
+      border-radius: 0 5px 5px 0;
+    }
+
+    @include md {
+      font-size: clamp(6px, 8vw, 12px);
+      line-height: 1.1rem;
+    }
+  }
+
+  h4 {
+    color: var(--grey);
+    padding-top: 15px;
+    font-weight: 600;
+  }
+  thead {
+    color: var(--grey);
+    text-align: left;
+    font-size: clamp(4.5px, 8vw, 9px);
+    letter-spacing: 0.03em;
+    line-height: 1rem;
+    font-weight: normal;
+
+    @include md {
+      font-size: clamp(5.5px, 8vw, 11px);
+    }
+  }
+
+  th {
+    padding: 0px 0px 10px 5px;
+
+    &:nth-child(1),
+    &:nth-child(4) {
+      padding: 0px 0px 10px 15px;
+
+      @include md {
+        padding: 0px 0px 10px 20px;
+      }
+    }
+    @include md {
+      padding: 0px 0px 10px 8px;
+    }
+  }
+  tr {
+    padding: 0px 0px 15px 15px;
+  }
+
+  td {
+    padding: 5px 5px;
+
+    @include md {
+      padding: 15px 8px;
+    }
+    @include lg {
+      padding: 18px;
+    }
+  }
+
+  tbody tr {
+    // transition: all ease-in 0.35s;
+    // cursor: pointer;
+    opacity: .6;
+    // &:hover {
+    //   transform: scale(1.02);
+    //   background-color: #6a4ab61e;
+      
+    // }
+  }
+  // tbody:hover > tr:not(:hover) {
+  //   opacity: 0.4;
+  //   transform: scale(1);
+  //   background-color: transparent;
+  //   color: var(--white);
+  // }
+
+  tbody tr:nth-child(1) {
+    background-color: #6a4ab61e;
+    transform: scale(1.025);
+    
+    opacity: 1;    
+  }
+
+  tbody td:nth-child(1) {
+    padding: 8px 10px 8px 15px;
+    @include md {
+      padding: 8px 15px 8px 20px;
+    }
+  }
+
+  tbody td:nth-child(4) {
+    padding: 8px 15px 8px 10px;
+    @include md {
+      padding: 8px 20px 8px 15px;
+    }
+  }
+}
+
+.status {
+  padding: 0.5rem;
+  border-radius: 5px;
+  letter-spacing: 0.03em;
+  line-height: 1rem;
+  font-weight: normal;
+  text-align: center;
+  font-size: clamp(4px, 8vw, 8px);
+  @include md {
+    font-size: clamp(7px, 8vw, 12px);
+  }
+}
+
+.status-BAJO {
+  color: #00BBE0;
+  background-color: rgba(0, 187, 224, 0.2);
+}
+
+.status-OKEY {
+  color: #0bb97d;
+  background-color: rgba(94, 255, 234, 0.15);
+}
+
+.status-ALTO {
+  color: #c5b117d2;
+  background-color: rgba(233, 208, 67, 0.15);
+}
+
+.status-MUY-ALTO {
+  color: #e94343;
+  background-color: rgba(233, 67, 67, 0.15);
+}

@@ -1,0 +1,318 @@
+.w-Home {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+
+  .Home-title {
+    width: 14rem;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    position: absolute;
+    top: 14vh;
+    padding: 1rem;
+    gap: 0.5rem;
+    z-index: 1;
+    left: 50%;
+    transform: translateX(-50%);
+
+    h1 {
+      text-transform: uppercase;
+    }
+    span {
+      color: var(--grey);
+      font-size: clamp(5px, 8vw, 8px);
+      @include md {
+        font-size: clamp(6px, 8vw, 12px);
+      }
+    }
+    @include md {
+      padding: 1.5rem;
+      width: 16rem;
+      text-align: left;
+      left: 4vw;
+      transform: translateX(0);
+    }
+  }
+
+  .Home-image {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+
+    .Map-info {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      animation: letter-flicker 0.45s linear;
+      img {
+        height: 2.3rem;
+        padding-bottom: 6px;
+        padding-left: 5px;
+        @include md {
+          height: 4rem;
+          padding-left: 8px;
+        }
+      }
+
+      .M-i-content {
+        cursor: pointer;
+        z-index: 1;
+        border-radius: 0;
+
+        padding: 0;
+        transition: 0.35s ease-in-out;
+        opacity: 1;
+        position: relative;
+        .content-text {
+          text-align: left;
+          display: none;
+          span {
+            font-size: clamp(5px, 6vw, 9px);
+            display: none;
+            padding-top: 0.5rem;
+            @include md {
+              display: flex;
+            }
+          }
+          h2 {
+            color: var(--white);
+            font-size: clamp(4px, 6vw, 8px);
+            font-weight: 400;
+            transition: 0.35s ease-in;
+            padding-top: 0;
+            @include md {
+              font-size: clamp(7.5px, 8vw, 15px);
+              line-height: 1rem;
+              letter-spacing: 0.03rem;
+              padding-top: 0.2rem;
+            }
+          }
+
+          button {
+            font-size: clamp(4.5px, 6vw, 8px);
+            padding: 0;
+            padding-top: 0.5rem;
+            color: #9ea2a8;
+            display: none;
+            @include md {
+              display: flex;
+            }
+          }
+          @include md {
+            display: block;
+          }
+        }
+
+        svg {
+          width: 1rem;
+          @include md {
+            width: 2rem;
+          }
+        }
+
+        .pulse {
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          position: relative;
+          display: grid;
+          place-items: center;
+          top: -5px;
+          left: calc(50% - 5px);
+          &::before {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            top: 50%;
+            left: 50%;
+            transition: 0.35s ease-in-out all;
+          }
+        }
+
+        @media (hover: hover) {
+          &:hover {
+            transform: scale(1.15);
+            &:hover::before,
+            &:hover::after {
+              width: calc(100% + 7px);
+              height: calc(100% + 7px);
+            }
+          }
+        }
+
+        @include md {
+          &::before,
+          &::after {
+            content: "";
+            position: absolute;
+            width: 0px;
+            height: 0px;
+            transition: 0.5s ease-in-out;
+            border-radius: 4px;
+          }
+
+          &::before {
+            top: -5px;
+            left: -5px;
+          }
+
+          &::after {
+            right: -5px;
+            bottom: -5px;
+          }
+        }
+
+        @include md {
+          border-radius: 8px;
+          padding: 0 1.5rem 0.8rem 1.5rem;
+        }
+      }
+    }
+  }
+}
+
+.Map-content {
+  overflow: auto;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  place-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+@include md {
+  .image-marker:hover > .image-marker__marker:not(:hover) {
+    opacity: 0.4;
+  }
+  .image-marker__marker {
+    transition: 0.35s ease-in-out all;
+  }
+}
+
+/*===================================== COLORES =====================================*/
+/*===================================================================================*/
+
+.M-blue {
+  .M-i-content {
+    background-image: linear-gradient(to bottom, #0a4f9c41, rgba(0, 0, 0, 10%));
+    border: none;
+    .content-text {
+      span {
+        color: #1a96d4;
+      }
+    }
+
+    .pulse {
+      background: #0a4f9c;
+      box-shadow: 0px 0px 1px 1px #0a4f9c;
+      animation: pulse-animation-blue 2s infinite;
+      &::before {
+        border: 0.5px solid #0a4f9c;
+      }
+    }
+
+    @keyframes pulse-animation-blue {
+      0% {
+        box-shadow: 0 0 0 0px #0a4f9c;
+      }
+      100% {
+        box-shadow: 0 0 0 20px rgba(255, 0, 0, 0);
+      }
+    }
+
+    @media (hover: hover) {
+      &:hover {
+        border: 0.5px solid #0a4f9c5e;
+        box-shadow: 0px 0px 15px 10px rgba(10, 79, 156, 0.25);
+
+        > .pulse {
+          &::before {
+            border: 0.5px solid #0a4f9c;
+          }
+        }
+      }
+    }
+
+    &::before {
+      border-top: 1px solid #0a4f9c;
+      border-left: 1px solid #0a4f9c;
+    }
+
+    &::after {
+      border-bottom: 1px solid #0a4f9c;
+      border-right: 1px solid #0a4f9c;
+    }
+    @include md {
+      border: 0.5px solid #0a4f9c;
+    }
+  }
+}
+
+.M-orange {
+  .M-i-content {
+    background-image: linear-gradient(to bottom, #f4892441, rgba(0, 0, 0, 10%));
+    border: none;
+
+    .content-text {
+      span {
+        color: #f6c427;
+      }
+    }
+
+    .pulse {
+      background: #f48a24;
+      box-shadow: 0px 0px 1px 1px #f48a24;
+      animation: pulse-animation 2s infinite;
+      &::before {
+        border: 0.5px solid #f48a24;
+      }
+    }
+
+    @keyframes pulse-animation {
+      0% {
+        box-shadow: 0 0 0 0px #f48a24;
+      }
+      100% {
+        box-shadow: 0 0 0 20px rgba(255, 0, 0, 0);
+      }
+    }
+
+    @media (hover: hover) {
+      &:hover {
+        border: 0.5px solid #f489245e;
+        box-shadow: 0px 0px 15px 10px rgba(244, 138, 36, 0.25);
+
+        > .pulse {
+          &::before {
+            border: 0.5px solid #f48a24;
+          }
+        }
+      }
+    }
+
+    &::before {
+      border-top: 1px solid #f48a24;
+      border-left: 1px solid #f48a24;
+    }
+
+    &::after {
+      border-bottom: 1px solid #f48a24;
+      border-right: 1px solid #f48a24;
+    }
+    @include md {
+      border: 0.5px solid #f48a24;
+    }
+  }
+}
