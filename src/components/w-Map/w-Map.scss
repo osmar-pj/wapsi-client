@@ -35,6 +35,14 @@
       left: 4vw;
       transform: translateX(0);
     }
+    .img-warning{
+      position: absolute;
+      bottom : -65%;
+      left: 50%;
+      width: 11.5rem;
+      transform: translateX(-50%);
+    }
+    
   }
 
   .Home-image {
@@ -87,6 +95,13 @@
             font-weight: 400;
             transition: 0.35s ease-in;
             padding-top: 0;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            -webkit-line-clamp: 2;
+            text-overflow: ellipsis;
+            white-space: normal;
+            max-width: 180px;
             @include md {
               font-size: clamp(7.5px, 8vw, 15px);
               line-height: 1rem;

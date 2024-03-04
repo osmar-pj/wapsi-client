@@ -19,6 +19,8 @@ const getMachineImage = () => {
       return "/imgs/mapJulcani.svg";
     } else if (empresa === "YUMPAG") {
       return "/imgs/mapYumpag.svg";
+    } else if (empresa === "HUARON") {
+      return "/imgs/mapHuaron.svg";
     }
   }
 
@@ -117,9 +119,10 @@ export default function Mapa({ controllers, empresa }) {
     <>
       <div className="Home-title points">
         <h1>UNIDAD MINERA {empresa}</h1>
-        <span>//Monitoreo en tiempo real </span>
+        <span>Monitoreo de gases en tiempo real </span>
         <div className="square1"></div>
         <div className="square2"></div>
+        <img src="imgs/warning.svg" className="img-warning" alt="" />
       </div>
       <div className="Home-image">
         {isLoading ? (
