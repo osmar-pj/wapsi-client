@@ -4,16 +4,10 @@ export default function Foot() {
   return (
     <>
       <footer className="w-Foot">
-        <Marquee speed={30} className="Foot-marquee">
-          <p className="marquee-text">
-            Si no es seguro, no se hace <span>·</span> Tus acciones y mis
-            acciones cuidan vidas <span>·</span> Si no es seguro, no se hace{" "}
-            <span>·</span> Tus acciones y mis acciones cuidan vidas{" "}
-            <span>·</span> Si no es seguro, no se hace <span>·</span> Tus acciones y mis
-            acciones cuidan vidas{" "}
-            <span>·</span> Si no es seguro, no se hace <span>·</span>
-          </p>
-        </Marquee>
+        <p className="marquee-text">
+          Derechos reservados
+          <br />© 2024 Gunjop
+        </p>
       </footer>
     </>
   );

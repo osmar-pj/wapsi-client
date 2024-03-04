@@ -5,36 +5,15 @@
   position: fixed;
   padding: 0 4vw;
   z-index: 2;
-
-  .Foot-marquee {
-    padding: 0.5rem 0;
-    position: relative;
-    .marquee-text {
-      color: var(--grey);
-      font-size: clamp(5px, 8vw, 10px);
-      @include md {
-        font-size: clamp(6px, 8vw, 13px);
-      }
-    }
-    &::after,
-    &::before {
-      content: "";
-      position: absolute;
-      width: 49%;
-      height: 1px;
-      background-color: #6a4ab641;
-      bottom: 0;
-    }
-    &::after {
-      right: 0;
-    }
-
-    &::before {
-      background-color: inherit;
-      left: 0;
-      border-top: 2px dashed #6a4ab641;
-      border-right: none;
-      margin-top: 5px;
+  display: flex;
+  justify-content: flex-end;
+  text-align: right;
+  .marquee-text {
+    color: var(--grey);
+    font-size: clamp(5px, 8vw, 9px);
+    line-height: .8rem;
+    @include md {
+      font-size: clamp(6px, 8vw, 10px);
     }
   }
 }

@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 export default function Header({ roles }) {
   const isAdmin = roles.some((role) => role.name === "admin");
   const [name, setName] = useState("");
+  const [empresa, setEmpresa] = useState("");
 
   useEffect(() => {
     const userDataCookie = Cookies.get("userData");
@@ -14,6 +15,13 @@ export default function Header({ roles }) {
       const userData = JSON.parse(userDataCookie);
       const name = userData.name;
       setName(name);
+      
+      const empresa = userData.empresa;
+      if (empresa === "HUARON") {
+        setEmpresa("/imgs/logo-Huaron.svg");
+      } else {
+        setEmpresa("/imgs/buena.svg");
+      }
     }
   }, []);
 
@@ -39,7 +47,7 @@ export default function Header({ roles }) {
       <div className="logo points">
         <div className="square1"></div>
         <div className="square2"></div>
-        <img src="/imgs/buena.svg" className="Products-banner-desk" alt="" />
+        <img src={empresa} className="Products-banner-desk" alt="" />
       </div>
 
       <div className="navbar points">
