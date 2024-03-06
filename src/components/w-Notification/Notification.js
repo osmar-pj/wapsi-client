@@ -3,17 +3,19 @@ import Reg from "@/src/Icons/reg";
 import { useEffect, useState } from "react";
 
 export default function Notification({ sensorData }) {
-  const [notifications, setNotifications] = useState([]);
 
+  const [notifications, setNotifications] = useState([]);
+  
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
         const response = await fetch(
           `${process.env.API_URL}/api/v1/notification?serie=${sensorData.serie}`
-        );
-
-        if (response.ok) {
-          const jsonData = await response.json();
+          );
+          
+          if (response.ok) {
+            const jsonData = await response.json();
+          
           setNotifications(jsonData);
         } else {
           console.error("Error en la petición");

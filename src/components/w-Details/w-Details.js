@@ -16,7 +16,7 @@ const Details = ({ sensorData }) => {
     if (!!menuOpen) {
       ref.current.scrollTo(0, 0);
     }
-  },[menuOpen]);
+  }, [menuOpen]);
 
   return (
     <div className="w-Details">
@@ -43,9 +43,9 @@ const Details = ({ sensorData }) => {
           <span onClick={() => setMenuOpen(!menuOpen)}>&times;</span>
         </div>
         <div className="Details-body" ref={ref}>
-          <Sensor  className="text-1" sensorData={sensorData} />
-          <Notification  className="text-2" sensorData={sensorData} />
-          <Graphic  className="text-3" sensorData={sensorData} />
+          <Sensor className="text-1" sensorData={sensorData} />
+          <Notification className="text-2" sensorData={sensorData} />
+          <Graphic className="text-3" sensorData={sensorData} />
         </div>
       </div>
     </div>

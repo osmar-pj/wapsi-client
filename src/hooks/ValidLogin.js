@@ -39,7 +39,7 @@ const ValidLogin = (initialData, onValidate, resetForm) => {
         }, 500);
         
         if (data.status === true) {
-          console.log(data);
+          
           const cookieData = {
             token: data.token,
             area: data.area,

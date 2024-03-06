@@ -5,6 +5,7 @@ export const MainContext = createContext();
 export const MainProvider = ({ globalData, children }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const isMenuOpenClass = "is-menu-open";
+  const [controllers, setControllers] = useState([]);
 
   useEffect(() => {
     if (menuOpen) {
@@ -21,6 +22,8 @@ export const MainProvider = ({ globalData, children }) => {
       value={{
         menuOpen,
         setMenuOpen,
+        controllers,
+        setControllers,
         globalData,
       }}
     >

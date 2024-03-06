@@ -3,6 +3,7 @@ import Dat from "@/src/Icons/dat";
 import More from "@/src/Icons/more";
 
 const Sensor = ({ sensorData }) => {
+
   const renderNameWithSubscript = (name) => {
     const number = name.match(/\d+/);
     if (number) {
@@ -47,7 +48,7 @@ const Sensor = ({ sensorData }) => {
               >
                 <Circle/>
                 <p>{renderNameWithSubscript(name)}</p>          
-                <h3>{value.toFixed(1)}</h3>
+                <h3>{value.toFixed(2)}</h3>
                 <span>{und}</span>
               </div>
             );

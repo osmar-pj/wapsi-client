@@ -36,9 +36,9 @@ export default function Header({ roles }) {
 
   const routes = [
     { path: "/safety", label: "SEGURIDAD" },
-    { path: "/ventilation", label: "VENTILACIÓN" },
-    { path: "/operation", label: "OPERACIÓN" },
-    { path: "/ti", label: "TI" },
+    // { path: "/ventilation", label: "VENTILACIÓN" },
+    // { path: "/operation", label: "OPERACIÓN" },
+    // { path: "/ti", label: "TI" },
     { path: "/Analysis", label: "ANÁLISIS" },
   ];
 

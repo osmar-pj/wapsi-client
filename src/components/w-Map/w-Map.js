@@ -1,12 +1,11 @@
-import { useContext, useEffect, useState, useCallback } from "react";
+import { useContext, useEffect, useState,useCallback } from "react";
 import { MainContext } from "@/src/contexts/Main-context";
-import { BehaviorSubject } from "rxjs";
-import { map } from "rxjs/operators";
 import ImageMarker from "react-image-marker";
+import { BehaviorSubject } from "rxjs";
+import { map } from 'rxjs/operators';
 
 import Loader from "@/src/Icons/loader";
 import Details from "../w-Details/w-Details";
-
 
 const getMachineImage = () => {
   let empresa = null;
@@ -28,63 +27,54 @@ const getMachineImage = () => {
 };
 
 const CustomMarker = ({ sensorData, handleOnClick, index }) => {
-  const memoizedHandleOnClick = useCallback(() => {
+  const handleClick = () => {
     handleOnClick(sensorData);
-  }, [handleOnClick, sensorData, index]);
+  };
 
+
+  // Agregar un índice propio al sensorData
   return (
     <div
-      onClick={memoizedHandleOnClick}
-      className={`Map-info ${index % 2 === 0 ? "M-orange" : "M-blue"}`}
+      onClick={handleClick}
+      className={`Map-info ${index % 2 === 0 ? "M-blue" : "M-orange"}`}
       key={sensorData._id}
     >
       <img src="/imgs/icon.png" alt="" loading="lazy" />
       <div className="M-i-content">
-      <div className="pulse"></div>
-      <div className="content-text">
-        <span>{sensorData.level}</span>
-        <h2>{sensorData.ubication}</h2>
-        <button> Ver Detalle</button>
-      </div>
+        <div className="pulse"></div>
+        <div className="content-text">
+          <span>{sensorData.level}</span>
+          <h2>{sensorData.ubication}</h2>
+          <button> Ver Detalle</button>
+        </div>
       </div>
     </div>
   );
 };
 
+
 const MemoizedCustomMarker = CustomMarker;
-
 const selectedSensorSubject = new BehaviorSubject(null);
-
-export default function Mapa({ controllers, empresa }) {
+export default function Mapa({ empresa }) {
   const machineImage = getMachineImage();
   const [isLoading, setIsLoading] = useState(true);
-  const [isMapLoaded, setIsMapLoaded] = useState(false);
-  const { setMenuOpen } = useContext(MainContext);
+
+  const contextData = useContext(MainContext);
+  const { setMenuOpen, controllers } = contextData;
   const [selectedSensor, setSelectedSensor] = useState(null);
+  const [misControllers, setMisControllers] = useState([]);
 
   useEffect(() => {
-    if (controllers.length > 0) {
-      setIsLoading(false);
-    }
+    setMisControllers(controllers);
   }, [controllers]);
 
-  const handleMapLoad = () => {
-    setIsMapLoaded(true);
-  };
-
   useEffect(() => {
-    if (isMapLoaded && !isLoading) {
+    const image = new Image();
+    image.onload = () => {
       setIsLoading(false);
-    }
-  }, [isMapLoaded, isLoading]);
-
-  const handleOnClick = useCallback(
-    (sensorData) => {
-      setMenuOpen((prevMenuOpen) => !prevMenuOpen);
-      selectedSensorSubject.next(sensorData);
-    },
-    [setMenuOpen]
-  );
+    };
+    image.src = machineImage;
+  }, []);
 
   useEffect(() => {
     const subscription = selectedSensorSubject
@@ -102,17 +92,21 @@ export default function Mapa({ controllers, empresa }) {
           setSelectedSensor(sensorData);
         }
       });
-
+  
     return () => {
       subscription.unsubscribe();
     };
-  }, [controllers]);
+  }, [controllers, selectedSensorSubject]);
+  
 
-  const memoizedMarkerComponent = useCallback(
-    (props) => (
-      <MemoizedCustomMarker {...props} handleOnClick={handleOnClick} index={controllers.findIndex((sensorData) => sensorData._id === props.sensorData._id)} />
-    ),
-    [handleOnClick, controllers]
+
+
+  const handleMarkerClick = useCallback(
+    (sensorData) => {
+      setMenuOpen((prevMenuOpen) => !prevMenuOpen);
+      selectedSensorSubject.next(sensorData);
+    },
+    [setMenuOpen]
   );
 
   return (
@@ -126,58 +120,27 @@ export default function Mapa({ controllers, empresa }) {
       </div>
       <div className="Home-image">
         {isLoading ? (
-          <div
-            onLoad={handleMapLoad}
-            style={{
-              position: "relative",
-              top: "0",
-              left: "0",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              width: "100%",
-              height: "100%",
-              opacity: isLoading ? "1" : "0",
-              visibility: isLoading ? "visible" : "hidden",
-              transition: "opacity 0.8 ease-in-out, visibility 0.8 ease-in-out",
-              zIndex: "2",
-            }}
-          >
-            <Loader className="loader" />
-          </div>
-        ) : controllers.length > 0 ? (
-          <div
-            className="Map-content"
-            onLoad={handleMapLoad}
-            style={{
-              opacity: isMapLoaded ? "1" : "0",
-              visibility: isMapLoaded ? "visible" : "hidden",
-              transition: "opacity 0.8 ease-in-out, visibility 0.8 ease-in-out",
-            }}
-          >
+          <Loader className="loader" />
+        ) : (
+          <div className="Map-content">
             <ImageMarker
               src={machineImage}
-              markers={controllers
-                .map((sensorData) => {
-                  
-                    return {
-                      top: parseInt(sensorData.top),
-                      left: parseInt(sensorData.left),
-                      sensorData: sensorData,
-                    };
-                  
-                  return null;
-                })
-                .filter((marker) => marker !== null)}
-                markerComponent={memoizedMarkerComponent}
+              markers={misControllers.map((sensorData, index) => ({
+                top: parseInt(sensorData.top),
+                left: parseInt(sensorData.left),
+                sensorData: sensorData,
+                handleOnClick: handleMarkerClick,
+                index,
+              }))}
+              markerComponent={MemoizedCustomMarker}
             />
           </div>
-        ) : (
-          <p>No hay datos disponibles para mostrar en el mapa.</p>
         )}
-
-        {selectedSensor && <Details sensorData={selectedSensor} />}
       </div>
+      {selectedSensor && (
+        <Details
+          sensorData={selectedSensor}/>
+      )}
     </>
   );
 }

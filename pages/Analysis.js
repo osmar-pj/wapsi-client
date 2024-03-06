@@ -32,7 +32,7 @@ export default function Analysis({ empresa, roles }) {
 
       if (response.ok) {
         const jsonData = await response.json();
-        console.log(jsonData.controllers);
+      
         setList(jsonData.controllers);
         if (jsonData.controllers.length > 0) {
           setSensor(jsonData.controllers[0].serie);
@@ -247,7 +247,7 @@ export default function Analysis({ empresa, roles }) {
   }, [sensor]);
 
   let options = [];
-  console.log(list);
+ 
   if (list) {
     options = list.map((i) => {
       return {
