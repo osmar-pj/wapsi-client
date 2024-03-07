@@ -7,6 +7,15 @@ import annotationPlugin from "chartjs-plugin-annotation";
 import "chart.js/auto";
 import "chartjs-adapter-date-fns";
 import "chartjs-plugin-annotation";
+import moment from 'moment';
+import 'moment/locale/es';
+
+if (typeof window !== 'undefined') {
+  // Solo ejecuta este código en el navegador
+  moment.locale(navigator.language);
+}
+
+
 Chart.register(annotationPlugin);
 
 export default function Analysis({ empresa, roles }) {
@@ -125,9 +134,9 @@ export default function Analysis({ empresa, roles }) {
       barThickness: 60,
       maxBarThickness: 65,
     }));
+
     const formatSpanishDate = (date) => {
-      const options = { weekday: "short", day: "numeric", month: "short" };
-      return new Date(date).toLocaleDateString("es-ES", options);
+      return moment(date).format('ddd, DD MMM');
     };
 
     Chart.register(...registerables);
