@@ -45,7 +45,7 @@
       padding: 6px 0 1px 0;
       @include md {
         line-height: 1.5rem;
-        font-size: clamp(9px, 8vw, 22px);
+        font-size: clamp(9px, 8vw, 20px);
       }
     }
 
@@ -68,68 +68,60 @@
   }
 }
 
-.top {
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-}
 
-.right {
-  top: 50%;
-  right: 0;
-  transform: translateY(-50%);
-}
-
-.bottom {
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.left {
-  top: 50%;
-  left: 0;
-  transform: translateY(-50%);
-}
-
-.green {
+.success {
   svg {
     fill: #0bb97d;
       display: block;
       .fil2 {
-        fill: #0A423B;
+        fill:#00b979;
       }
   }
   h3, span {
-    color:  #0bb97d;
+    color:  #01b475;
   }
 }
 
-.yellow {
+.warning {
   svg {
-    fill: #B9A50C;
+    fill:  #e6c700;
       display: block;
       .fil2 {
-        fill: #42410a;
+        fill: #e6c700;
       }
   }
   h3, span {
-    color:  #B9A50C;
+    color:  #e6c700;
   }
 }
 
-.red {
+.danger {
   svg {
     fill: #FF1437;
       display: block;
       .fil2 {
-        fill: #6B0D1B;
+        fill:#c7001e;
       }
   }
   h3, span {
     color:  #FF1437;
   }
   animation: error .25s ease-in-out infinite;
+}
+
+.undefined {
+  opacity: .4;
+  svg {
+    fill: var(--grey-1);
+      display: block;
+      .fil2 {
+        fill:var(--grey-1);
+      }
+  }
+  h3, span {
+    color:  var(--grey-1);
+  }
+  animation: rotate 0s ease-in-out !important;
 }
 
 

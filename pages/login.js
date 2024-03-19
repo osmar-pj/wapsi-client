@@ -23,7 +23,7 @@ export default function Login() {
   };
 
   const handleInputKeyDown = (index, event) => {
-    if (  
+    if (
       event.key === "Backspace" &&
       !codes[index] &&
       inputReferences.current[index - 1]
@@ -68,81 +68,79 @@ export default function Login() {
 
   return (
     <section className="L-Home">
-      <div className="w-Login">
-        <form action="" onSubmit={handleSubmit}>
+      <form
+        className="Login-content"
+        action=""
+        onSubmit={handleSubmit}
+        style={{
+          userSelect: loading ? "none" : "auto",
+          pointerEvents: loading ? "none" : "auto",
+        }}
+      >
+        <img src="/imgs/logo-web.svg" alt="" />
+        <h2 className="Login-title">Wapsi-Solutions</h2>
+        <font>
+          Ingrese su clave de <strong>inicio de sesión</strong> para acceder
+          <br />
+          Recuerde no compartirla con nadie.
+        </font>
+        <div className="L-c-dig">
+          <div className="inputs">
+            {codes.map((code, index) => (
+              <input
+                key={index}
+                type="password"
+                name="code"
+                value={code}
+                maxLength={1}
+                onChange={(event) => handleInputChange(index, event)}
+                onKeyDown={(event) => handleInputKeyDown(index, event)}
+                ref={(ref) => (inputReferences.current[index] = ref)}
+                pattern="[0-9]*"
+                inputMode="numeric"
+                className="input"
+                required
+              />
+            ))}
+          </div>
+        {errors.code && (
+          <h4>
+            
+            {errors.code}
+          </h4>
+        )}
+        </div>
+        <button
+          type="submit"
+          className="btn-success"
+          disabled={loading || codes.join("").length !== 8}
+        >
           {loading ? (
-            <Loader className="loader"/>
+            <>
+              <span className="loader"></span> Cargando...
+            </>
           ) : (
-            <>
-              <div className="Login-title">
-                <h2>WAPSI-SOLUTIONS</h2>
-              </div>
-              <div className="Login-content">
-                <svg className="svg" width="100%" height="100%">
-                  <rect
-                    className="rect"
-                    x="0"
-                    y="0"
-                    width="100%"
-                    height="100%"
-                    rx="1"
-                    ry="10"
-                  />
-                </svg>
-
-                <div className="cd"></div>
-                <div className="cd2"></div>
-                <div className="cd3"></div>
-                <div className="cd4"></div>
-                <label>INGRESE CÓDIGO:</label>
-                <div className="L-c-dig">
-                  <div className="inputs">
-                    {codes.map((code, index) => (
-                      <input
-                        key={index}
-                        type="text"
-                        name="code"
-                        value={code}
-                        maxLength={1}
-                        onChange={(event) => handleInputChange(index, event)}
-                        onKeyDown={(event) => handleInputKeyDown(index, event)}
-                        ref={(ref) => (inputReferences.current[index] = ref)}
-                        pattern="[0-9]*"
-                        inputMode="numeric"
-                        className="input"
-                        required
-                      />
-                    ))}
-                  </div>
-                  <button
-                    type="submit"
-                    disabled={loading || codes.join("").length !== 8}
-                  >
-                    <Marc />
-                  </button>
-                </div>
-              </div>
-            </>
+            "Ingresar"
           )}
-          {showMessage && (
-            <>
-              {loginStatus === true ? (
-                <h3 className="Login-access">
-                  ACCESO ACEPTADO:
-                  <strong className="L-green">CONTRASEÑA CORRECTA</strong>
-                </h3>
-              ) : loginStatus === false ? (
-                <h3 className="Login-access">
-                  ACCESO DENEGADO:
-                  <strong className="L-red">CONTRASEÑA INCORRECTA</strong>
-                </h3>
-              ) : null}
-            </>
-          )}
+        </button>
+        <span></span>
+      </form>
 
-          {errors.code && <h4>{errors.code}</h4>}
-        </form>
-      </div>
+      {/* {showMessage && (
+        <>
+          {loginStatus === true ? (
+            <h3 className="Login-access">
+              ACCESO ACEPTADO:
+              <strong className="L-green">CONTRASEÑA CORRECTA</strong>
+            </h3>
+          ) : loginStatus === false ? (
+            <h3 className="Login-access">
+              ACCESO DENEGADO:
+              <strong className="L-red">CONTRASEÑA INCORRECTA</strong>
+            </h3>
+          ) : null}
+        </>
+      )} */}
     </section>
   );
 }

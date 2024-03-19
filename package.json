@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3002",
     "build": "next build",
     "start": "next start",
     "export": "next build && next export",
@@ -28,12 +28,16 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-fast-marquee": "^1.6.2",
+    "react-hot-toast": "^2.4.1",
     "react-image-marker": "^1.2.0",
+    "react-query": "^3.39.3",
     "react-redux": "^8.1.1",
     "react-select": "^5.7.4",
     "redux": "^4.2.1",
     "rxjs": "^7.8.1",
     "sass": "^1.63.4",
-    "socket.io-client": "^4.6.2"
+    "socket.io-client": "^4.6.2",
+    "sonner": "^1.4.3",
+    "use-sound": "^4.0.1"
   }
 }

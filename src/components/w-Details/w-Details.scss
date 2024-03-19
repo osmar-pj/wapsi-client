@@ -1,12 +1,13 @@
 .w-Details {
   z-index: 10;
   position: fixed;
-  right: 0px;
+  right: 30px;
   top: 0px;
+  max-width: 500px;
   width: 100%;
   height: 100vh;
   display: block;
-  background: radial-gradient(circle, rgba(17, 17, 58, 0.7), rgba(11, 10, 40, 0.7), rgba(10, 8, 18, 0.7));
+ 
   transition: 1.2s ease-in-out all;
   visibility: hidden;
   opacity: 0;
@@ -35,59 +36,14 @@
     transform-origin: center;
     transform: translate(-50%, -50%) scaleX(0) translateZ(0);
     transition-delay: 0;
-    
+    background-color: rgba(255, 255, 255, 0.438);
+    border-radius: 12px;
+    border: 1px solid var(--white); 
     .is-menu-open & {
       transform: translate(-50%, -50%) scaleX(1) translateZ(0);
       transition-duration: 1.4s;
     }
-    .svg,
-    .rect {
-      display: none;
-      @include md {
-        display: block;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        fill: transparent;
-        z-index: 1;
-      }
-    }
-    .rect {
-      stroke: #6a4ab679;
-      stroke-width: 1px;
-      stroke-dasharray: 200;
-      animation: animate 20s linear infinite;
-    }
-
-    .cd,
-    .cd2,
-    .cd3,
-    .cd4 {
-      @include md {
-        position: absolute;
-        width: 10px;
-        height: 10px;
-        background-color: #6a4ab641;
-      }
-    }
-    .cd {
-      top: -15px;
-      left: -15px;
-    }
-    .cd2 {
-      top: -15px;
-      right: -15px;
-    }
-    .cd3 {
-      bottom: -15px;
-      left: -15px;
-    }
-    .cd4 {
-      bottom: -15px;
-      right: -15px;
-    }
+    
     .Details-header {
       position: -webkit-sticky;
       position: sticky;
@@ -95,19 +51,19 @@
       align-items: center;
       justify-content: flex-start;
       z-index: 2;
-      width: 100%;
-      height: 65px;
+      width: 100%;    
       font-size: 16px;
-      padding-left: 2rem;
-      background: rgba(0,0,0,.5); 
-      border-bottom: 1px solid #6a4ab641;
+      padding: 1rem 1.5rem;
+      
+      
       h2 {
         transition-delay: 1.2s;
         transition: 0.5s ease-in-out all;
         visibility: hidden;
         opacity: 0;
-        color: var(--red);
-        font-weight: bold;
+        color: var(--black);
+        font-weight: 550;
+        font-size: clamp(5px, 8vw, 14px);
         .is-menu-open & {
           transition-delay: 0.8s;
           opacity: 1;
@@ -157,20 +113,19 @@
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
-      gap: 1.5rem;
-      padding: 1.5rem 1rem 3rem 1rem;
+      gap: .5rem;
+      padding: 1rem;
       overflow-x: hidden;
       overflow-y: scroll;
       z-index: 2;
-      background: rgba(0,0,0,.5); 
+      
       .Details-content {
         display: flex;
         flex: 1 1 500px;
         flex-direction: column;
         justify-content: center;
         gap: 1.5rem;
-        background: rgba(0,0,0,.5);      
-        border: 0.5px solid #270c49;
+             
         border-radius: 8px;
         padding: 1.5rem 1.3rem;
         position: relative;
@@ -178,7 +133,7 @@
         transition: 0.5s ease-in-out all;
         visibility: hidden;
         opacity: 0;
-
+        background-color: var(--white);
         .is-menu-open & {
           transition-delay: 0.8s;
           opacity: 1;
@@ -256,7 +211,7 @@
       }
 
       @include md {
-        padding: 3rem;
+        padding: .5rem 1.5rem;
       }
     }
 

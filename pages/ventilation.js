@@ -11,24 +11,3 @@ export default function Safety({ empresa, roles }) {
     />
   );
 }
-
-export const getServerSideProps = async (ctx) => {
-  const userDataCookie = ctx.req.cookies.userData;
-  const isLoggedIn = !!userDataCookie;
-
-  if (!isLoggedIn) {
-    return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
-    };
-  }
-
-  const userData = JSON.parse(userDataCookie);
-  const empresa = userData.empresa;
-  const roles = userData.roles;
-  return {
-    props: { empresa, roles },
-  };
-};

@@ -25,6 +25,7 @@ export default function CreateController({
 
       if (response.ok) {
         const data = await response.json();
+        console.log(data);
         setCompanies(data.empresas);
       } else {
         console.error("Error al obtener datos:", response.statusText);
@@ -40,7 +41,6 @@ export default function CreateController({
     fecthData();
   }, []);
 
- 
   const initialValues = isCreateUser
     ? {
         serie: "",
@@ -49,7 +49,7 @@ export default function CreateController({
         level: "",
         top: "",
         left: "",
-        
+
       }
     : {
         serie: userToEdit.serie,
@@ -90,6 +90,7 @@ export default function CreateController({
   };
 
   console.log(userToEdit);
+
   return (
     <Crud
       isCreateUser={isCreateUser}
@@ -100,77 +101,95 @@ export default function CreateController({
       refetchData={refetchData}
       url={url}
     >
-      <input
-        type="text"
-        name="name"
-        inputMode="text"
-        className="input-f"
-        placeholder="Ingrese Serie"
-        required
-        value={formData.serie}
-        onChange={(e) => setFormData({ ...formData, serie: e.target.value })}
-      />
-
-      <div className="select-g">
-        <Select
-          instanceId="react-select-instance"
-          name="period"
-          classNamePrefix="custom-select"
-          isSearchable={false}
-          isClearable={false}
-          onChange={handleAreaChange}
-          options={optionsEmpresas}
-          value={optionsEmpresas.find((opt) => opt.value === formData.mining)}
-        />
+      <div className="mC-imputs-item">
+        <label>Ingrese Serie</label>
+        <div className="imputs-i-input">
+          <input
+            type="text"
+            name="serie"
+            placeholder="Ej. D24-0001"
+            required
+            value={formData.serie}
+            onChange={(e) =>
+              setFormData({ ...formData, serie: e.target.value })
+            }
+          />
+        </div>
       </div>
 
-      <input
-        type="text"
-        name="ubication"
-        inputMode="text"
-        className="input-f"
-        placeholder="Ingrese Ubicación"
-        required
-        value={formData.ubication}
-        onChange={(e) =>
-          setFormData({ ...formData, ubication: e.target.value })
-        }
-      />
+      <div className="mC-imputs-item">
+        <label>Mina</label>
+        <div className="imputs-i-input">
+          <Select
+            instanceId="react-select-instance"
+            name="period"
+            classNamePrefix="custom-select"
+            isSearchable={false}
+            isClearable={false}
+            onChange={handleAreaChange}
+            options={optionsEmpresas}
+            value={optionsEmpresas.find((opt) => opt.value === formData.mining)}
+          />
+        </div>
+      </div>
+      <div className="mC-imputs-item">
+        <label>Ingrese Ubicación</label>
+        <div className="imputs-i-input">
+          <input
+            type="text"
+            name="ubication"
+            placeholder="Ej. Subterraneo"
+            required
+            value={formData.ubication}
+            onChange={(e) =>
+              setFormData({ ...formData, ubication: e.target.value })
+            }
+          />
+        </div>
+      </div>
 
-      <input
-        type="text"
-        name="level"
-        inputMode="text"
-        className="input-f"
-        placeholder="Ingrese Nivel"
-        required
-        value={formData.level}
-        onChange={(e) => setFormData({ ...formData, level: e.target.value })}
-      />
-      <input
-        type="text"
-        name="code"
-        pattern="[0-9]*"
-        maxLength={8}
-        inputMode="numeric"
-        className="input-f"
-        placeholder="Ingrese Top"
-        required
-        value={formData.top}
-        onChange={(e) => setFormData({ ...formData, top: e.target.value })}
-      />
-      <input
-        type="text"
-        name="code"
-        pattern="[0-9]*"
-        maxLength={8}
-        inputMode="numeric"
-        className="input-f"
-        placeholder="Ingrese Left"
-        required
-        value={formData.left}
-        onChange={(e) => setFormData({ ...formData, left: e.target.value })}
-      />
+      <div className="mC-imputs-item">
+        <label>Ingrese Nivel</label>
+        <div className="imputs-i-input">
+          <input
+            type="text"
+            name="level"
+            placeholder="Ej. Nivel 9"
+            required
+            value={formData.level}
+            onChange={(e) =>
+              setFormData({ ...formData, level: e.target.value })
+            }
+          />
+        </div>
+      </div>
+      <div className="mC-imputs-item">
+        <label>Ingrese Top</label>
+        <div className="imputs-i-input">
+          <input
+            type="number"
+            name="top"
+            placeholder="Ej. 100"
+            required
+            value={formData.top}
+            onChange={(e) => setFormData({ ...formData, top: e.target.value })}
+          />
+        </div>
+      </div>
+      <div className="mC-imputs-item">
+        <label>Ingrese Left</label>
+        <div className="imputs-i-input">
+          <input
+            type="number"
+            name="left"
+            placeholder="Ej. 100"
+            required
+            value={formData.left}
+            onChange={(e) => setFormData({ ...formData, left: e.target.value })}
+          />
+        </div>
+      </div>
+     
     </Crud>
   );
 }

@@ -7,6 +7,8 @@ import Delete from "@/src/Icons/delete";
 import Edit from "@/src/Icons/edit";
 import CreateCompany from "./c-company";
 import CreateController from "./c-controller";
+import CreateInstrument from "./c-instrument";
+import CreateGroupInstrument from "./c-group";
 
 function GenericList({
   url,
@@ -113,7 +115,7 @@ function GenericList({
       header: "Acciones",
       cell: ({ row }) => (
         <div className="btns">
-          <button onClick={() => handleEdit(row.original._id, "user")}>
+          <button onClick={() => handleEdit(row.original)}>
             <Edit />
           </button>
           <button onClick={() => handleDelete(row.original._id, "user")}>
@@ -146,7 +148,7 @@ function GenericList({
       header: "Acciones",
       cell: ({ row }) => (
         <div className="btns">
-          <button onClick={() => handleEdit(row.original._id, "empresa")}>
+          <button onClick={() => handleEdit(row.original)}>
             <Edit />
           </button>
           <button onClick={() => handleDelete(row.original._id, "empresa")}>
@@ -157,31 +159,39 @@ function GenericList({
     },
   ];
 
-  const controllerColumns = [
+  const groupInstrumentColumns = [
     {
-      header: "Empresa",
-      accessorKey: "name", 
-      cell: ({ row }) => (
-        <div className="td-user">
-          <div className="t-name">
-            <h4>{row.original.mining.name}</h4>
-            <h5>{row.original.ubication}</h5>
-          </div>
-        </div>
-      ),    
+      header: "Nombre",
+      accessorKey: "name",     
     },
     
     {
-      header: "Nivel",
-      accessorKey: "level",     
+      header: "Descripción",
+      accessorKey: "description",     
     },
     {
-      header: "Top",
-      accessorKey: "top",     
+      header: "Imagen",
+      accessorKey: "img",     
     },
     {
-      header: "Left",
-      accessorKey: "left",     
+      header: "Ubicación",
+      accessorKey: "ubication",     
+    },
+    {
+      header: "Instlación",
+      accessorKey: "installation",     
+    },
+    {
+      header: "Position X",
+      cell: ({ row }) => {
+        return <h4>{row.original.position.x}</h4>;
+      },
+    },
+    {
+      header: "Postion Y",
+      cell: ({ row }) => {
+        return <h4>{row.original.position.y}</h4>;
+      },
     },
     {
       header: "Fecha de creación",
@@ -192,10 +202,88 @@ function GenericList({
       header: "Acciones",
       cell: ({ row }) => (
         <div className="btns">
-          <button onClick={() => handleEdit(row.original._id, "controller")}>
+          <button onClick={() => handleEdit(row.original, "groupInstrument")}>
+            <Edit />
+          </button>
+          <button onClick={() => handleDelete(row.original._id, "groupInstrument")}>
+            <Delete />
+          </button>
+        </div>
+      ),
+    },
+  ];
+  const controllerColumns = [
+    {
+      header: "Serie",
+      accessorKey: "serie",     
+    },
+    {
+      header: "Nivel",
+      accessorKey: "level",     
+    },
+    {
+      header: "Left",
+      accessorKey: "left",     
+    },
+    {
+      header: "Right",
+      accessorKey: "right",     
+    },
+    {
+      header: "Ubicación",
+      accessorKey: "ubication",     
+    },
+    {
+      header: "Acciones",
+      cell: ({ row }) => (
+        <div className="btns">
+          <button onClick={() => handleEdit(row.original)}>
             <Edit />
           </button>
           <button onClick={() => handleDelete(row.original._id, "controller")}>
+            <Delete />
+          </button>
+        </div>
+      ),
+    },
+  ];
+  const instrumentColumns = [
+    {
+      header: "Nivel",
+      accessorKey: "name",     
+    },
+    {
+      header: "Controller",
+      accessorKey: "controllerId",     
+    },
+    {
+      header: "Descripción",
+      accessorKey: "description",     
+    },
+    {
+      header: "Tipo",
+      accessorKey: "type",     
+    },
+    {
+      header: "Modo",
+      accessorKey: "mode",     
+    },
+    {
+      header: "Señal",
+      accessorKey: "signal",     
+    },
+    {
+      header: "Medida",
+      accessorKey: "measure",     
+    },
+    {
+      header: "Acciones",
+      cell: ({ row }) => (
+        <div className="btns">
+          <button onClick={() => handleEdit(row.original, "groupInstrument")}>
+            <Edit />
+          </button>
+          <button onClick={() => handleDelete(row.original._id, "instrument")}>
             <Delete />
           </button>
         </div>
@@ -211,6 +299,15 @@ function GenericList({
       columns: companyColumns,
       createComponent: CreateCompany,
     },
+    groupInstrument: {
+      columns: groupInstrumentColumns,
+      createComponent: CreateGroupInstrument,
+    },
+    instrument: {
+      columns: instrumentColumns,
+      createComponent: CreateInstrument,
+    },
+    
     controller: {
       columns: controllerColumns,
       createComponent: CreateController,
@@ -224,34 +321,13 @@ function GenericList({
 
   const { columns, createComponent: CreateComponent } = selectedConfig;
 
-  const handleEdit = async (_id, url) => {
-    try {
-      const response = await fetch(
-        `${process.env.API_URL}/api/v1/${url}/${_id}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            "x-access-token": token,
-            "ngrok-skip-browser-warning": true,
-          },
-        }
-      );
-
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data);
-        setUserToEdit(data);
-        setCreate(true);
-        setIsCreateUser(false);
-      } else {
-        console.error("Error al obtener datos:", response.statusText);
-      }
-    } catch (error) {
-      console.error("Error en la solicitud:", error);
-    }
+  const handleEdit = (rowData, type) => {
+    console.log("Datos editados:", rowData);
+     setUserToEdit(rowData);
+     setCreate(true);
+     setIsCreateUser(false);
   };
+  
 
   const handleDelete = async (_id, url) => {
     try {

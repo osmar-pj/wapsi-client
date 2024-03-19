@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import Popup from "../c-popup/c-popup";
 import Reg from "@/src/Icons/reg";
+import Plus from "@/src/Icons/plus";
+import Close from "@/src/Icons/close";
 
 function Crud(props) {
   const {
@@ -15,8 +17,8 @@ function Crud(props) {
     handleCreateUser: onCreateUser,
   } = props;
 
-  const [msg, setMsg] = useState("");
-  const [successModalVisible, setSuccessModalVisible] = useState(false);
+  const [buttonClicked, setButtonClicked] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -28,40 +30,51 @@ function Crud(props) {
   };
 
   const handleCreateUser = async () => {
-    try {
-      const response = await fetch(`${process.env.API_URL}/api/v1/${url}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          "x-access-token": token,
-          "ngrok-skip-browser-warning": true,
-        },
-        body: JSON.stringify(formData),
-      });
+    console.log(formData);
+    if (
+      Object.values(formData).some((value) => value === "" || value === null)
+    ) {
+      console.log("Los datos estan vacios ");
+    } else {
+      try {
+        setButtonClicked(true);
+        const response = await fetch(`${process.env.API_URL}/api/v1/${url}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "x-access-token": token,
+            "ngrok-skip-browser-warning": true,
+          },
+          body: JSON.stringify(formData),
+        });
 
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data);
-        if (data.status === true) {
-          setMsg(data.message);
-          setSuccessModalVisible(true);
-          refetchData();
+        if (response.ok) {
+          const data = await response.json();
+          console.log(data);
+          if (data.status === true) {
+            refetchData();
+            setSuccess(true);
+            setTimeout(() => {
+              setCreate(false);
+            }, 3000);
+          } else {
+            setButtonClicked(false);
+            console.log(data.message);
+          }
         } else {
-          setMsg(data.message);
-          console.log(data.message);
+          console.error("Error al crear:", response.statusText);
         }
-      } else {
-        console.error("Error al crear:", response.statusText);
+      } catch (error) {
+        setButtonClicked(false);
+        console.error("Error en la solicitud:", error);
       }
-    } catch (error) {
-      console.error("Error en la solicitud:", error);
     }
   };
 
   const handleUpdateUser = async () => {
-   
     try {
+      setButtonClicked(true);
       const response = await fetch(
         `${process.env.API_URL}/api/v1/${url}/${userToEdit._id}`,
         {
@@ -78,62 +91,105 @@ function Crud(props) {
 
       if (response.ok) {
         const data = await response.json();
-       
-        // setMsg("Éxito");
-        setSuccessModalVisible(true);
         refetchData();
+        setSuccess(true);
         setTimeout(() => {
-          setCreate(false)
-        }, 2000);
-        // if (data.status === true) {
-        // } else {
-        //   setMsg(data.message);
-        //   console.log(data.message);
-        // }
+          setCreate(false);
+        }, 3000);
       } else {
+        setButtonClicked(false);
         console.error("Error al actualizar", response.statusText);
       }
     } catch (error) {
+      setButtonClicked(false);
       console.error("Error en la solicitud:", error);
     }
   };
 
   return (
-    <div className="popupOverlay">
-      {successModalVisible ? (
-        <Popup
-          title="Acción exitosa!"
-          message={"Éxito"}
-          visible={successModalVisible}
-        />
-      ) : (
-        <div className="popupContent">
-          <form onSubmit={handleSubmit}>
-            <div className="Form-container">
-              <div className="F-c-header">
-                <Reg />
-                <h2>{isCreateUser ? "Crear usuario" : "Actualizar usuario"}</h2>
-                <span
-                  className="mC-h-close"
-                  type="button"
-                  onClick={() => setCreate(false)}
-                >
-                  &times;
-                </span>
-              </div>
-              <div className="F-c-main">{props.children}</div>
-              <div className="F-c-footer">
-                <button className="btn-cancel" type="button" onClick={() => setCreate(false)}>
-                  Cancelar
-                </button>
-                <button className="btn-acept" type="submit">
-                  {isCreateUser ? "Crear" : "Actualizar"}
-                </button>
-              </div>
+    <div className="modalCreate-backg">
+      <form
+        className="mCreate-content"
+        onSubmit={handleSubmit}
+        style={{
+          userSelect: buttonClicked ? "none" : "auto",
+          pointerEvents: buttonClicked ? "none" : "auto",
+        }}
+      >
+        <div className="mC-c-header">
+          <div className="mC-h-title">
+            <div className="mC-c-title-icon">
+              <Plus />
             </div>
-          </form>
+            <div className="mC-c-title-text">
+              <h3>
+                {isCreateUser ? "Crear nuevo elemento" : "Actualizar dato"}
+              </h3>
+              <h4>
+                {isCreateUser
+                  ? " Agregar información para un nuevo elemento"
+                  : " Modificar información existente"}
+              </h4>
+            </div>
+          </div>
+          <span
+            onClick={() => setCreate(false)}
+            className="mC-h-close"
+            type="button"
+          >
+            <Close/>
+          </span>
         </div>
-      )}
+        <div className="mC-c-body">
+          <div className="mC-b-imputs-Crud">{props.children}</div>
+        </div>
+        <div className="mC-c-footer">
+          <button
+            className="btn-cancel"
+            type="button"
+            onClick={() => setCreate(false)}
+          >
+            Cancelar
+          </button>
+
+          <button
+            className={`btn-acept${
+              buttonClicked && !success ? " sending" : ""
+            }${success ? " success" : ""}`}
+            type="submit"
+            disabled={buttonClicked}
+            onClick={handleSubmit}
+          >
+            {buttonClicked && !success ? (
+              <>
+                <span className="loader"></span>Enviando...
+              </>
+            ) : success ? (
+              <>
+                <div className="checkbox-wrapper">
+                  <svg viewBox="0 0 35.6 35.6">
+                    <circle
+                      className="stroke"
+                      cx="17.8"
+                      cy="17.8"
+                      r="14.37"
+                    ></circle>
+                    <polyline
+                      className="check"
+                      points="11.78 18.12 15.55 22.23 25.17 12.87"
+                    ></polyline>
+                  </svg>
+                </div>
+                Proceso exitoso
+              </>
+            ) : isCreateUser ? (
+              "Guardar"
+            ) : (
+              "Actualizar"
+            )}
+          </button>
+        </div>
+      </form>
     </div>
   );
 }

@@ -11,7 +11,6 @@ import moment from 'moment';
 import 'moment/locale/es';
 
 if (typeof window !== 'undefined') {
-  // Solo ejecuta este código en el navegador
   moment.locale(navigator.language);
 }
 
@@ -240,7 +239,6 @@ export default function Analysis({ empresa, roles }) {
     }
   };
   
-
   useEffect(() => {
     if (isInitialLoad) {
       setIsInitialLoad(false);
@@ -277,14 +275,11 @@ export default function Analysis({ empresa, roles }) {
     }),
   };
   function formatearTiempo(totalMinutos) {
-    // Calcular las horas y los minutos
-    const horas = Math.floor(totalMinutos / 60); // Obtener las horas completas
-    const minutos = totalMinutos % 60; // Obtener los minutos restantes
+    const horas = Math.floor(totalMinutos / 60); 
+    const minutos = totalMinutos % 60; 
 
-    // Formatear los minutos con dos decimales
     const minutosFormateados = minutos.toFixed(0);
 
-    // Formatear el resultado
     const tiempoFormateado = `${horas}h ${minutosFormateados}min`;
 
     return tiempoFormateado;
@@ -369,3 +364,5 @@ export const getServerSideProps = async (ctx) => {
     props: { empresa, roles },
   };
 };
+
+

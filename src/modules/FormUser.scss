@@ -12,16 +12,16 @@
     justify-content: space-between;
     h2 {
       padding-bottom: 1rem;
-      color: var(--white);
+      color: var(--black);
     }
     button {
       border-radius: 5px;
       padding: 0.7rem 1rem;
       font-size: clamp(4px, 8vw, 11px);
-      color: var(--white);
+      color: var(--black);
       background-color: var(--grey);
       &:hover {
-        background-color: var(--red);
+        background-color: var(--secondary);
         color: #000e1b;
         font-weight: 400;
       }
@@ -47,7 +47,7 @@
         height: 3.5rem;
         background-color: rgba(0, 34, 55, 0.368627451);
         border: 0.5px solid #293345;
-        color: var(--white);
+        color: var(--black);
         border-radius: 50%;
         display: grid;
         place-items: center;
@@ -64,7 +64,7 @@
             font-weight: normal;
           }
           h4 {
-            color: var(--white);
+            color: var(--black);
             opacity: 0.7;
             font-size: clamp(8px, 8vw, 12px);
             font-weight: normal;
@@ -84,7 +84,7 @@
             font-size: clamp(4px, 8vw, 11px);
           }
           .btn-edit {
-            color: var(--white);
+            color: var(--black);
             background-color: var(--grey);
             &:hover {
               background-color: var(--red);
@@ -151,35 +151,7 @@
       }
     }
     .D-title-more {
-      button {
-        border-radius: 8px;
-        padding: 0.7rem 1rem;
-        font-size: clamp(6px, 8vw, 12px);
-        font-weight: bold;
-        color: var(--black-light-1);
-        background-color: var(--red);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 1rem;
-        height: 40px;
-        svg {
-          fill: var(--white);
-          width: 1em;
-        }
-        &:hover {
-          background-color: var(--red);
-          color: #000e1b;
-          font-weight: 400;
-          > svg {
-            fill: #000e1b;
-          }
-        }
-        @include md {
-          font-size: clamp(6px, 8vw, 13px);
-          height: 40px;
-        }
-      }
+      
     }
   }
 
@@ -196,31 +168,7 @@
       .c-t-h-search {
         max-width: 300px;
         width: 100%;
-        input {
-          width: 100%;
-          height: 40px;
-          border: 1px solid var(--black-light-1);
-          background-color: var(--black-light-1);
-          text-align: left;
-          color: var(--white);
-          font-size: clamp(6px, 8vw, 12px);
-          border-radius: 8px;
-          padding: 14px 20px;
-          font-style: normal;
-          @include md {
-            font-size: clamp(4.5px, 8vw, 13.5px);
-            height: 40px;
-            max-width: 350px;
-          }
-
-          &:focus {
-            color: var(--white);
-            border: 1px solid #41486b;
-          }
-          &::placeholder {
-            color: var(--grey);
-          }
-        }
+        
       }
       .c-t-h-items{
         display: flex;
@@ -240,8 +188,13 @@
       align-items: flex-start;
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
-      border: 1px solid var(--black-light-1);
+     
       height: 60vh;
+    
+      padding: 1rem;
+      background-color: rgba(255, 255, 255, 0.438);
+      border-radius: 12px;
+      border: 1px solid var(--white);
       &::-webkit-scrollbar {
         width: 0.3rem !important;
         height: 0.3rem !important;
@@ -250,38 +203,46 @@
         width: 100%;
         letter-spacing: 0.03em;
         line-height: 0.7rem;
-        font-weight: normal;
+        font-weight: 400;
         border-collapse: collapse;
         white-space: nowrap;
         thead {
-          background-color: var(--black-light-1);
-          color: var(--grey);
+          color: var(--grey-2);
           text-align: left;
-          font-size: clamp(4.5px, 8vw, 9px);
-          letter-spacing: 0.03em;
-          height: 50px;
-          font-weight: normal;
+          background-color: var(--grey-light-1);
           position: sticky;
           top: 0;
           z-index: 1;
+          
           @include md {
             font-size: clamp(5.5px, 8vw, 11px);
+          }
+          th{
+            padding: 20px 12px;
+            font-size: clamp(6px, 8vw, 10.5px);
+            font-weight: 400 ;
+            &:first-child {
+              border-radius: 8px 0px 0px 8px;
+            }
+            &:last-child {
+              border-radius: 0 8px 8px 0px;
+            }
           }
         }
 
         tbody {
-          color: var(--white);
+          color: var(--black);
           font-size: clamp(5.5px, 8vw, 12px);
           tr {
             overflow: auto;
             transition: all ease-in 0.35s;
             cursor: pointer;
-            opacity: 0.7;
+            opacity: 0.9;
             &:hover {
-              background-color: #0d0d25;
-              box-shadow: 0 4px 8px 3px rgba(0, 0, 0, 0.15),
-                0 1px 3px rgba(0, 0, 0, 0.3);
-              color: var(--white);
+              background-color: var(--white);
+              box-shadow: 0 4px 8px 3px var(--grey-light-1),
+                0 1px 3px var(--grey-light-1);
+              color: var(--black);
               opacity: 1;
             }
           }
@@ -295,11 +256,11 @@
         }
 
         tr td:first-child {
-          border-radius: 5px 0 0 5px;
+          border-radius: 10px 0 0 10px;
         }
 
         tr td:last-child {
-          border-radius: 0 5px 5px 0;
+          border-radius: 0 10px 10px 0;
         }
 
         th,
@@ -313,7 +274,7 @@
           }
         }
       }
-
+      
       tbody:hover > tr:not(:hover) {
         opacity: 0.3;
       }
@@ -321,7 +282,7 @@
       .t-siglas {
         width: 30px;
         height: 30px;
-        background-color: var(--red);
+        background-color: var(--primary);
         color: #0a0a1f;
         border-radius: 50%;
         display: grid;
@@ -330,8 +291,9 @@
         font-weight: bold;
         @include md {
           width: 38px;
-        height: 38px;
+          height: 38px;
           font-size: clamp(6px, 8vw, 18px);
+          line-height: 1rem;
         }
       }
 
@@ -366,17 +328,19 @@
         align-items: center;
         gap: 1rem;
         button {
-          background-color: var(--black-light-1);
+          background-color: var(--white);
           width: 25px;
           height: 25px;
           display: grid;
           place-items: center;
           border-radius: 5px;
           svg {
-            width: 6px;
+            width: 5px;
+            height: 5px;
             fill: var(--grey);
             @include md{
-              width: 8px;
+              width: 10px;
+              height: 10px;
             }
           }
           &:hover {
@@ -394,7 +358,7 @@
           color: var(--grey);
           font-size: clamp(6px, 8vw, 11px);
           strong {
-            color: var(--white);
+            color: var(--black);
           }
           @include md{
             font-size: clamp(6px, 8vw, 13.5px);

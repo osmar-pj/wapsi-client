@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
+import { useMainContext } from "../contexts/Main-context";
 
 const ValidLogin = (initialData, onValidate, resetForm) => {
   const [loading, setLoading] = useState(false);
   const [loginStatus, setLoginStatus] = useState(null);
   const [errors, setErrors] = useState({});
-
+  // const { login } = MainProvider();
+  const { login } = useMainContext();
   const router = useRouter();
 
   const handleSubmit = async (event) => {
@@ -29,7 +31,7 @@ const ValidLogin = (initialData, onValidate, resetForm) => {
         });
 
         const data = await response.json();
-       
+        
        
         setTimeout(() => {
           setLoading(false);
@@ -51,8 +53,9 @@ const ValidLogin = (initialData, onValidate, resetForm) => {
 
           Cookies.set("userData", JSON.stringify(cookieData)); 
           const empresa = data.empresa;
-          localStorage.setItem("empresa", empresa);               
-          router.push("/");
+          localStorage.setItem("empresa", empresa);
+          login(data);               
+          router.push("/safety");
         } else {
           resetForm(initialData);
         }

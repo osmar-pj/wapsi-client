@@ -6,10 +6,13 @@
   position: relative;
 
   .Home-title {
-    width: 14rem;
+    background-color: rgba(255, 255, 255, 0.438);
+    border-radius: 15px;
+    border: 1px solid var(--white); 
+    width: 12rem;
     display: flex;
     flex-direction: column;
-    text-align: center;
+   
     position: absolute;
     top: 14vh;
     padding: 1rem;
@@ -19,30 +22,32 @@
     transform: translateX(-50%);
 
     h1 {
-      text-transform: uppercase;
+      text-transform: capitalize;
+      text-align: center;
     }
     span {
+      text-align: center;
       color: var(--grey);
       font-size: clamp(5px, 8vw, 8px);
       @include md {
         font-size: clamp(6px, 8vw, 12px);
       }
     }
+    .img-warning{
+      position: absolute;
+      bottom : -80px;
+      left: 50%;
+      width: 100%;
+      transform: translateX(-50%);
+    }
+    
     @include md {
       padding: 1.5rem;
-      width: 16rem;
+      width: 11rem;
       text-align: left;
       left: 4vw;
       transform: translateX(0);
     }
-    .img-warning{
-      position: absolute;
-      bottom : -65%;
-      left: 50%;
-      width: 11.5rem;
-      transform: translateX(-50%);
-    }
-    
   }
 
   .Home-image {
@@ -61,12 +66,19 @@
       animation: letter-flicker 0.45s linear;
       img {
         height: 2.3rem;
+        width: 2.3rem;
         padding-bottom: 6px;
         padding-left: 5px;
         @include md {
-          height: 4rem;
+          height: 3rem;
+          width: 3rem;
           padding-left: 8px;
         }
+      }
+      svg {
+        width: 3rem;
+        height: 3rem;
+       
       }
 
       .M-i-content {
@@ -84,15 +96,16 @@
           span {
             font-size: clamp(5px, 6vw, 9px);
             display: none;
+            font-weight: 600;
             padding-top: 0.5rem;
             @include md {
               display: flex;
             }
           }
           h2 {
-            color: var(--white);
+            color: var(--black);
             font-size: clamp(4px, 6vw, 8px);
-            font-weight: 400;
+            font-weight: 600;
             transition: 0.35s ease-in;
             padding-top: 0;
             display: -webkit-box;
@@ -101,9 +114,9 @@
             -webkit-line-clamp: 2;
             text-overflow: ellipsis;
             white-space: normal;
-            max-width: 180px;
+            max-width: 120px;
             @include md {
-              font-size: clamp(7.5px, 8vw, 15px);
+              font-size: clamp(7.5px, 8vw, 12px);
               line-height: 1rem;
               letter-spacing: 0.03rem;
               padding-top: 0.2rem;
@@ -221,113 +234,48 @@
 
 .M-blue {
   .M-i-content {
-    background-image: linear-gradient(to bottom, #0a4f9c41, rgba(0, 0, 0, 10%));
-    border: none;
+    background-color: white;
+   
     .content-text {
       span {
         color: #1a96d4;
       }
     }
 
-    .pulse {
-      background: #0a4f9c;
-      box-shadow: 0px 0px 1px 1px #0a4f9c;
-      animation: pulse-animation-blue 2s infinite;
-      &::before {
-        border: 0.5px solid #0a4f9c;
-      }
-    }
+    // .pulse {
+    //   background: #0a4f9c;
+    //   box-shadow: 0px 0px 1px 1px #0a4f9c;
+    //   animation: pulse-animation-blue 2s infinite;
+    //   &::before {
+    //     border: 0.5px solid #0a4f9c;
+    //   }
+    // }
 
-    @keyframes pulse-animation-blue {
-      0% {
-        box-shadow: 0 0 0 0px #0a4f9c;
-      }
-      100% {
-        box-shadow: 0 0 0 20px rgba(255, 0, 0, 0);
-      }
-    }
+    // @keyframes pulse-animation-blue {
+    //   0% {
+    //     box-shadow: 0 0 0 0px #0a4f9c;
+    //   }
+    //   100% {
+    //     box-shadow: 0 0 0 20px rgba(255, 0, 0, 0);
+    //   }
+    // }
 
-    @media (hover: hover) {
-      &:hover {
-        border: 0.5px solid #0a4f9c5e;
-        box-shadow: 0px 0px 15px 10px rgba(10, 79, 156, 0.25);
+   
 
-        > .pulse {
-          &::before {
-            border: 0.5px solid #0a4f9c;
-          }
-        }
-      }
-    }
-
-    &::before {
-      border-top: 1px solid #0a4f9c;
-      border-left: 1px solid #0a4f9c;
-    }
-
-    &::after {
-      border-bottom: 1px solid #0a4f9c;
-      border-right: 1px solid #0a4f9c;
-    }
-    @include md {
-      border: 0.5px solid #0a4f9c;
-    }
+   
+   
   }
 }
 
 .M-orange {
   .M-i-content {
-    background-image: linear-gradient(to bottom, #f4892441, rgba(0, 0, 0, 10%));
+    background-color: white;
     border: none;
 
     .content-text {
       span {
         color: #f6c427;
       }
-    }
-
-    .pulse {
-      background: #f48a24;
-      box-shadow: 0px 0px 1px 1px #f48a24;
-      animation: pulse-animation 2s infinite;
-      &::before {
-        border: 0.5px solid #f48a24;
-      }
-    }
-
-    @keyframes pulse-animation {
-      0% {
-        box-shadow: 0 0 0 0px #f48a24;
-      }
-      100% {
-        box-shadow: 0 0 0 20px rgba(255, 0, 0, 0);
-      }
-    }
-
-    @media (hover: hover) {
-      &:hover {
-        border: 0.5px solid #f489245e;
-        box-shadow: 0px 0px 15px 10px rgba(244, 138, 36, 0.25);
-
-        > .pulse {
-          &::before {
-            border: 0.5px solid #f48a24;
-          }
-        }
-      }
-    }
-
-    &::before {
-      border-top: 1px solid #f48a24;
-      border-left: 1px solid #f48a24;
-    }
-
-    &::after {
-      border-bottom: 1px solid #f48a24;
-      border-right: 1px solid #f48a24;
-    }
-    @include md {
-      border: 0.5px solid #f48a24;
     }
   }
 }

@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 export default function User({ token, roles }) {
   const [controllers, setControllers] = useState({});
   const [loading, setLoading] = useState(true);
+
+  
   const refetchData = async () => {
     try {
       const response = await fetch(`${process.env.API_URL}/api/v1/controller`, {
@@ -12,12 +14,13 @@ export default function User({ token, roles }) {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          "x-access-token": token,
+          
         },
       });
 
       if (response.ok) {
         const data = await response.json();
+        console.log(data);
         setControllers(data.controllers);
 
       } else {

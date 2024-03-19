@@ -3,6 +3,7 @@ import Reg from "../Icons/reg";
 import Select from "react-select";
 import DropLeft from "../Icons/drop-left";
 import DropRight from "../Icons/drop-right";
+import More from "../Icons/more";
 
 let ascIcon = "/imgs/i-up-arrow.svg";
 let descIcon = "/imgs/i-down-arrow.svg";
@@ -27,8 +28,8 @@ export default function View({
           
         </div>
         <div className="D-title-more">
-          <button onClick={() => setCreate(true) & setIsCreateUser(true)}>
-            + Crear nuevo
+          <button className="btn-acept" onClick={() => setCreate(true) & setIsCreateUser(true)}>
+            <More/> Crear nuevo
           </button>
         </div>
       </div>

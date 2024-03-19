@@ -47,7 +47,7 @@ export default function CreateUser({
   }, []);
 
   const { rolesFiltered, empresas } = users;
-  
+
   const initialValues = isCreateUser
     ? {
         empresa: "",
@@ -113,81 +113,97 @@ export default function CreateUser({
       refetchData={refetchData}
       url={url}
     >
-      <div className="select-g">
-        {/* <label>Nombres</label> */}
-        <input
-          type="text"
-          name="name"
-          inputMode="text"
-          className="input-f"
-          placeholder="Ingrese Nombre"
-          required
-          value={formData.name}
-          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-        />
+      <div className="mC-imputs-item">
+        <label>Ingrese Nombres</label>
+        <div className="imputs-i-input">
+          <input
+            type="text"
+            name="name"
+            inputMode="text"
+           
+            placeholder="Ingrese Nombre"
+            required
+            value={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+          />
+        </div>
       </div>
-      <div className="select-g">
-        {/* <label>Apellidos</label> */}
-        <input
-          type="text"
-          name="lastname"
-          inputMode="text"
-          className="input-f"
-          placeholder="Ingrese Apellido"
-          required
-          value={formData.lastname}
-          onChange={(e) =>
-            setFormData({ ...formData, lastname: e.target.value })
-          }
-        />
+      <div className="mC-imputs-item">
+        <label>Ingrese Apellidos</label>
+        <div className="imputs-i-input">
+          <input
+            type="text"
+            name="lastname"
+            inputMode="text"
+           
+            placeholder="Ingrese Apellido"
+            required
+            value={formData.lastname}
+            onChange={(e) =>
+              setFormData({ ...formData, lastname: e.target.value })
+            }
+          />
+        </div>
       </div>
-
-      <div className="select-g">
-        {/* <label>DNI</label> */}
-        <input
-          type="text"
-          name="code"
-          pattern="[0-9]*"
-          maxLength={8}
-          inputMode="numeric"
-          className="input-f"
-          placeholder="Ingrese DNI"
-          required
-          value={formData.dni}
-          onChange={(e) => setFormData({ ...formData, dni: e.target.value })}
-        />
+      <div className="mC-imputs-item">
+        <label>Ingrese DNI</label>
+        <div className="imputs-i-input">
+          <input
+            type="number"
+            name="dni"
+            min="0"
+            max="99999999" 
+            pattern="[0-9]*"
+            inputMode="numeric"
+           
+            placeholder="Ingrese DNI"
+            required
+            value={formData.dni}
+            onChange={(e) => {
+              const inputValue = e.target.value;
+              if (inputValue.length <= 8) {
+                setFormData({ ...formData, dni: inputValue });
+              }
+            }}
+          />
+        </div>
       </div>
-
-      <div className="select-g">
-        {/* <label>Empresa</label> */}
-        <Select
-          instanceId="react-select-instance"
-          name="period"
-          classNamePrefix="custom-select"
-          isSearchable={false}
-          isClearable={false}
-          onChange={handleAreaChange}
-          options={optionsEmpresas}
-          value={optionsEmpresas.find((opt) => opt.value === formData.empresa)}
-          placeholder="Seleccione..."
-        />
+      <div className="mC-imputs-item">
+        <label>Empresa</label>
+        <div className="imputs-i-input">
+          <Select
+            instanceId="react-select-instance"
+            name="period"
+            classNamePrefix="custom-select"
+            isSearchable={false}
+            isClearable={false}
+            onChange={handleAreaChange}
+            options={optionsEmpresas}
+            value={optionsEmpresas.find(
+              (opt) => opt.value === formData.empresa
+            )}
+            placeholder="Seleccione..."
+          />
+        </div>
       </div>
-      <div className="select-g">
-        {/* <label>Rol</label> */}
-        <Select
-          instanceId="react-select-instance"
-          name="roles"
-          classNamePrefix="custom-select"
-          isSearchable={false}
-          isClearable={false}
-          isMulti
-          onChange={handleRolesChange}
-          options={optionsRoles}
-          value={optionsRoles.filter((opt) =>
-            formData.roles.includes(opt.value)
-          )}
-          placeholder="Seleccione..."
-        />
+      <div className="mC-imputs-item">
+        <label>Rol</label>
+        <div className="imputs-i-input">
+          <Select
+            instanceId="react-select-instance"
+            name="roles"
+            classNamePrefix="custom-select"
+            isSearchable={false}
+            isClearable={false}
+            isMulti
+            onChange={handleRolesChange}
+            options={optionsRoles}
+            value={optionsRoles.filter((opt) =>
+              formData.roles.includes(opt.value)
+            )}
+            placeholder="Seleccione..."
+          />
+        </div>
       </div>
     </Crud>
   );

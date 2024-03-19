@@ -4,7 +4,6 @@ import Header from "@/src/components/c-header/c-header";
 import { MainContext } from "@/src/contexts/Main-context";
 import { Subject } from "rxjs";
 import { io } from "socket.io-client";
-import Circle from "../Icons/circle";
 import Foot from "../components/c-footer/c-footer";
 
 export default function ConexionSocket({ empresa, roles, categoria }) {
@@ -15,7 +14,7 @@ export default function ConexionSocket({ empresa, roles, categoria }) {
     const fetchController = async () => {
       try {
         const response = await fetch(
-          `${process.env.API_URL}/api/v1/controller?empresa=${empresa}`,
+          `${process.env.API_URL}/api/v1/groupInstrument`,
           {
             method: "GET",
             headers: {
@@ -27,7 +26,8 @@ export default function ConexionSocket({ empresa, roles, categoria }) {
 
         if (response.ok) {
           const data = await response.json();
-          setControllers(data.controllers);
+          console.log(data);
+          setControllers(data);
         } else {
           console.error("Error al obtener datos:", response.statusText);
         }
@@ -38,13 +38,13 @@ export default function ConexionSocket({ empresa, roles, categoria }) {
 
     fetchController();
   }, [empresa, setControllers]);
+
   useEffect(() => {
     const socket = io(process.env.API_URL);
   
-    socket.on(`${empresa.toUpperCase()}-${categoria}`, (data) => {
-     
-      
-      const foundControlIndex = controllers.findIndex((d) => d.serie === data.serie);
+    socket.on(`${empresa.toUpperCase()}`, (data) => {
+          console.log(data.value, data.name)
+      const foundControlIndex = controllers.findIndex((d) => d._id === data._id);
       
       if (foundControlIndex !== -1) {
         const updatedController = { ...controllers[foundControlIndex] };
@@ -69,8 +69,9 @@ export default function ConexionSocket({ empresa, roles, categoria }) {
     return () => {
       socket.disconnect();
     };
-  }, [controllers, empresa, categoria]);
+  }, [controllers, empresa]);
   
+
   const renderNameWithSubscript = (name) => {
     const number = name.match(/\d+/);
     if (number) {
@@ -88,47 +89,7 @@ export default function ConexionSocket({ empresa, roles, categoria }) {
       <Header roles={roles} />
       <section className="w-Home">
         <Mapa controllers={controllers} controller={controllers} empresa={empresa} />
-        <div className="float-sensores">
-          {controllers.map((i, index) => {
-            return (
-              <div
-                className={`Float-content ${
-                  index % 2 === 0 ? "D-blue" : "D-orange"
-                }`}
-                key={i._id}
-              >
-                <div className="Float-title">
-                  <h2>{i.ubication}</h2>
-                  <h3>/{i.level}</h3>
-                  <div className="square"></div>
-                </div>
-                <div className="Sensor-circle">
-                  {i.devices.map((device) => {
-                    const { name, value, und, min, max1, max2 } = device;
-                    return (
-                      <div
-                        key={name}
-                        className={`circle-item ${
-                          value < max1 && value > min
-                            ? "green"
-                            : value < min || value > max2
-                            ? "red"
-                            : "yellow"
-                        }`}
-                      >
-                        <Circle />
-                        <p>{renderNameWithSubscript(name)}</p>
-                        <h3>{value.toFixed(2)}</h3>
-                        <span>{und}</span>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-        
+       
       </section>
       <Foot />
     </>

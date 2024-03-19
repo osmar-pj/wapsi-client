@@ -5,8 +5,7 @@ import { useEffect, useState } from "react";
 export default function User({ token, roles }) {
   const [users, setUsers] = useState({
     usersFiltered2: [],
-    rolesFiltered: [],
-    empresas: [],
+    
   });
   const [loading, setLoading] = useState(true);
   const refetchData = async () => {
@@ -22,10 +21,10 @@ export default function User({ token, roles }) {
 
       if (response.ok) {
         const data = await response.json();
+        console.log(data);
         setUsers({
           usersFiltered2: data.usersFiltered2,
-          rolesFiltered: data.rolesFiltered,
-          empresas: data.empresas,
+         
         });
       } else {
         console.error("Error al obtener datos:", response.statusText);

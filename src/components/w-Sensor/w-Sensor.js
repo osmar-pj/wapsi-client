@@ -8,9 +8,9 @@ const Sensor = ({ sensorData }) => {
     const number = name.match(/\d+/);
     if (number) {
       return [
-        name.substring(0, number.index), 
-        <sub key={number[0]}>{number[0]}</sub>, 
-        name.substring(number.index + number[0].length) 
+        name.substring(0, number.index),
+        <sub key={number[0]}>{number[0]}</sub>,
+        name.substring(number.index + number[0].length),
       ];
     } else {
       return name;
@@ -28,33 +28,23 @@ const Sensor = ({ sensorData }) => {
           <h5>Tiempo real</h5>
         </div>
         <div className="D-title-more">
-          <More />
+          
         </div>
       </div>
       <div className="Sensor-circle">
-        {sensorData.devices && sensorData.devices.length > 0 ? (
-          sensorData.devices.map((device, index) => {
-            const { name, value, und, min, max1, max2 } = device;
+        {sensorData.groups && sensorData.groups.length > 0 ? (
+          sensorData.groups.map((device, index) => {
             return (
-              <div
-                key={name}
-                className={`circle-item ${
-                  value < max1 && value > min 
-                    ? "green"
-                    : value < min || value > max2
-                    ? "red"
-                    : "yellow"
-                }`}
-              >
-                <Circle/>
-                <p>{renderNameWithSubscript(name)}</p>          
-                <h3>{value.toFixed(2)}</h3>
-                <span>{und}</span>
+              <div key={device.name} className={`circle-item ${device.alarm && device.alarm.category}`}>
+                <Circle />
+                <p >{renderNameWithSubscript(device.name)}</p>
+                <h3>{device.value.toFixed(2)}</h3>
+                <span>{device.und}</span>
               </div>
             );
           })
         ) : (
-          <p>Datos no disponibles</p>
+          <p>Sin Datos</p>
         )}
       </div>
     </div>

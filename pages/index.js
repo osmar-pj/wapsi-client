@@ -5,58 +5,58 @@ import { useState } from "react";
 import Select from "react-select";
 
 export default function Formu({ userId }) {
-  const [area, setArea] = useState("");
-  const [successModalVisible, setSuccessModalVisible] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
+  // const [area, setArea] = useState("");
+  // const [successModalVisible, setSuccessModalVisible] = useState(false);
+  // const [successMessage, setSuccessMessage] = useState("");
 
-  const router = useRouter();
+  // const router = useRouter();
 
-  const handleAreaChange = ({ value }) => {
-    setArea(value);
-  };
+  // const handleAreaChange = ({ value }) => {
+  //   setArea(value);
+  // };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
 
-    if (!area) {
-      console.log("Por favor, ingrese una descripción.");
-      return;
-    }
+  //   if (!area) {
+  //     console.log("Por favor, ingrese una descripción.");
+  //     return;
+  //   }
 
-    try {
-      const response = await fetch(
-        `${process.env.API_URL}/api/v1/user/${userId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-          body: JSON.stringify({ area: area }),
-        }
-      );
+  //   try {
+  //     const response = await fetch(
+  //       `${process.env.API_URL}/api/v1/user/${userId}`,
+  //       {
+  //         method: "PUT",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Accept: "application/json",
+  //         },
+  //         body: JSON.stringify({ area: area }),
+  //       }
+  //     );
 
-      if (response.ok) {
-        const data = await response.json();
+  //     if (response.ok) {
+  //       const data = await response.json();
 
-        setSuccessMessage("Área actualizado");
-        setSuccessModalVisible(true);
-        setTimeout(() => {
-          setSuccessMessage("");
-          router.push(`/${area}`);
-          setSuccessModalVisible(false);
-        }, 3000);
-      } else {
-        console.error("Error al actualizar recurso:", response.statusText);
-      }
-    } catch (error) {
-      console.error("Error en la solicitud:", error);
-    }
-  };
+  //       setSuccessMessage("Área actualizado");
+  //       setSuccessModalVisible(true);
+  //       setTimeout(() => {
+  //         setSuccessMessage("");
+  //         router.push(`/${area}`);
+  //         setSuccessModalVisible(false);
+  //       }, 3000);
+  //     } else {
+  //       console.error("Error al actualizar recurso:", response.statusText);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error en la solicitud:", error);
+  //   }
+  // };
 
   return (
     <section className="w-Home">
-      {successModalVisible ? (
+      {/* {successModalVisible ? (
         <Popup
           title="Acción exitosa!"
           message={successMessage}
@@ -95,41 +95,41 @@ export default function Formu({ userId }) {
             <button type="submit">Guardar</button>
           </form>
         </div>
-      )}
+      )} */}
     </section>
   );
 }
 
-export const getServerSideProps = async (ctx) => {
-  const userDataCookie = ctx.req.cookies.userData;
-  const isLoggedIn = !!userDataCookie;
+ export const getServerSideProps = async (ctx) => {
+   const userDataCookie = ctx.req.cookies.userData;
+   const isLoggedIn = !!userDataCookie;
 
-  if (!isLoggedIn) {
-    return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
-    };
-  }
+   if (!isLoggedIn) {
+     return {
+       redirect: {
+         destination: "/login",
+         permanent: false,
+       },
+     };
+   }
 
-  const userData = JSON.parse(userDataCookie);
-  const area = userData.area;
-  const userId = userData.userId;
+   const userData = JSON.parse(userDataCookie);
+   const area = userData.area;
+   const userId = userData.userId;
 
-  if (typeof area !== "undefined" && area !== "") {
-    return {
-      redirect: {
-        destination: `/${area}`,
-        permanent: false,
-      },
-    };
-  } else {
-    return {
-      props: {
-        area: null,
-        userId,
-      },
-    };
-  }
-};
+   if (typeof area !== "undefined" && area !== "") {
+     return {
+       redirect: {
+         destination: `/${area}`,
+         permanent: false,
+       },
+     };
+   } else {
+     return {
+       props: {
+         area: null,
+         userId,
+       },
+     };
+   }
+ };

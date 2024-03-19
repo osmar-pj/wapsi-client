@@ -1,70 +1,63 @@
-import { createContext, useContext, useReducer, useEffect } from 'react';
-// import { parseCookies, setCookie, destroyCookie } from 'cookies'; // Para gestionar cookies en Next.js
+import { useRouter } from "next/router";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from "react";
 
-const initialState = {
-  name: 'Juan',
-  user: null,
-  dataList: [],
-};
+const AUTH_TOKENS_KEY = "NEXT_JS_AUTH";
 
-const AuthContext = createContext();
-
-// Tipos de acciones
-const actionTypes = {
-  AUTH_LOGIN: 'AUTH_LOGIN',
-  AUTH_LOGOUT: 'AUTH_LOGOUT',
-  GET_LIST: 'GET_LIST',
-};
-
-const reducer = (state, action) => {
-  switch (action.type) {
-    case actionTypes.AUTH_LOGIN:
-      return { ...state, user: action.payload };
-    case actionTypes.AUTH_LOGOUT:
-      return { ...state, user: null };
-    case actionTypes.GET_LIST:
-      return { ...state, dataList: action.payload };
-    default:
-      return state;
+const getAuthTokensFromLocalStorage = () => {
+  if (typeof window !== "undefined") {
+    const authTokensInLocalStorage = window.localStorage.getItem(AUTH_TOKENS_KEY);
+    return authTokensInLocalStorage ? JSON.parse(authTokensInLocalStorage) : null;
   }
+  return null;
 };
 
-const AuthProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+export const AuthContext = createContext({
+  login: (authTokens) => {},
+  logout: () => {},
+  isLoggedIn: false,
+  authTokens: null,
+});
 
-  const authLogin = (payload) => {
-    dispatch({ type: actionTypes.AUTH_LOGIN, payload });
-  };
+export function AuthContextProvider({ children }) {
+  const [authTokens, setAuthTokens] = useState(getAuthTokensFromLocalStorage());
 
-  const authLogout = () => {
-    dispatch({ type: actionTypes.AUTH_LOGOUT });
-  };
+  const login = useCallback(function (authTokens) {
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem(AUTH_TOKENS_KEY, JSON.stringify(authTokens));
+      setAuthTokens(authTokens);
+    }
+  }, []);
 
-  const getList = (payload) => {
-    dispatch({ type: actionTypes.GET_LIST, payload });
-  };
+  const router = useRouter();
+  const logout = useCallback(function () {
+    if (typeof window !== "undefined") {
+      router.push("/login");
+      window.localStorage.removeItem(AUTH_TOKENS_KEY);
+      setAuthTokens(null);
+    }
+  }, []);
 
-//   useEffect(() => {
-//     // Recuperar datos del usuario desde cookies al inicio
-//     const { user } = parseCookies();
-//     if (user) {
-//       authLogin(JSON.parse(user));
-//     }
-//   }, []);
+  const isLoggedIn = useMemo(() => authTokens !== null, [authTokens]);
 
-  return (
-    <AuthContext.Provider value={{ state, authLogin, authLogout, getList }}>
-      {children}
-    </AuthContext.Provider>
+  const value = useMemo(
+    () => ({
+      login,
+      logout,
+      authTokens,
+      isLoggedIn,
+    }),
+    [authTokens, login, logout, isLoggedIn]
   );
-};
 
-const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth debe utilizarse dentro de AuthProvider');
-  }
-  return context;
-};
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+}
 
-export { AuthProvider, useAuth };
+export function useAuthContext() {
+  return useContext(AuthContext);
+}

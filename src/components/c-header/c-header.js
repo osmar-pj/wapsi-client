@@ -2,20 +2,27 @@ import User from "@/src/Icons/user";
 import Cookies from "js-cookie";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import NotifyW from "../c-modal/c-notify";
+import { MainContext } from "@/src/contexts/Main-context";
 
 export default function Header({ roles }) {
+
+  // const { userData } = useContext(MainContext);
+
+
   const isAdmin = roles.some((role) => role.name === "admin");
   const [name, setName] = useState("");
   const [empresa, setEmpresa] = useState("");
 
   useEffect(() => {
     const userDataCookie = Cookies.get("userData");
+    
     if (userDataCookie) {
       const userData = JSON.parse(userDataCookie);
       const name = userData.name;
       setName(name);
-      
+
       const empresa = userData.empresa;
       if (empresa === "HUARON") {
         setEmpresa("/imgs/logo-Huaron.svg");
@@ -35,22 +42,20 @@ export default function Header({ roles }) {
   };
 
   const routes = [
-    { path: "/safety", label: "SEGURIDAD" },
+    { path: "/safety", label: "Seguridad" },
     // { path: "/ventilation", label: "VENTILACIÓN" },
     // { path: "/operation", label: "OPERACIÓN" },
-    // { path: "/ti", label: "TI" },
-    { path: "/Analysis", label: "ANÁLISIS" },
+    { path: "/table", label: "Tabla" },
+    { path: "/Analysis", label: "Análisis" },
   ];
 
   return (
     <header className="c-header">
-      <div className="logo points">
-        <div className="square1"></div>
-        <div className="square2"></div>
+      <div className="logo">
         <img src={empresa} className="Products-banner-desk" alt="" />
       </div>
 
-      <div className="navbar points">
+      <div className="navbar">
         <div className="square1"></div>
         <div className="square2"></div>
         <ul className="menu">
@@ -64,19 +69,18 @@ export default function Header({ roles }) {
               <Link href={route.path}>{route.label}</Link>
             </li>
           ))}
-        </ul>  
+        </ul>
       </div>
-      <div className="admAvatar points">
-        <div className="square1"></div>
-        <div className="square2"></div>
-        <div>
+      <div className="admAvatar">
+        <div className="web-name">
           <span>WAPSI-SOLUTIONS </span>
         </div>
         <div className="avatar">
           <div className="menu">
             <div className="dropdown">
               <button className="dropdownButton">
-                <User /><span> {name} </span>
+                <User />
+                <span> {name} </span>
               </button>
               <div className="dropdownContent">
                 <Link href="/Analysis" className="none">
@@ -96,20 +100,26 @@ export default function Header({ roles }) {
                 </Link>
                 <Link href="/track" className="none">
                   <button>Seguimiento</button>
-                </Link>  
+                </Link>
                 {isAdmin ? (
                   <>
                     <Link href="/Form">
                       <button>Actualizar Modal</button>
                     </Link>
                     <Link href="/Users">
-                      <button>Lista de Usuarios</button>
+                      <button>Usuarios</button>
                     </Link>
                     <Link href="/Company">
-                      <button>Lista de Empresas</button>
+                      <button>Empresas</button>
                     </Link>
                     <Link href="/Controller">
-                      <button>Lista de Controladores</button>
+                      <button>Controladores</button>
+                    </Link>
+                    <Link href="/Group">
+                      <button>Agrupadores</button>
+                    </Link>
+                    <Link href="/Instrument">
+                      <button>Instrumentos</button>
                     </Link>
                   </>
                 ) : null}
@@ -118,9 +128,10 @@ export default function Header({ roles }) {
                 </button>
               </div>
             </div>
-          </div>        
+          </div>
         </div>
       </div>
+     
     </header>
   );
 }
