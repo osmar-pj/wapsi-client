@@ -1,79 +1,44 @@
-import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
-import { useRouter } from "next/router";
-import { useMainContext } from "../contexts/Main-context";
 
-const ValidLogin = (initialData, onValidate, resetForm) => {
-  const [loading, setLoading] = useState(false);
-  const [loginStatus, setLoginStatus] = useState(null);
-  const [errors, setErrors] = useState({});
-  // const { login } = MainProvider();
-  const { login } = useMainContext();
-  const router = useRouter();
+export async function ValidLogin(initialData, login) {
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const err = onValidate(initialData);
-   
-    setErrors(err);
+  try {
+    const response = await fetch(`${process.env.API_URL}/auth/api/v1/signin`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(initialData),
+    });
 
-    if (Object.keys(err).length === 0) {
-      setLoading(true);
-
-      try {
-        const response = await fetch(`${process.env.API_URL}/auth/api/v1/signin`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-          body: JSON.stringify(initialData),
-        });
-
-        const data = await response.json();
-        
+    if (response.ok) {
+      const data = await response.json();
+      if (data.status === true) {
        
-        setTimeout(() => {
-          setLoading(false);
-        }, 1500);
-        setTimeout(() => {
-          setLoginStatus(data.status);
-        }, 500);
+        const cookieData = {
+          token: data.token,
+          area: data.area,
+          roles: data.roles,
+          empresa: data.empresa,
+          userId: data.userId,
+          name: data.user,
+        };
         
-        if (data.status === true) {
-          
-          const cookieData = {
-            token: data.token,
-            area: data.area,
-            roles: data.roles,
-            empresa: data.empresa,
-            userId: data.userId,
-            name: data.user
-          };
-
-          Cookies.set("userData", JSON.stringify(cookieData)); 
-          const empresa = data.empresa;
-          localStorage.setItem("empresa", empresa);
-          login(data);               
-          router.push("/safety");
-        } else {
-          resetForm(initialData);
-        }
-      } catch (error) {
-        console.log(error);        
+        Cookies.set("userData", JSON.stringify(cookieData));
+        login(data);
+        
+        return true;
+      } else {
+        console.error("Error:", error);
+        return false;
       }
+    } else {
+      console.error("Error en la petición");
+      return false;
     }
-  };
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoginStatus(null);
-    }, 2000);
-
-    return () => clearTimeout(timer);
-  }, [loginStatus]);
-
-  return { errors, loading, loginStatus, handleSubmit };
-};
-
-export default ValidLogin;
+  } catch (error) {
+    console.error("Error:", error);
+    return false;
+  }
+}

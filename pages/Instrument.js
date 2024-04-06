@@ -1,18 +1,21 @@
 import GenericList from "@/src/components/c-crud/generic";
-import Header from "@/src/components/c-header/c-header";
+import { useMainContext } from "@/src/contexts/Main-context";
+import { DataGroups, DataInstruments } from "@/src/libs/api";
 import { useEffect, useState } from "react";
 
-export default function User({ token, roles }) {
-  const [instruments, setInstruments] = useState({});
+export default function Instrument() {
+  const [instruments, setInstruments] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { authTokens } = useMainContext();
+
   const refetchData = async () => {
     try {
-      const response = await fetch(`${process.env.API_URL}/api/v1/instrument`, {
+      const response = await fetch(`${process.env.API_URL}/api/v1/instrument?empresa=${authTokens.empresa}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          "x-access-token": token,
+          // "x-access-token": authTokens.token,
         },
       });
 
@@ -20,7 +23,6 @@ export default function User({ token, roles }) {
         const data = await response.json();
         console.log(data);
         setInstruments(data);
-
       } else {
         console.error("Error al obtener datos:", response.statusText);
       }
@@ -37,21 +39,17 @@ export default function User({ token, roles }) {
 
 
   return (
-    <>
-      <Header roles={roles} />
-      <section className="w-FormUser">
-      <div className="Cont"> 
+    <section className="w-FormUser">
+      <div className="Cont">
         <GenericList
           url="instrument"
           title="Lista de Instrumentos"
-          token={token}
           usersFiltered2={instruments}
           loading={loading}
           refetchData={refetchData}
-        /> 
-        </div>
-      </section>
-    </>
+        />
+      </div>
+    </section>
   );
 }
 export async function getServerSideProps(ctx) {
@@ -69,23 +67,18 @@ export async function getServerSideProps(ctx) {
 
   const userData = JSON.parse(userDataCookie);
   const roles = userData.roles;
-  const token = userData.token;
   const isAdmin = roles.some((role) => role.name === "admin");
 
   if (!isAdmin) {
     return {
       redirect: {
-        destination: "/safety",
+        destination: "/",
         permanent: false,
       },
     };
   }
 
   return {
-    props: {
-      roles,
-      token,
-    },
+    props: {},
   };
 }
-

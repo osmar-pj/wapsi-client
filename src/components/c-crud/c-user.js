@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import Select from "react-select";
 import Crud from "./c-crud";
+import { useMainContext } from "@/src/contexts/Main-context";
 
 export default function CreateUser({
   isCreateUser,
   setCreate,
   refetchData,
-  token,
+
   userToEdit,
   url,
 }) {
@@ -15,6 +16,8 @@ export default function CreateUser({
     empresas: [],
   });
   const [loading, setLoading] = useState(true);
+  const { authTokens } = useMainContext();
+
   const fecthData = async () => {
     try {
       const response = await fetch(`${process.env.API_URL}/api/v1/user`, {
@@ -22,7 +25,7 @@ export default function CreateUser({
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          "x-access-token": token,
+          "x-access-token": authTokens.token,
         },
       });
 
@@ -107,7 +110,6 @@ export default function CreateUser({
     <Crud
       isCreateUser={isCreateUser}
       setCreate={setCreate}
-      token={token}
       userToEdit={userToEdit}
       formData={formData}
       refetchData={refetchData}
@@ -120,7 +122,6 @@ export default function CreateUser({
             type="text"
             name="name"
             inputMode="text"
-           
             placeholder="Ingrese Nombre"
             required
             value={formData.name}
@@ -135,7 +136,6 @@ export default function CreateUser({
             type="text"
             name="lastname"
             inputMode="text"
-           
             placeholder="Ingrese Apellido"
             required
             value={formData.lastname}
@@ -152,10 +152,9 @@ export default function CreateUser({
             type="number"
             name="dni"
             min="0"
-            max="99999999" 
+            max="99999999"
             pattern="[0-9]*"
             inputMode="numeric"
-           
             placeholder="Ingrese DNI"
             required
             value={formData.dni}
@@ -205,6 +204,8 @@ export default function CreateUser({
           />
         </div>
       </div>
+      <div className="mC-imputs-item"></div>
+      <div className="mC-imputs-item"></div>
     </Crud>
   );
 }

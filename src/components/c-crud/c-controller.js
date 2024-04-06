@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
 import Select from "react-select";
 import Crud from "./c-crud";
+import { useMainContext } from "@/src/contexts/Main-context";
 
 export default function CreateController({
   isCreateUser,
   setCreate,
   refetchData,
-  token,
   userToEdit,
   url,
 }) {
   const [companies, setCompanies] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { authTokens } = useMainContext();
   const fecthData = async () => {
     try {
       const response = await fetch(`${process.env.API_URL}/api/v1/user`, {
@@ -19,7 +20,7 @@ export default function CreateController({
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          "x-access-token": token,
+          "x-access-token": authTokens.token,
         },
       });
 
@@ -49,7 +50,6 @@ export default function CreateController({
         level: "",
         top: "",
         left: "",
-
       }
     : {
         serie: userToEdit.serie,
@@ -58,7 +58,6 @@ export default function CreateController({
         level: userToEdit.level,
         top: userToEdit.top,
         left: userToEdit.left,
-        
       };
 
   const [formData, setFormData] = useState(initialValues);
@@ -72,7 +71,6 @@ export default function CreateController({
         level: userToEdit.level,
         top: userToEdit.top,
         left: userToEdit.left,
-        
       });
     }
   }, [isCreateUser, userToEdit]);
@@ -95,7 +93,6 @@ export default function CreateController({
     <Crud
       isCreateUser={isCreateUser}
       setCreate={setCreate}
-      token={token}
       userToEdit={userToEdit}
       formData={formData}
       refetchData={refetchData}
@@ -189,7 +186,6 @@ export default function CreateController({
           />
         </div>
       </div>
-     
     </Crud>
   );
 }

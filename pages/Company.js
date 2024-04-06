@@ -2,8 +2,9 @@ import GenericList from "@/src/components/c-crud/generic";
 import Header from "@/src/components/c-header/c-header";
 import { useEffect, useState } from "react";
 
-export default function Company({ token, roles }) {
+export default function Company() {
   const [usersFiltered2, setCompany] = useState("");
+
   const [loading, setLoading] = useState(true);
   const refetchData = async () => {
     try {
@@ -12,7 +13,6 @@ export default function Company({ token, roles }) {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          "x-access-token": token,
         },
       });
 
@@ -32,23 +32,19 @@ export default function Company({ token, roles }) {
   useEffect(() => {
     refetchData();
   }, []);
-  
+
   return (
-    <>
-      <Header roles={roles} />
-      <section className="w-FormUser">
-      <div className="Cont"> 
+    <section className="w-FormUser">
+      <div className="Cont">
         <GenericList
           url="empresa"
-          title="Lista de Compañias"
-          token={token}
+          title="Lista de Empresas"
           usersFiltered2={usersFiltered2}
           loading={loading}
           refetchData={refetchData}
         />
-        </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 }
 
@@ -67,22 +63,18 @@ export async function getServerSideProps(ctx) {
 
   const userData = JSON.parse(userDataCookie);
   const roles = userData.roles;
-  const token = userData.token;
   const isAdmin = roles.some((role) => role.name === "admin");
 
   if (!isAdmin) {
     return {
       redirect: {
-        destination: "/safety",
+        destination: "/",
         permanent: false,
       },
     };
   }
 
   return {
-    props: {
-      roles,
-      token,
-    },
+    props: {},
   };
 }

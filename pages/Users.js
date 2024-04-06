@@ -1,12 +1,14 @@
 import GenericList from "@/src/components/c-crud/generic";
-import Header from "@/src/components/c-header/c-header";
+import { useMainContext } from "@/src/contexts/Main-context";
 import { useEffect, useState } from "react";
 
-export default function User({ token, roles }) {
+export default function Users() {
   const [users, setUsers] = useState({
     usersFiltered2: [],
-    
   });
+
+  const { authTokens } = useMainContext();
+
   const [loading, setLoading] = useState(true);
   const refetchData = async () => {
     try {
@@ -15,7 +17,7 @@ export default function User({ token, roles }) {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          "x-access-token": token,
+          "x-access-token": authTokens.token,
         },
       });
 
@@ -24,7 +26,6 @@ export default function User({ token, roles }) {
         console.log(data);
         setUsers({
           usersFiltered2: data.usersFiltered2,
-         
         });
       } else {
         console.error("Error al obtener datos:", response.statusText);
@@ -42,21 +43,17 @@ export default function User({ token, roles }) {
 
   const { usersFiltered2 } = users;
   return (
-    <>
-      <Header roles={roles} />
-      <section className="w-FormUser">
-      <div className="Cont"> 
+    <section className="w-FormUser">
+      <div className="Cont">
         <GenericList
           url="user"
           title="Lista de Usuarios"
-          token={token}
           usersFiltered2={usersFiltered2}
           loading={loading}
           refetchData={refetchData}
         />
-        </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 }
 export async function getServerSideProps(ctx) {
@@ -74,23 +71,19 @@ export async function getServerSideProps(ctx) {
 
   const userData = JSON.parse(userDataCookie);
   const roles = userData.roles;
-  const token = userData.token;
+
   const isAdmin = roles.some((role) => role.name === "admin");
 
   if (!isAdmin) {
     return {
       redirect: {
-        destination: "/safety",
+        destination: "/",
         permanent: false,
       },
     };
   }
 
   return {
-    props: {
-      roles,
-      token,
-    },
+    props: {},
   };
 }
-

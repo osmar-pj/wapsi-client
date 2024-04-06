@@ -110,7 +110,7 @@ export async function getServerSideProps(ctx) {
   if (!isAdmin) {
     return {
       redirect: {
-        destination: "/safety",
+        destination: "/",
         permanent: false,
       },
     };

@@ -1,8 +1,9 @@
-import React from "react";
-import Head from 'next/head'
+import Head from 'next/head';
 import Script from 'next/script.js';
+import MainProvider from "./contexts/Main-context";
 
-export default function Layout({ children}) {
+export default function Layout({ children }) {
+
     return (
         <>
             <Script async
@@ -32,7 +33,10 @@ export default function Layout({ children}) {
                 <meta name="google-site-verification" content="2-CRsNdlVMPHrrg65_GyqF7uJhaLnNaVxn2EXa6ByRA" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
+
+            <MainProvider>
                 {children}
+            </MainProvider>
         </>
     );
 }

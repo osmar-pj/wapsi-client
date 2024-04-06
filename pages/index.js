@@ -1,135 +1,75 @@
-import Reg from "@/src/Icons/reg";
-import Popup from "@/src/components/c-popup/c-popup";
-import { useRouter } from "next/router";
-import { useState } from "react";
-import Select from "react-select";
+import CardTitle from "@/src/components/w-Map/CardTitle";
+import Mapa from "@/src/components/w-Map/w-Map";
+import Notification from "@/src/components/w-Notification/Notification";
+import { useMainContext } from "@/src/contexts/Main-context";
+import { useEffect } from "react";
+import { Subject } from "rxjs";
+import { io } from "socket.io-client";
 
-export default function Formu({ userId }) {
-  // const [area, setArea] = useState("");
-  // const [successModalVisible, setSuccessModalVisible] = useState(false);
-  // const [successMessage, setSuccessMessage] = useState("");
+export default function Home() {
+  const { authTokens, setInstruments } = useMainContext();
 
-  // const router = useRouter();
+  useEffect(() => {
+    const socket = io(process.env.API_URL);
+    const instrument$ = new Subject();
 
-  // const handleAreaChange = ({ value }) => {
-  //   setArea(value);
-  // };
+    socket.on(`${authTokens?.empresa.toUpperCase()}`, (data) => {
+      console.log(data.value, data.name);
+      instrument$.next(data);
+    });
 
-  // const handleSubmit = async (event) => {
-  //   event.preventDefault();
+    const subscription = instrument$.subscribe((updatedData) => {
+      setInstruments((prevInstruments) => {
+        const updatedInstruments = prevInstruments.map((instrument) => {
+          if (instrument.groups && Array.isArray(instrument.groups)) {
+            const foundIndex = instrument.groups.findIndex(
+              (group) => group._id === updatedData._id
+            );
+            if (foundIndex !== -1) {
+              const updatedGroup = {
+                ...instrument.groups[foundIndex],
+                ...updatedData,
+              };
+              const updatedGroups = [...instrument.groups];
+              updatedGroups[foundIndex] = updatedGroup;
+              return { ...instrument, groups: updatedGroups };
+            }
+          }
+          return instrument;
+        });
+        return updatedInstruments;
+      });
+    });
 
-  //   if (!area) {
-  //     console.log("Por favor, ingrese una descripción.");
-  //     return;
-  //   }
-
-  //   try {
-  //     const response = await fetch(
-  //       `${process.env.API_URL}/api/v1/user/${userId}`,
-  //       {
-  //         method: "PUT",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Accept: "application/json",
-  //         },
-  //         body: JSON.stringify({ area: area }),
-  //       }
-  //     );
-
-  //     if (response.ok) {
-  //       const data = await response.json();
-
-  //       setSuccessMessage("Área actualizado");
-  //       setSuccessModalVisible(true);
-  //       setTimeout(() => {
-  //         setSuccessMessage("");
-  //         router.push(`/${area}`);
-  //         setSuccessModalVisible(false);
-  //       }, 3000);
-  //     } else {
-  //       console.error("Error al actualizar recurso:", response.statusText);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error en la solicitud:", error);
-  //   }
-  // };
+    return () => {
+      subscription.unsubscribe();
+      socket.disconnect();
+    };
+  }, [authTokens, setInstruments]);
 
   return (
     <section className="w-Home">
-      {/* {successModalVisible ? (
-        <Popup
-          title="Acción exitosa!"
-          message={successMessage}
-          visible={successModalVisible}
-        />
-      ) : (
-        <div className="Update-area">
-          <div className="Content-header">
-            <div className="D-title-name">
-              <div>
-                <Reg />
-              </div>
-              <h3>Actualizar área |</h3>
-              <h4>update</h4>
-            </div>
-          </div>
-          <form onSubmit={handleSubmit} className="form-l">
-            <h3>Seleccione el área al que pertenece</h3>
-            <div className="select-area">
-              <Select
-                instanceId="react-select-instance"
-                name="period"
-                classNamePrefix="custom-select"
-                isSearchable={false}
-                isClearable={false}
-                onChange={handleAreaChange}
-                options={[
-                  { value: "safety", label: "Seguridad" },
-                  { value: "ti", label: "TI" },
-                  { value: "ventilation", label: "Ventilación" },
-                  { value: "operation", label: "Operaciones" },
-                ]}
-                placeholder="Seleccione..."
-              />
-            </div>
-            <button type="submit">Guardar</button>
-          </form>
-        </div>
-      )} */}
+      <CardTitle/>
+      <Mapa />
+      <Notification />
     </section>
   );
 }
 
- export const getServerSideProps = async (ctx) => {
-   const userDataCookie = ctx.req.cookies.userData;
-   const isLoggedIn = !!userDataCookie;
+export const getServerSideProps = async (ctx) => {
+  const userDataCookie = ctx.req.cookies.userData;
+  const isLoggedIn = !!userDataCookie;
 
-   if (!isLoggedIn) {
-     return {
-       redirect: {
-         destination: "/login",
-         permanent: false,
-       },
-     };
-   }
+  if (!isLoggedIn) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
 
-   const userData = JSON.parse(userDataCookie);
-   const area = userData.area;
-   const userId = userData.userId;
-
-   if (typeof area !== "undefined" && area !== "") {
-     return {
-       redirect: {
-         destination: `/${area}`,
-         permanent: false,
-       },
-     };
-   } else {
-     return {
-       props: {
-         area: null,
-         userId,
-       },
-     };
-   }
- };
+  return {
+    props: {},
+  };
+};

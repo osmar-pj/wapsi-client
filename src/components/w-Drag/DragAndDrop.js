@@ -1,41 +1,30 @@
 import Back from "@/src/Icons/back";
-import Drag from "@/src/Icons/draj";
+import Close from "@/src/Icons/close";
+import Drag from "@/src/Icons/drag";
 import Layer from "@/src/Icons/layer";
 import Reg from "@/src/Icons/reg";
+import { useMainContext } from "@/src/contexts/Main-context";
+import { DataRelations, UpdateRelations } from "@/src/libs/api";
 import { useEffect, useState } from "react";
 
-export default function DragAndDrop({ setCreate }) {
+export default function DragAndDrop({ setCreate,fetchRelations }) {
+  const [buttonClicked, setButtonClicked] = useState(false);
+  const [success, setSuccess] = useState(false);
   const [draggedSensors, setDraggedSensors] = useState([]);
   const [draggedActuators, setDraggedActuators] = useState([]);
   const [sensorItems, setSensorItems] = useState([]);
   const [actuatorsItems, setActuatorsItems] = useState([]);
+  const { authTokens } = useMainContext();
 
   useEffect(() => {
-    const fetchWapsi = async () => {
-      try {
-        const response = await fetch(`${process.env.API_URL}/api/v1/relation`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        });
+    async function fetchInstruments() {
+      const data = await DataRelations(authTokens.empresa);
+      setSensorItems(data.sensors);
+      setActuatorsItems(data.actuators);
+    }
 
-        if (response.ok) {
-          const data = await response.json();
-          console.log(data);
-          setSensorItems(data.sensors);
-          setActuatorsItems(data.actuators);
-        } else {
-          console.error("Error al obtener datos");
-        }
-      } catch (error) {
-        console.error("Error en la solicitud:", error);
-      }
-    };
-
-    fetchWapsi();
-  }, []);
+    fetchInstruments();
+  }, [authTokens]);
 
   const handleSensorItemClick = (clickedItem) => {
     setSensorItems((prevItems) =>
@@ -43,7 +32,11 @@ export default function DragAndDrop({ setCreate }) {
     );
     setDraggedSensors((prevDraggedSensors) => [
       ...prevDraggedSensors,
-      { _id: clickedItem._id, name: clickedItem.name },
+      {
+        ...clickedItem,
+        mining: clickedItem.controllerId.mining.name,
+        ubication: clickedItem.controllerId.ubication,
+      },
     ]);
   };
 
@@ -53,7 +46,11 @@ export default function DragAndDrop({ setCreate }) {
     );
     setDraggedActuators((prevDraggedActuators) => [
       ...prevDraggedActuators,
-      { _id: clickedItem._id, name: clickedItem.name },
+      {
+        ...clickedItem,
+        mining: clickedItem.controllerId.mining.name,
+        ubication: clickedItem.controllerId.ubication,
+      },
     ]);
   };
 
@@ -72,39 +69,33 @@ export default function DragAndDrop({ setCreate }) {
   };
 
   const handleCreateUser = async () => {
+    const dataToSend = {
+      sensors: draggedSensors.map((item) => item._id),
+      actuators: draggedActuators.map((item) => item._id),
+    };
+
     try {
-      const dataToSend = {
-        sensors: draggedSensors.map((item) => item._id),
-        actuators: draggedActuators.map((item) => item._id),
-      };
-
-      console.log(dataToSend);
-      const response = await fetch(`${process.env.API_URL}/api/v1/relation`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify(dataToSend),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data);
-        setCreate(false)
-        fetchData();
-      } else {
-        console.error("Error al crear:", response.statusText);
-      }
-    } catch (error) {
-      console.error("Error en la solicitud:", error);
+      setButtonClicked(true);
+      const data = await UpdateRelations(dataToSend);
+      console.log(data)
+       if (data.status === true) {
+        fetchRelations();
+        setSuccess(true);
+        setTimeout(() => {
+          setCreate(false);
+        }, 3000);
+       }
+    } finally {
+      
     }
   };
 
- 
   return (
     <div className="modalCreate-backg">
-      <form className="mCreate-content mC-Drag">
+      <form className="mCreate-content mC-Drag" style={{
+          userSelect: buttonClicked ? "none" : "auto",
+          pointerEvents: buttonClicked ? "none" : "auto",
+        }}>
         <div className="mC-c-header">
           <div className="mC-h-title">
             <div className="mC-c-title-icon">
@@ -120,7 +111,7 @@ export default function DragAndDrop({ setCreate }) {
             className="mC-h-close"
             type="button"
           >
-            <img src="../assets/img/i-close.svg" alt="" />
+            <Close />
           </span>
         </div>
         <div className="mC-c-body">
@@ -140,14 +131,32 @@ export default function DragAndDrop({ setCreate }) {
                       onClick={() => handleSensorItemClick(item)}
                       className="d-item-list"
                     >
-                      <span>{item.name}</span>
+                      <div className="item-l-icon">
+                        <Drag />
+                      </div>
+                      <div className="item-l-content">
+                        <div className="item-l-detall">
+                          <span>{item.name}</span>
+                          <h5>{item.controllerId.mining.name}</h5>
+                        </div>
+                        <h6>{item.controllerId.ubication}</h6>
+                      </div>
                     </div>
                   ))}
                 </div>
                 <div className="c-drag-items">
                   {draggedSensors.map((item) => (
                     <div key={item._id} className="d-item-list">
-                      <span>{item.name}</span>
+                      <div className="item-l-icon">
+                        <Drag />
+                      </div>
+                      <div className="item-l-content">
+                        <div className="item-l-detall">
+                          <span>{item.name}</span>
+                          <h5>{item.mining}</h5>
+                        </div>
+                        <h6>{item.ubication}</h6>
+                      </div>
                       <button onClick={() => handleRemoveSensorItemClick(item)}>
                         <Back />
                       </button>
@@ -171,14 +180,33 @@ export default function DragAndDrop({ setCreate }) {
                       onClick={() => handleActuatorItemClick(item)}
                       className="d-item-list"
                     >
-                      <span>{item.name}</span>
+                      <div className="item-l-icon">
+                        <Drag />
+                      </div>
+                      <div className="item-l-content">
+                        <div className="item-l-detall">
+                          <span>{item.name}</span>
+                          <h5>{item.controllerId.mining.name}</h5>
+                        </div>
+                        <h6>{item.controllerId.ubication}</h6>
+                      </div>
                     </div>
                   ))}
                 </div>
                 <div className="c-drag-items">
                   {draggedActuators.map((item) => (
                     <div key={item._id} className="d-item-list">
-                      <span>{item.name}</span>
+                      <div className="item-l-icon">
+                        <Drag />
+                      </div>
+                      <div className="item-l-content">
+                        <div className="item-l-detall">
+                          <span>{item.name}</span>
+                          <h5>{item.mining}</h5>
+                        </div>
+                        <h6>{item.ubication}</h6>
+                      </div>
+
                       <button
                         onClick={() => handleRemoveActuatorItemClick(item)}
                       >
@@ -200,11 +228,38 @@ export default function DragAndDrop({ setCreate }) {
             Cancelar
           </button>
           <button
-            className="btn-acept"
+             className={`btn-acept${
+              buttonClicked && !success ? " sending" : ""
+            }${success ? " success" : ""}`}
             type="button"
             onClick={() => handleCreateUser()}
           >
-            Aceptar
+            {buttonClicked && !success ? (
+              <>
+                <span className="loader"></span>Enviando...
+              </>
+            ) : success ? (
+              <>
+                <div className="checkbox-wrapper">
+                  <svg viewBox="0 0 35.6 35.6">
+                    <circle
+                      className="stroke"
+                      cx="17.8"
+                      cy="17.8"
+                      r="14.37"
+                    ></circle>
+                    <polyline
+                      className="check"
+                      points="11.78 18.12 15.55 22.23 25.17 12.87"
+                    ></polyline>
+                  </svg>
+                </div>
+                Proceso exitoso
+              </>
+            ) : (
+              "Aceptar"
+            )}
+            
           </button>
         </div>
       </form>

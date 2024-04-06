@@ -1,14 +1,12 @@
-import { useEffect, useState } from "react";
-import Popup from "../c-popup/c-popup";
-import Reg from "@/src/Icons/reg";
-import Plus from "@/src/Icons/plus";
 import Close from "@/src/Icons/close";
+import Plus from "@/src/Icons/plus";
+import { useMainContext } from "@/src/contexts/Main-context";
+import { useState } from "react";
 
 function Crud(props) {
   const {
     isCreateUser,
     setCreate,
-    token,
     formData,
     refetchData,
     userToEdit,
@@ -19,7 +17,7 @@ function Crud(props) {
 
   const [buttonClicked, setButtonClicked] = useState(false);
   const [success, setSuccess] = useState(false);
-
+  const { authTokens} = useMainContext();
   const handleSubmit = (event) => {
     event.preventDefault();
     if (isCreateUser) {
@@ -43,7 +41,7 @@ function Crud(props) {
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
-            "x-access-token": token,
+            "x-access-token": authTokens.token,
             "ngrok-skip-browser-warning": true,
           },
           body: JSON.stringify(formData),
@@ -57,10 +55,10 @@ function Crud(props) {
             setSuccess(true);
             setTimeout(() => {
               setCreate(false);
-            }, 3000);
+            }, 2000);
           } else {
             setButtonClicked(false);
-            console.log(data.message);
+            // console.log(data.message);
           }
         } else {
           console.error("Error al crear:", response.statusText);
@@ -82,7 +80,7 @@ function Crud(props) {
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
-            "x-access-token": token,
+            "x-access-token": authTokens.token,
             "ngrok-skip-browser-warning": true,
           },
           body: JSON.stringify(formData),
@@ -91,11 +89,18 @@ function Crud(props) {
 
       if (response.ok) {
         const data = await response.json();
-        refetchData();
-        setSuccess(true);
-        setTimeout(() => {
-          setCreate(false);
-        }, 3000);
+        console.log(data);
+      
+        if (data.status === true) {
+          refetchData();
+          setSuccess(true);
+          setTimeout(() => {
+            setCreate(false);
+          }, 1500);
+        } else {
+          setButtonClicked(false);
+          // console.log(data.message);
+        }
       } else {
         setButtonClicked(false);
         console.error("Error al actualizar", response.statusText);

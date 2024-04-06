@@ -1,16 +1,12 @@
 import Close from "@/src/Icons/close";
 import Delete from "@/src/Icons/delete";
-
+import { useMainContext } from "@/src/contexts/Main-context";
 import { useState } from "react";
 
-export default function DeleteForm({
-  token,
-  refetchData,
-  setDelet,
-  userToDeleteId,
-}) {
+export default function DeleteForm({ refetchData, setDelet, userToDeleteId }) {
   const [buttonClicked, setButtonClicked] = useState(false);
   const [success, setSuccess] = useState(false);
+  const { authTokens } = useMainContext();
 
   const handleDelete = async () => {
     try {
@@ -22,7 +18,7 @@ export default function DeleteForm({
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
-            "x-access-token": token,
+            "x-access-token": authTokens.token,
             "ngrok-skip-browser-warning": true,
           },
         }
@@ -30,6 +26,7 @@ export default function DeleteForm({
 
       if (response.ok) {
         const data = await response.json();
+        console.log(data);
         if (data.status === true) {
           refetchData();
           setSuccess(true);
@@ -38,7 +35,7 @@ export default function DeleteForm({
           }, 3000);
         } else {
           setButtonClicked(false);
-          console.log(data.message);
+          // console.log(data.message);
         }
       } else {
         setButtonClicked(false);
@@ -52,13 +49,18 @@ export default function DeleteForm({
 
   return (
     <div className="modalCreate-backg">
-      <div className="mCreate-content mC-Delete " style={{
+      <div
+        className="mCreate-content mC-Delete "
+        style={{
           userSelect: buttonClicked ? "none" : "auto",
           pointerEvents: buttonClicked ? "none" : "auto",
-        }}>
+        }}
+      >
         <div className="mC-c-header">
           <div className="mC-h-title">
-            <div className="mC-c-title-icon"><Delete /> </div>
+            <div className="mC-c-title-icon">
+              <Delete />{" "}
+            </div>
             <div className="mC-c-title-text">
               <h3>Eliminar </h3>
               <h4>Remover dato seleccionado</h4>
@@ -69,7 +71,7 @@ export default function DeleteForm({
             className="mC-h-close"
             type="button"
           >
-            <Close/>
+            <Close />
           </span>
         </div>
 

@@ -1,12 +1,10 @@
 import GenericList from "@/src/components/c-crud/generic";
-import Header from "@/src/components/c-header/c-header";
 import { useEffect, useState } from "react";
 
-export default function User({ token, roles }) {
+export default function Controllers() {
   const [controllers, setControllers] = useState({});
   const [loading, setLoading] = useState(true);
 
-  
   const refetchData = async () => {
     try {
       const response = await fetch(`${process.env.API_URL}/api/v1/controller`, {
@@ -14,7 +12,6 @@ export default function User({ token, roles }) {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          
         },
       });
 
@@ -22,7 +19,6 @@ export default function User({ token, roles }) {
         const data = await response.json();
         console.log(data);
         setControllers(data.controllers);
-
       } else {
         console.error("Error al obtener datos:", response.statusText);
       }
@@ -37,23 +33,18 @@ export default function User({ token, roles }) {
     refetchData();
   }, []);
 
-
   return (
-    <>
-      <Header roles={roles} />
-      <section className="w-FormUser">
-      <div className="Cont"> 
+    <section className="w-FormUser">
+      <div className="Cont">
         <GenericList
           url="controller"
-          title="Lista de Usuarios"
-          token={token}
+          title="Lista de Controladores"
           usersFiltered2={controllers}
           loading={loading}
           refetchData={refetchData}
-        /> 
-        </div>
-      </section>
-    </>
+        />
+      </div>
+    </section>
   );
 }
 export async function getServerSideProps(ctx) {
@@ -71,23 +62,18 @@ export async function getServerSideProps(ctx) {
 
   const userData = JSON.parse(userDataCookie);
   const roles = userData.roles;
-  const token = userData.token;
   const isAdmin = roles.some((role) => role.name === "admin");
 
   if (!isAdmin) {
     return {
       redirect: {
-        destination: "/safety",
+        destination: "/",
         permanent: false,
       },
     };
   }
 
   return {
-    props: {
-      roles,
-      token,
-    },
+    props: {},
   };
 }
-

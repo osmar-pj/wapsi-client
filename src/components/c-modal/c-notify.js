@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import Circle from "@/src/Icons/circle";
+import { formatRelativeTime, isDataUpdated } from "@/src/libs/utils";
+import 'dayjs/locale/es';
 import Cookies from "js-cookie";
+import { useEffect, useState } from "react";
 import { Subject } from "rxjs";
 import { io } from "socket.io-client";
-import Close from "@/src/Icons/close";
-import Circle from "@/src/Icons/circle";
 
 export default function NotifyW() {
   const [isSoundPlaying, setIsSoundPlaying] = useState(false);
@@ -21,42 +22,45 @@ export default function NotifyW() {
   }, []);
 
   useEffect(() => {
-    const fetchInstrumensts = async () => {
-      try {
-        const response = await fetch(
-          `${process.env.API_URL}/api/v1/instrument`
-        );
-        if (response.ok) {
-          const data = await response.json();
-
-          setInstruments(data);
-        } else {
-          console.error("Error al obtener datos");
+    if (empresa) {
+      const fetchInstrumensts = async (empresa) => {
+        try {
+          const response = await fetch(
+            `${process.env.API_URL}/api/v1/instrument?empresa=${empresa}`
+          );
+          if (response.ok) {
+            const data = await response.json();
+            setInstruments(data);
+          } else {
+            console.error("Error al obtener datos");
+          }
+        } catch (error) {
+          console.error("Error en la solicitud:", error);
         }
-      } catch (error) {
-        console.error("Error en la solicitud:", error);
-      }
-    };
+      };
 
-    fetchInstrumensts();
-  }, []);
+      fetchInstrumensts(empresa);
+    }
+  }, [empresa]);
 
   useEffect(() => {
     const socket = io(process.env.API_URL);
     const controller$ = new Subject();
 
     socket.on(`${empresa.toUpperCase()}`, (data) => {
+      // console.log(data.name, data.value, data.updatedAt);
       controller$.next(data);
     });
 
     const subscription = controller$.subscribe((updatedData) => {
-      setInstruments((prevControllers) => {
-        return prevControllers.map((controller) => {
-          if (controller._id === updatedData._id) {
-            return { ...controller, ...updatedData };
+      setInstruments((prevInstruments) => {
+        const updatedInstruments = prevInstruments.map((instrument) => {
+          if (instrument._id === updatedData._id) {
+            return { ...instrument, ...updatedData };
           }
-          return controller;
+          return instrument;
         });
+        return updatedInstruments;
       });
     });
 
@@ -73,29 +77,42 @@ export default function NotifyW() {
 
   //   console.log(instruments);
 
+ 
+
   return (
     <div className="w-notify">
       <div className="Sensor-circle">
         {instruments.length > 0 ? (
           instruments.map((device, index) => {
             return (
-              <div
-                key={device.name}
-                className={`circle-item c-${
-                  device.alarm && device.alarm.category
-                }`}
-              >
-                <Circle />
-                <p>{device.name}</p>
-                {device.value !== undefined ? (
-                  <>
-                    <h3>{device.value.toFixed(2)}</h3>
-                    <span>{device.und}</span>
-                  </>
+              <div key={device._id}>
+                {isDataUpdated(device.updatedAt) ? (
+                  <div
+                    key={index}
+                    className={`circle-item c-${
+                      device.alarm && device.alarm.category
+                    }`}
+                  >
+                    <Circle />
+                    <p>{device.name}</p>
+                    {device.value !== undefined ? (
+                      <div>
+                        <h3>{device.value.toFixed(2)}</h3>
+                        <span>{device.und}</span>
+                      </div>
+                    ) : (
+                      <p>no disponible</p>
+                    )}
+                    <p>{device.ubication}</p>
+                  </div>
                 ) : (
-                  <p>Valor no disponible</p>
+                  <div>
+                    <span key={device._id}>Sin conexión</span>
+                    <span>{device.name}</span>
+                    <p>{device.ubication}</p>
+                    <p>{formatRelativeTime(device.updatedAt)}</p>
+                  </div>
                 )}
-                <p>{device.ubication}</p>
               </div>
             );
           })

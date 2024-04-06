@@ -1,27 +1,27 @@
 import GenericList from "@/src/components/c-crud/generic";
-import Header from "@/src/components/c-header/c-header";
+import { useMainContext } from "@/src/contexts/Main-context";
 import { useEffect, useState } from "react";
 
-export default function Group({ token, roles }) {
+export default function Group() {
   const [groupInstrument, setGroupInstrument] = useState({});
   const [loading, setLoading] = useState(true);
+  const { authTokens } = useMainContext();
 
-  
   const refetchData = async () => {
     try {
-      const response = await fetch(`${process.env.API_URL}/api/v1/groupInstrument`, {
+      const response = await fetch(`${process.env.API_URL}/api/v1/groupInstrument?empresa=${authTokens.empresa}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Accept: "application/json",          
+          Accept: "application/json",
+          // "x-access-token": authTokens.token,
         },
       });
 
       if (response.ok) {
         const data = await response.json();
         console.log(data);
-        setGroupInstrument(data);
-
+        setInstruments(data);
       } else {
         console.error("Error al obtener datos:", response.statusText);
       }
@@ -36,23 +36,18 @@ export default function Group({ token, roles }) {
     refetchData();
   }, []);
 
-
   return (
-    <>
-      <Header roles={roles} />
-      <section className="w-FormUser">
-      <div className="Cont"> 
+    <section className="w-FormUser">
+      <div className="Cont">
         <GenericList
           url="groupInstrument"
-          title="Lista de Usuarios"
-          token={token}
+          title="Lista de Agrupados"
           usersFiltered2={groupInstrument}
           loading={loading}
           refetchData={refetchData}
-        /> 
-        </div>
-      </section>
-    </>
+        />
+      </div>
+    </section>
   );
 }
 export async function getServerSideProps(ctx) {
@@ -70,23 +65,18 @@ export async function getServerSideProps(ctx) {
 
   const userData = JSON.parse(userDataCookie);
   const roles = userData.roles;
-  const token = userData.token;
   const isAdmin = roles.some((role) => role.name === "admin");
 
   if (!isAdmin) {
     return {
       redirect: {
-        destination: "/safety",
+        destination: "/",
         permanent: false,
       },
     };
   }
 
   return {
-    props: {
-      roles,
-      token,
-    },
+    props: {},
   };
 }
-

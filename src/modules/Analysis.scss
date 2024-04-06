@@ -24,6 +24,9 @@
   width: 100%;
   position: relative;
   flex: 1 1;
+  background-color: var(--white) !important;
+  border-radius: 20px;
+  padding: 1rem;
   @include md {
     height: 70vh;
   }
@@ -93,7 +96,7 @@
       border-radius: 50%;
     }
     span {
-      color: var(--white);
+      color: var(--black);
       font-size: clamp(5px, 8vw, 10px);
       @include md {
         font-size: clamp(5px, 8vw, 11px);
@@ -143,7 +146,7 @@
     flex-direction: column;
     text-align: center;
     h2 {
-      color: var(--white);
+      color: var(--black);
       font-size: clamp(5px, 8vw, 23px);
       line-height: 1.3rem;
       strong {
@@ -157,4 +160,75 @@
       padding-bottom:1rem;
     }
   }
+}
+
+
+.t-t-f-btns {
+  .radio-inputs {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    border-radius: 12px;
+    background-color: #ececec;
+    box-sizing: border-box;
+    padding: 6px;
+    width: 200px;
+    font-size: 14px;
+  }
+
+  .radio-inputs .radio {
+    flex: 1 1 auto;
+    text-align: center;
+  }
+
+  .radio-inputs .radio input {
+    display: none;
+  }
+
+  .radio-inputs .radio .name {
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    border: none;
+    padding: 0.5rem 0;
+    color: var(--grey-1);
+    transition: all 0.15s ease-in-out;
+    height: 35px;
+    font-size: clamp(7px, 8vw, 12.5px);
+  }
+
+  .radio-inputs .radio input:checked + .name {
+    background-color: var(--primary);
+    color: var(--white);
+    font-weight: 500;
+  }
+}
+
+.container-selects{
+  width: 100%;
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-start;
+}
+
+.chart-hidden {
+  opacity: 0;
+  display: none;
+  transition: opacity 0.6s ease-in-out, visibility 0.6s ease-in-out;
+}
+
+.chart-visible {
+  opacity: 0.8;
+  display: block;
+  transition: opacity 0.6s ease-in-out, visibility 0.6s ease-in-out;
+}
+
+.no-data-opacity-0 {
+  opacity: 1;
+}
+
+.no-data-opacity-1 {
+  opacity: 0;
 }

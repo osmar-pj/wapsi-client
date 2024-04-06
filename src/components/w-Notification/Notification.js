@@ -1,123 +1,97 @@
-import More from "@/src/Icons/more";
-import Reg from "@/src/Icons/reg";
+import NotConect from "@/src/Icons/notConect";
+import { useMainContext } from "@/src/contexts/Main-context";
+import { DataInstruments } from "@/src/libs/api";
+import { formatRelativeTime, isDataUpdated } from "@/src/libs/utils";
 import { useEffect, useState } from "react";
+import { Subject } from "rxjs";
+import { io } from "socket.io-client";
 
-export default function Notification({ sensorData }) {
+export default function Notification() {
+  const [instruments, setInstruments] = useState([]);
+  const { authTokens } = useMainContext();
 
-  const [notifications, setNotifications] = useState([]);
-  
   useEffect(() => {
-    const fetchNotifications = async () => {
+    async function fetchInstruments() {
       try {
-        const response = await fetch(
-          `${process.env.API_URL}/api/v1/notification?serie=${sensorData.serie}`
-          );
-          
-          if (response.ok) {
-            const jsonData = await response.json();
-          
-          setNotifications(jsonData);
+        const data = await DataInstruments(authTokens.empresa);
+        if (data) {
+          setInstruments(data);
         } else {
-          console.error("Error en la petición");
+          console.error("Error.");
         }
       } catch (error) {
-        console.error("Error:", error);
+        console.error("Error :", error);
       }
-    };
+    }
+    fetchInstruments();
+  }, [authTokens]);
 
-    fetchNotifications();
-  }, [sensorData.serie]);
+  useEffect(() => {
+    const socket = io(process.env.API_URL);
+    const controller$ = new Subject();
+
+    socket.on(`${authTokens?.empresa.toUpperCase()}`, (data) => {
+      // console.log(data.name, data.value);
+      controller$.next(data);
+    });
+
+    const subscription = controller$.subscribe((updatedData) => {
+      setInstruments((prevInstruments) => {
+        const updatedInstruments = prevInstruments.map((instrument) => {
+          if (instrument._id === updatedData._id) {
+            return { ...instrument, ...updatedData };
+          }
+          return instrument;
+        });
+        return updatedInstruments;
+      });
+    });
+
+    return () => {
+      subscription.unsubscribe();
+      socket.disconnect();
+    };
+  }, [authTokens]);
 
   return (
-    <div className="Details-content text-2">
-      <div className="Details-title">
-        <div className="D-title-name">
-          <div>
-            <Reg />
-          </div>
-          <h4>Registro escalada |</h4>
-          <h5>Notificaciones</h5>
-        </div>
-        <div className="D-title-more">
-          <More />
-        </div>
-      </div>
-      <div className="D-c-notification">
-        <table>
-          <thead>
-            <tr>
-              <th>Sensor</th>
-              <th>Valor</th>
-              <th>Nivel</th>
-              <th>Fecha</th>
-            </tr>
-          </thead>
-          <tbody>
-            {notifications.length === 0 ? (
-              <>
-                <tr>
-                  <td>No hay datos</td>
-                </tr>
-              </>
-            ) : (
-              notifications                
-                .map((notification, index) => (
-                  <tr key={index}>
-                    <td>{notification.name}</td>
-                    <td>{notification.value}</td>
-                    <td>
-                      <p
-                        className={`status ${
-                          notification.msg === "ALERTA NIVEL MUY ALTO"
-                            ? "status-MUY-ALTO"
-                            : notification.msg === "ALERTA NIVEL ALTO"
-                            ? "status-ALTO"
-                            : notification.msg === "ALERTA NIVEL BAJO"
-                            ? "status-BAJO"
-                            : "OKEY"
-                        }`}
-                      >
-                        {notification.msg}
-                      </p>
-                    </td>
-                    <td>                     
-                        {formatFecha(notification.createdAt) }
-                    </td>
-                  </tr>
-                ))
-            )}
-          </tbody>
-        </table>
-      </div>
+    <div className="w-notify">
+      {instruments.length > 0
+        ? instruments.map((device, index) => {
+            return (
+              <div key={device._id}>
+                {isDataUpdated(device.updatedAt) ? (
+                  <div
+                    key={index}
+                    className={`notify-item c-${
+                      device.alarm && device.alarm.category
+                    }`}
+                  >
+                    {/* <Circle /> */}
+                    <p>{device.name}</p>
+                    <h3>{device.value.toFixed(2)}</h3>
+                    {/* <span>{device.und}</span> */}
+                    <div className="n-i-ubi">
+                      <font>{device.ubication}</font>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="sensor-withC">
+                    <div className="s-w-content">
+                      <NotConect />
+                      <h4>
+                        <strong>{device.name}</strong>
+                      </h4>
+                    </div>
+                    <font>{formatRelativeTime(device.updatedAt)}</font>
+                    <div className="s-w-ubi">
+                      <p>{device.ubication}</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })
+        : null}
     </div>
   );
-}
-
-function formatFecha(dateString) {
-  const date = new Date(dateString);
-  const monthNames = [
-    "Ene",
-    "Feb",
-    "Mar",
-    "Abr",
-    "May",
-    "Jun",
-    "Jul",
-    "Ago",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dic",
-  ];
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
-  const seconds = date.getSeconds();
-  const formattedHours = hours < 10 ? `0${hours}` : hours;
-  const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
-  const formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
-
-  const day = date.getDate();
-  const monthIndex = date.getMonth();
-
-  return ` ${day} ${monthNames[monthIndex]}, ${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
 }

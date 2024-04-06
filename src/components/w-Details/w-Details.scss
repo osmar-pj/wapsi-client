@@ -1,229 +1,195 @@
 .w-Details {
   z-index: 10;
   position: fixed;
-  right: 30px;
-  top: 0px;
-  max-width: 500px;
-  width: 100%;
-  height: 100vh;
-  display: block;
- 
-  transition: 1.2s ease-in-out all;
   visibility: hidden;
   opacity: 0;
 
+  top: 50%;
+  right: 3rem;
+  width: 300px;
+  height: 70vh;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  transition-delay: 0;
+  background-color: rgba(255, 255, 255, 0.438);
+  border-radius: 12px;
+  border: 1px solid var(--white);
+
   .is-menu-open & {
-    transition: 0.5s ease-in-out all;
+    transition: 0.35s ease-in-out all;
     opacity: 1;
     visibility: visible;
   }
 
-  .Details-Container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    padding: 0;
-    width: 100%;
-    height: 100vh;
+  .Details-header {
+    position: -webkit-sticky;
+    position: sticky;
     display: flex;
-    flex-direction: column;
-    z-index: 10;
-    border-radius: 10px;
-    transition-property: transform;
-    transition-duration: 0.8s;
-    transition-timing-function: cubic-bezier(0.77, 0, 0.175, 1);
-    will-change: transform;
-    transform-origin: center;
-    transform: translate(-50%, -50%) scaleX(0) translateZ(0);
-    transition-delay: 0;
-    background-color: rgba(255, 255, 255, 0.438);
-    border-radius: 12px;
-    border: 1px solid var(--white); 
-    .is-menu-open & {
-      transform: translate(-50%, -50%) scaleX(1) translateZ(0);
-      transition-duration: 1.4s;
-    }
-    
-    .Details-header {
-      position: -webkit-sticky;
-      position: sticky;
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      z-index: 2;
-      width: 100%;    
-      font-size: 16px;
-      padding: 1rem 1.5rem;
-      
-      
-      h2 {
-        transition-delay: 1.2s;
-        transition: 0.5s ease-in-out all;
-        visibility: hidden;
-        opacity: 0;
-        color: var(--black);
-        font-weight: 550;
-        font-size: clamp(5px, 8vw, 14px);
-        .is-menu-open & {
-          transition-delay: 0.8s;
-          opacity: 1;
-          visibility: visible;
-          animation: letter-flicker 0.45s linear;
-          animation-delay: 1.2s;
-          transition-delay: 1.2s;
-        }
+    align-items: center;
+    justify-content: flex-start;
+    z-index: 2;
+    width: 100%;
+    font-size: 16px;
+    padding: 1rem 1.5rem;
+
+    h2 {
+      transition-delay: .35s;
+      transition: 0.5s ease-in-out all;
+      visibility: hidden;
+      opacity: 0;
+      color: var(--black);
+      font-weight: 550;
+      font-size: clamp(5px, 8vw, 14px);
+      .is-menu-open & {
+        transition-delay: 0.8s;
+        opacity: 1;
+        visibility: visible;
+        animation: letter-flicker 0.45s linear;
+        animation-delay: .35s;
+        transition-delay: .35s;
       }
     }
+  }
 
-    .Details-close {
-      position: absolute;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 2;
-      width: 60px;
-      height: 65px;
-      font-size: 16px;
-      right: 0;
-      span {
-        color: var(--grey);
-        font-size: 28px;
-        font-weight: bold;
-        cursor: pointer;
-        transition: ease-in 0.35s;
-        visibility: hidden;
-        opacity: 0;
+  .Details-close {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+    right: 12px;
+    top: 12px;
+    span {
+      color: var(--grey);
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: ease-in 0.35s;
+      visibility: hidden;
+      opacity: 0;
 
-        &:hover,
-        &:focus {
-          color: var(--red);
-        }
-        .is-menu-open & {
-          transition-delay: 0.8s;
-          opacity: 1;
-          visibility: visible;
-          animation: letter-flicker 0.45s linear;
-        }
+      &:hover,
+      &:focus {
+        color: var(--red);
+      }
+      .is-menu-open & {
+        transition-delay: 0.35s;
+        opacity: 1;
+        visibility: visible;
+        animation: letter-flicker 0.45s linear;
       }
     }
+  }
 
-    .Details-body {
-      width: 100%;
-      height: 100%;
+  .Details-body {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    z-index: 2;
+
+    .Details-content {
       display: flex;
+      flex: 1 1 500px;
+      flex-direction: column;
       justify-content: center;
-      flex-wrap: wrap;
       gap: .5rem;
+
+      border-radius: 8px;
       padding: 1rem;
-      overflow-x: hidden;
-      overflow-y: scroll;
-      z-index: 2;
-      
-      .Details-content {
+      position: relative;
+      transition-delay: 1.2s;
+      transition: 0.5s ease-in-out all;
+      visibility: hidden;
+      opacity: 0;
+      background-color: rgba(255, 255, 255, 0.8);
+      .is-menu-open & {
+        transition-delay: 0.35s;
+        opacity: 1;
+        visibility: visible;
+      }
+      .Details-title {
+        width: 100%;
         display: flex;
-        flex: 1 1 500px;
-        flex-direction: column;
-        justify-content: center;
-        gap: 1.5rem;
-             
-        border-radius: 8px;
-        padding: 1.5rem 1.3rem;
-        position: relative;
-        transition-delay: 1.2s;
-        transition: 0.5s ease-in-out all;
-        visibility: hidden;
-        opacity: 0;
-        background-color: var(--white);
-        .is-menu-open & {
-          transition-delay: 0.8s;
-          opacity: 1;
-          visibility: visible;
-        }
-        .Details-title {
-          width: 100%;
+        align-items: center;
+        justify-content: space-between;
+
+        .D-title-name {
           display: flex;
           align-items: center;
-          justify-content: space-between;
+          gap: 0.5rem;
+          div {
+            padding: 0.3rem;
+            background-color: #6a4ab62f;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
 
-          .D-title-name {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            div {
-              padding: 0.4rem;
-              background-color: #6a4ab62f;
-              border-radius: 50%;
-              display: grid;
-              place-items: center;
-
-              svg {
-                height: 0.7rem;
-                fill: var(--red);
-                @include md {
-                  height: 1rem;
-                }
-              }
-              @include md {
-                padding: 0.5rem;
-              }
-            }
-            h4 {
-              color: var(--white);
-            }
-            h5 {
-              color: var(--grey);
-            }
-          }
-          .D-title-more {
             svg {
-              height: 0.8rem;
-              fill: var(--grey);
+              height: 0.7rem;
+              fill: var(--red);
+              @include md {
+                height: 1rem;
+              }
+            }
+            @include md {
+              padding: 0.4rem;
             }
           }
+          h4 {
+            color: var(--black);
+          }
+          h5 {
+            color: var(--grey);
+          }
         }
-        @include md {
-          padding: 1.5rem 2rem;
-          border: 2px solid var#6a4ab641;
-        }
-      }
-
-      .text-1 {
-        .is-menu-open & {
-          animation: letter-flicker 0.45s linear;
-          animation-delay: 1s;
-          transition-delay: 1s;
-        }
-      }
-      .text-2 {
-        .is-menu-open & {
-          animation: letter-flicker 0.45s linear;
-          animation-delay: 1.2s;
-          transition-delay: 1.2s;
+        .D-title-more {
+          svg {
+            height: 0.8rem;
+            fill: var(--grey);
+          }
         }
       }
-      .text-3 {
-        .is-menu-open & {
-          animation: letter-flicker 0.45s linear;
-          animation-delay: 1.4s;
-          transition-delay: 1.4s;
-          width: 100%;
-        }
-      }
-
       @include md {
-        padding: .5rem 1.5rem;
+        padding: 1rem;
+        border: 2px solid var#6a4ab641;
+      }
+    }
+
+    .text-1 {
+      .is-menu-open & {
+        animation: letter-flicker 0.15s linear;
+        animation-delay: 1s;
+        transition-delay: 1s;
+      }
+    }
+    .text-2 {
+      .is-menu-open & {
+        animation: letter-flicker 0.15s linear;
+        animation-delay: 1.2s;
+        transition-delay: 1.2s;
+      }
+    }
+    .text-3 {
+      .is-menu-open & {
+        animation: letter-flicker 0.15s linear;
+        animation-delay: 1.4s;
+        transition-delay: 1.4s;
+        width: 100%;
       }
     }
 
     @include md {
-      max-width: 80vw;
-      width: 100%;
-      padding: 0;
-      height: 85vh;
-    }
-
-    @include lg {
-      padding: 0;
+      padding: 0.5rem 1.5rem;
     }
   }
 }

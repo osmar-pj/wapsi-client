@@ -13,7 +13,6 @@ import CreateGroupInstrument from "./c-group";
 function GenericList({
   url,
   title,
-  token,
   userId,
   usersFiltered2,
   loading,
@@ -162,36 +161,49 @@ function GenericList({
   const groupInstrumentColumns = [
     {
       header: "Nombre",
-      accessorKey: "name",     
+      accessorKey: "name",
     },
-    
     {
       header: "Descripción",
-      accessorKey: "description",     
+      accessorKey: "description",
     },
     {
       header: "Imagen",
-      accessorKey: "img",     
+      accessorKey: "img",
     },
     {
       header: "Ubicación",
-      accessorKey: "ubication",     
+      accessorKey: "ubication",
     },
     {
       header: "Instlación",
-      accessorKey: "installation",     
+      accessorKey: "installation",
     },
     {
-      header: "Position X",
+      header: "Posición X",
       cell: ({ row }) => {
         return <h4>{row.original.position.x}</h4>;
       },
     },
     {
-      header: "Postion Y",
+      header: "Posición Y",
       cell: ({ row }) => {
         return <h4>{row.original.position.y}</h4>;
       },
+    },
+    {
+      header: "Controladores",
+      accessorKey: "empresa",
+      cell: ({ row }) => (
+        <div className="td-user">
+          {row.original.groups.map((group, index) => (
+            <div key={index} className="t-name">
+              <h4>{group.name}</h4>
+              <h4>{group.controllerId.mining.name}</h4>
+            </div>
+          ))}
+        </div>
+      ),
     },
     {
       header: "Fecha de creación",
@@ -205,7 +217,9 @@ function GenericList({
           <button onClick={() => handleEdit(row.original, "groupInstrument")}>
             <Edit />
           </button>
-          <button onClick={() => handleDelete(row.original._id, "groupInstrument")}>
+          <button
+            onClick={() => handleDelete(row.original._id, "groupInstrument")}
+          >
             <Delete />
           </button>
         </div>
@@ -215,23 +229,32 @@ function GenericList({
   const controllerColumns = [
     {
       header: "Serie",
-      accessorKey: "serie",     
+      accessorKey: "serie",
+      cell: ({ row }) => (
+        <div className="td-user">
+          <div className="t-name">
+            <h4>{row.original.serie}</h4>
+            <h5>{row.original.mining.name}</h5>
+          </div>
+        </div>
+      ),
     },
+
     {
       header: "Nivel",
-      accessorKey: "level",     
+      accessorKey: "level",
     },
     {
       header: "Left",
-      accessorKey: "left",     
+      accessorKey: "left",
     },
     {
-      header: "Right",
-      accessorKey: "right",     
+      header: "Top",
+      accessorKey: "top",
     },
     {
       header: "Ubicación",
-      accessorKey: "ubication",     
+      accessorKey: "ubication",
     },
     {
       header: "Acciones",
@@ -249,32 +272,40 @@ function GenericList({
   ];
   const instrumentColumns = [
     {
-      header: "Nivel",
-      accessorKey: "name",     
+      header: "Controlador",
+      accessorKey: "controllerId",
+      cell: ({ row }) => (
+        <div className="td-user">
+          <div className="t-name">
+            <h4>{row.original.controllerId.serie}</h4>
+            <h5>{row.original.controllerId.mining.name}</h5>
+          </div>
+        </div>
+      ),
     },
     {
-      header: "Controller",
-      accessorKey: "controllerId",     
+      header: "Nivel",
+      accessorKey: "name",
     },
     {
       header: "Descripción",
-      accessorKey: "description",     
+      accessorKey: "description",
     },
     {
       header: "Tipo",
-      accessorKey: "type",     
+      accessorKey: "type",
     },
     {
       header: "Modo",
-      accessorKey: "mode",     
+      accessorKey: "mode",
     },
     {
       header: "Señal",
-      accessorKey: "signal",     
+      accessorKey: "signal",
     },
     {
       header: "Medida",
-      accessorKey: "measure",     
+      accessorKey: "measure",
     },
     {
       header: "Acciones",
@@ -307,7 +338,7 @@ function GenericList({
       columns: instrumentColumns,
       createComponent: CreateInstrument,
     },
-    
+
     controller: {
       columns: controllerColumns,
       createComponent: CreateController,
@@ -323,11 +354,10 @@ function GenericList({
 
   const handleEdit = (rowData, type) => {
     console.log("Datos editados:", rowData);
-     setUserToEdit(rowData);
-     setCreate(true);
-     setIsCreateUser(false);
+    setUserToEdit(rowData);
+    setCreate(true);
+    setIsCreateUser(false);
   };
-  
 
   const handleDelete = async (_id, url) => {
     try {
@@ -360,7 +390,6 @@ function GenericList({
         <CreateComponent
           setCreate={setCreate}
           refetchData={refetchData}
-          token={token}
           userToEdit={userToEdit}
           isCreateUser={isCreateUser}
           url={url}
@@ -369,7 +398,6 @@ function GenericList({
       )}
       {delet && (
         <DeleteForm
-          token={token}
           setDelet={setDelet}
           refetchData={refetchData}
           userToDeleteId={userToDeleteId}

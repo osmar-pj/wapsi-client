@@ -9,14 +9,14 @@
     background-color: rgba(255, 255, 255, 0.438);
     border-radius: 15px;
     border: 1px solid var(--white); 
-    width: 12rem;
+    width: 20rem;
     display: flex;
     flex-direction: column;
    
     position: absolute;
-    top: 14vh;
+    top: 12vh;
     padding: 1rem;
-    gap: 0.5rem;
+    gap: 0.3rem;
     z-index: 1;
     left: 50%;
     transform: translateX(-50%);
@@ -35,18 +35,18 @@
     }
     .img-warning{
       position: absolute;
-      bottom : -80px;
+      top:115%;
       left: 50%;
-      width: 100%;
+      height:2.5rem;
       transform: translateX(-50%);
     }
     
     @include md {
-      padding: 1.5rem;
-      width: 11rem;
-      text-align: left;
-      left: 4vw;
-      transform: translateX(0);
+      // padding: 1.5rem;
+      // width: 11rem;
+      // text-align: left;
+      // left: 4vw;
+      // transform: translateX(0);
     }
   }
 
@@ -119,7 +119,7 @@
               font-size: clamp(7.5px, 8vw, 12px);
               line-height: 1rem;
               letter-spacing: 0.03rem;
-              padding-top: 0.2rem;
+              
             }
           }
 
@@ -202,7 +202,7 @@
 
         @include md {
           border-radius: 8px;
-          padding: 0 1.5rem 0.8rem 1.5rem;
+          padding: .8rem;
         }
       }
     }
@@ -216,13 +216,13 @@
   display: flex;
   flex-direction: column;
   place-items: center;
-  justify-content: center;
+  justify-content: flex-end;
   position: relative;
 }
 
 @include md {
   .image-marker:hover > .image-marker__marker:not(:hover) {
-    opacity: 0.4;
+    opacity: 1;
   }
   .image-marker__marker {
     transition: 0.35s ease-in-out all;

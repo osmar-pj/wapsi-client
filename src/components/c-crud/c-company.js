@@ -5,7 +5,6 @@ export default function CreateCompany({
   isCreateUser,
   setCreate,
   refetchData,
-  token,
   userToEdit,
   url,
 }) {
@@ -37,7 +36,6 @@ export default function CreateCompany({
     <Crud
       isCreateUser={isCreateUser}
       setCreate={setCreate}
-      token={token}
       userToEdit={userToEdit}
       formData={formData}
       refetchData={refetchData}

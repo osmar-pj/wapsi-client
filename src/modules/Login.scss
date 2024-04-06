@@ -17,16 +17,17 @@
     max-width: 400px;
     width: 100%;
     img {
-      width: 4rem;
-      height: 4rem;
+      width: 6.8rem;
+      height: 6.8rem;
     }
-    
+
     .Login-title {
       color: #fffffff3;
       font-weight: 600;
-      margin-bottom: .5rem;
+      margin-bottom: 0.5rem;
     }
     font {
+      margin-top: 1.5rem;
       color: var(--grey);
       font-size: clamp(5px, 8vw, 13.5px);
       white-space: pre-line;
@@ -34,7 +35,7 @@
       text-align: center;
       font-weight: normal;
       line-height: 1.2rem;
-      strong{
+      strong {
         color: #ffffff99;
       }
     }
@@ -49,7 +50,7 @@
         gap: 0.5rem;
         .input {
           width: 40px;
-          height: 48px;          
+          height: 48px;
           padding: 0;
           background-color: #ffffff08;
           border: 1.5px solid transparent;
@@ -117,4 +118,43 @@
     background-color: var(--secondary);
     color: var(--white);
   }
+}
+
+.error-login {
+  position: absolute;
+  left: 50%;
+  bottom: 8rem;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  background-color: rgba(33, 34, 38, 0.95);
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 12px 16px -4px,
+    rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+  backdrop-filter: blur(32px);
+  border-radius: 10px;
+  height: auto;
+  max-width: unset;
+  min-height: 40px;
+  padding: 8px 13px;
+  animation: 0.3s ease-in 0s 1 normal none running fadeIn;
+  h4{
+    line-height: 16px;
+    font-size: clamp(5px, 8vw, 11.5px);
+    color: rgba(255, 255, 255, 0.8);
+    font-weight:normal;
+  }
+}
+
+.error-hidden {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.35s ease-in-out, visibility 0.35s ease-in-out;
+}
+
+.error-visible {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.35s ease-in-out, visibility 0.35s ease-in-out;
 }

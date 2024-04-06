@@ -68,3 +68,79 @@
   }
 }
 
+/* -----------------REACTDATEPIKER---------------------------*/
+/*---------------------------------------------------*/
+
+.react-datepicker-wrapper{
+  width: 220px;
+}
+.react-datepicker{
+  padding: 1rem;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px !important;
+  border: 1px solid transparent !important;
+  border-radius: 12px !important;
+  z-index: 9;
+  background-color: var(--white);
+}
+
+.react-datepicker__header {
+  background-color: transparent !important;
+  border-bottom: 1px solid transparent !important;
+}
+.react-datepicker-year-header{
+  text-transform: capitalize;
+  font-family: "__Sora_fdd6c4", "__Sora_Fallback_fdd6c4";
+  font-weight: 500 !important;
+  padding-bottom: 1rem;
+}
+.react-datepicker__month-text{
+  text-transform: capitalize;
+  font-family: "__Sora_fdd6c4", "__Sora_Fallback_fdd6c4";
+  padding: .5rem ; 
+}
+.react-datepicker__month-text--selected{
+  background-color: var(--primary) !important;
+  font-weight: 500 !important;
+  color: var(--white) !important;
+  border-radius: 8px !important;
+}
+.react-datepicker__current-month{
+  text-transform: capitalize;
+  font-family: "__Sora_fdd6c4", "__Sora_Fallback_fdd6c4";
+  font-weight: 500 !important;
+  padding-bottom: 1rem;
+}
+
+  .react-datepicker__day-name{
+    text-transform: capitalize;
+    font-family: "__Sora_fdd6c4", "__Sora_Fallback_fdd6c4";
+    color: var(--grey) !important;
+  }
+  .react-datepicker__navigation{
+    top: 18px !important;
+  }
+  .react-datepicker__navigation-icon::before{
+    height: 7px !important;
+    width: 7px !important;
+    top: 9px !important;
+  }
+
+.react-datepicker__navigation--previous{
+  left: 20px !important;
+}
+
+.react-datepicker__navigation--next{
+  right: 20px !important;
+}
+.react-datepicker__day{
+  font-family: "__Sora_fdd6c4", "__Sora_Fallback_fdd6c4";
+}
+
+.react-datepicker__day--selected{
+  background-color: var(--primary) !important;
+  font-weight: 500 !important;
+}
+.react-datepicker__triangle::before{
+  border-bottom-color: white !important;
+}
+

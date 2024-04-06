@@ -1,5 +1,4 @@
-import { useRouter } from "next/router";
-import {
+import React, {
   createContext,
   useCallback,
   useContext,
@@ -7,8 +6,14 @@ import {
   useMemo,
   useState,
 } from "react";
+import { DataGroups } from "../libs/api";
 
-export const MainContext = createContext();
+export const MainContext = createContext({
+  login: (authTokens) => {},
+  logout: () => {},
+  isLoggedIn: false,
+  authTokens: null,
+});
 
 const AUTH_TOKENS_KEY = "NEXT_JS_AUTH";
 
@@ -23,21 +28,10 @@ const getAuthTokensFromLocalStorage = () => {
   return null;
 };
 
-export const MainProvider = ({ globalData, children }) => {
+export default function MainProvider({ children }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const isMenuOpenClass = "is-menu-open";
   const [instruments, setInstruments] = useState([]);
-
-  useEffect(() => {
-    if (menuOpen) {
-      document.body.classList.add(isMenuOpenClass);
-      //  document.body.style.overflow = "hidden";
-    } else {
-      document.body.classList.remove(isMenuOpenClass);
-      //  document.body.style.overflow = "auto";
-    }
-  }, [menuOpen]);
-
   const [authTokens, setAuthTokens] = useState(getAuthTokensFromLocalStorage());
 
   const login = useCallback(function (authTokens) {
@@ -47,46 +41,50 @@ export const MainProvider = ({ globalData, children }) => {
     }
   }, []);
 
+  const logout = useCallback(function () {
+    if (typeof window !== "undefined") {
+      window.localStorage.removeItem(AUTH_TOKENS_KEY);
+      setAuthTokens(null);
+    }
+  }, []);
+
+  // const fetchInstruments = async () => {
+  //   const data = await DataGroups(authTokens.empresa);
+  //   setInstruments(data);
+  // };
+
   const fetchInstruments = async () => {
-    try {
-      const response = await fetch(
-        `${process.env.API_URL}/api/v1/groupInstrument`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        }
-      );
-
-      if (response.ok) {
-        const data = await response.json();
-
+    if (authTokens && authTokens.empresa) {
+      const data = await DataGroups(authTokens?.empresa);
+      if (data !== null) {
         setInstruments(data);
-      } else {
-        console.error("Error al obtener datos:", response.statusText);
       }
-    } catch (error) {
-      console.error("Error en la solicitud:", error);
     }
   };
 
   useEffect(() => {
-    if (authTokens) {
-      fetchInstruments();
+    fetchInstruments();
+  }, []);
+
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.classList.add(isMenuOpenClass);
+    } else {
+      document.body.classList.remove(isMenuOpenClass);
     }
-  }, [authTokens, fetchInstruments]);
+  }, [menuOpen]);
+
 
   const value = useMemo(
     () => ({
       login,
+      logout,
       authTokens,
+      isLoggedIn: authTokens !== null,
       menuOpen,
       setMenuOpen,
       instruments,
       setInstruments,
-      globalData,
       fetchInstruments
     }),
     [
@@ -96,15 +94,12 @@ export const MainProvider = ({ globalData, children }) => {
       setMenuOpen,
       instruments,
       setInstruments,
-      globalData,
       fetchInstruments
     ]
   );
 
   return <MainContext.Provider value={value}>{children}</MainContext.Provider>;
-};
-
-MainContext.displayName = "MainContext";
+}
 
 export function useMainContext() {
   return useContext(MainContext);

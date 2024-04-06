@@ -1,44 +1,32 @@
 import { useEffect, useState } from "react";
 import Select from "react-select";
 import Crud from "./c-crud";
+import { DataControllers } from "@/src/libs/api";
 
 export default function CreateController({
   isCreateUser,
   setCreate,
   refetchData,
-  token,
   userToEdit,
   url,
 }) {
   const [controller, setController] = useState([]);
   const [loading, setLoading] = useState(true);
-  const fecthData = async () => {
-    try {
-      const response = await fetch(`${process.env.API_URL}/api/v1/controller`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          "x-access-token": token,
-        },
-      });
 
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data);
-        setController(data.controllers);
-      } else {
-        console.error("Error al obtener datos:", response.statusText);
-      }
-      setLoading(false);
-    } catch (error) {
-      console.error("Error en la solicitud:", error);
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const data = await DataControllers();
+      if (data !== null) {
+      setController(data.controllers);
+    }
+    } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fecthData();
+    fetchData();
   }, []);
 
   const initialValues = isCreateUser
@@ -46,7 +34,6 @@ export default function CreateController({
         name: "",
         description: "",
         controllerId: "",
-
         type: "",
         mode: "",
         signal: "",
@@ -56,7 +43,6 @@ export default function CreateController({
     : {
         name: userToEdit.name,
         description: userToEdit.description,
-
         type: userToEdit.type,
         mode: userToEdit.mode,
         signal: userToEdit.signal,
@@ -71,7 +57,6 @@ export default function CreateController({
       setFormData({
         name: userToEdit.name,
         description: userToEdit.description,
-
         type: userToEdit.type,
         mode: userToEdit.mode,
         signal: userToEdit.signal,
@@ -95,11 +80,46 @@ export default function CreateController({
 
   //   console.log(userToEdit);
 
+  const listType = [
+    { id: "sensor", name: "Sensor" },
+    { id: "actuator", name: "Actuador" },
+  ];
+  const listMode = [
+    { id: "auto", name: "Automático" },
+    { id: "manual", name: "Manual" },
+    { id: "auto/manual", name: "Automático/Manual" },
+  ];
+  const listSignal = [
+    { id: "digital", name: "Digital" },
+    { id: "analog", name: "Analógico" },
+  ];
+
+  const handleTypeChange = (selectedOption) => {
+    setFormData({
+      ...formData,
+      type: selectedOption.id,
+    });
+  };
+
+  const handleModeChange = (selectedOption) => {
+    setFormData({
+      ...formData,
+      mode: selectedOption.id,
+    });
+  };
+  const handleSignalChange = (selectedOption) => {
+    setFormData({
+      ...formData,
+      signal: selectedOption.id,
+    });
+  };
+
+
   return (
     <Crud
       isCreateUser={isCreateUser}
       setCreate={setCreate}
-      token={token}
+    
       userToEdit={userToEdit}
       formData={formData}
       refetchData={refetchData}
@@ -157,43 +177,58 @@ export default function CreateController({
       <div className="mC-imputs-item">
         <label>Ingrese Tipo</label>
         <div className="imputs-i-input">
-          <input
-            type="text"
+          <Select
+            instanceId="react-select-instance"
             name="type"
-            inputMode="text"
-            placeholder="Ingrese Tipo"
-            required
-            value={formData.type}
-            onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+            classNamePrefix="custom-select"
+            isSearchable={false}
+            isClearable={false}
+            onChange={handleTypeChange}
+            options={listType}
+            value={listType.find((opt) => opt.id === formData.type)}
+            placeholder="Seleccione..."
+            getOptionLabel={(option) => option.name} // Solo obtenemos el nombre de la opción
+            getOptionValue={(option) => option.id} // Obtenemos el ID de la opción
           />
+
         </div>
       </div>
       <div className="mC-imputs-item">
         <label>Ingrese Modo</label>
         <div className="imputs-i-input">
-          <input
-            type="text"
+        <Select
+            instanceId="react-select-instance"
             name="mode"
-            inputMode="numeric"
-            placeholder="Ingrese Modo"
-            value={formData.mode}
-            onChange={(e) => setFormData({ ...formData, mode: e.target.value })}
+            classNamePrefix="custom-select"
+            isSearchable={false}
+            isClearable={false}
+            onChange={handleModeChange}
+            options={listMode}
+            value={listMode.find((opt) => opt.id === formData.mode)}
+            placeholder="Seleccione..."
+            getOptionLabel={(option) => option.name} // Solo obtenemos el nombre de la opción
+            getOptionValue={(option) => option.id} // Obtenemos el ID de la opción
           />
+          
         </div>
       </div>
       <div className="mC-imputs-item">
         <label>Ingrese Señal</label>
         <div className="imputs-i-input">
-          <input
-            type="text"
+        <Select
+            instanceId="react-select-instance"
             name="signal"
-            placeholder="Ingrese Señal"
-            required
-            value={formData.signal}
-            onChange={(e) =>
-              setFormData({ ...formData, signal: e.target.value })
-            }
+            classNamePrefix="custom-select"
+            isSearchable={false}
+            isClearable={false}
+            onChange={handleSignalChange}
+            options={listSignal}
+            value={listSignal.find((opt) => opt.id === formData.signal)}
+            placeholder="Seleccione..."
+            getOptionLabel={(option) => option.name} // Solo obtenemos el nombre de la opción
+            getOptionValue={(option) => option.id} // Obtenemos el ID de la opción
           />
+          
         </div>
       </div>
       <div className="mC-imputs-item">

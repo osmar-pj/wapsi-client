@@ -1,44 +1,35 @@
 import { useEffect, useState } from "react";
 import Select from "react-select";
 import Crud from "./c-crud";
+import { useMainContext } from "@/src/contexts/Main-context";
+import { DataInstruments } from "@/src/libs/api";
+
 
 export default function CreateController({
   isCreateUser,
   setCreate,
   refetchData,
-  token,
   userToEdit,
   url,
 }) {
   const [instruments, setInstruments] = useState([]);
   const [loading, setLoading] = useState(true);
-  const fecthData = async () => {
-    try {
-      const response = await fetch(`${process.env.API_URL}/api/v1/instrument`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      });
+  const { authTokens } = useMainContext();
 
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data);
-        setInstruments(data);
-      } else {
-        console.error("Error al obtener datos:", response.statusText);
-      }
-      setLoading(false);
-    } catch (error) {
-      console.error("Error en la solicitud:", error);
+  const fetchData = async (authTokens) => {
+    setLoading(true);
+    try {
+      const data = await DataInstruments(authTokens.empresa);
+      setInstruments(data);
+    } finally {
       setLoading(false);
     }
   };
-
+  
   useEffect(() => {
-    fecthData();
-  }, []);
+    fetchData(authTokens);
+  }, [authTokens]);
+  
 
   const initialValues = isCreateUser
     ? {
@@ -59,11 +50,11 @@ export default function CreateController({
         description: userToEdit.description,
         img: userToEdit.img,
         ubication: userToEdit.ubication,
-      
+
         position: {
-            x: userToEdit.position.x,
-            y: userToEdit.position.y,
-          },
+          x: userToEdit.position.x,
+          y: userToEdit.position.y,
+        },
         installation: userToEdit.installation,
       };
 
@@ -78,18 +69,24 @@ export default function CreateController({
         img: userToEdit.img,
         ubication: userToEdit.ubication,
         position: {
-            x: userToEdit.position.x,
-            y: userToEdit.position.y,
-          },
+          x: userToEdit.position.x,
+          y: userToEdit.position.y,
+        },
         installation: userToEdit.installation,
       });
     }
   }, [isCreateUser, userToEdit]);
 
-  const optionsInstruments = instruments.map((i) => ({
-    value: i._id,
-    label: i.name,
-  }));
+  const optionsInstruments = instruments
+    .filter((i) => i.ubication === null)
+    .map((i) => ({
+      value: i._id,
+      label: i.name,
+      mining: i.controllerId.mining.name,
+      serie: i.controllerId.serie,
+    }));
+
+  console.log(instruments);
 
   const handleRolesChange = (selectedOptions) => {
     const selectedRoleValues = selectedOptions.map((option) => option.value);
@@ -101,11 +98,18 @@ export default function CreateController({
 
   console.log(userToEdit);
 
+  const formatOptionLabel = ({ serie, label, mining }) => (
+    <div>
+      <span>{label}</span>
+      <span style={{ color: "gray" }}> {mining} </span>
+      <span style={{ color: "gray" }}> {serie} </span>
+    </div>
+  );
+
   return (
     <Crud
       isCreateUser={isCreateUser}
       setCreate={setCreate}
-      token={token}
       userToEdit={userToEdit}
       formData={formData}
       refetchData={refetchData}
@@ -127,6 +131,7 @@ export default function CreateController({
               (opt) => opt.value === formData.empresa
             )}
             placeholder="Seleccione..."
+            formatOptionLabel={formatOptionLabel}
           />
         </div>
       </div>
@@ -211,7 +216,7 @@ export default function CreateController({
       <div className="mC-imputs-item">
         <label>Ingrese Left</label>
         <div className="imputs-i-input">
-        <input
+          <input
             type="number"
             name="y"
             placeholder="Ej. 100"
