@@ -1,11 +1,13 @@
-import { Sora } from "@next/font/google";
-import { MainProvider } from "@/src/contexts/Main-context";
-import "normalize.css";
+import Foot from "@/src/components/c-footer/c-footer";
+import Header from "@/src/components/c-header/c-header";
 import "@/src/global.scss";
 import Layout from "@/src/layout";
-import Header from "@/src/components/c-header/c-header";
+import { Sora } from "@next/font/google";
 import { useRouter } from "next/router";
-import Foot from "@/src/components/c-footer/c-footer";
+
+import { useEffect } from "react";
+
+// import "normalize.css";
 
 const inter = Sora({
   subsets: ["latin"],
@@ -22,6 +24,7 @@ function App({ Component, pageProps }) {
 
   return (
     <Layout>
+      
       {showHeader && <Header />}
       <main className={inter.className}>
         <Component {...pageProps} className={inter.className} />

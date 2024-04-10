@@ -139,6 +139,14 @@ function GenericList({
       accessorKey: "address",
     },
     {
+      header: "Nombre del Grupo",
+      accessorKey: "groupName",
+    },
+    {
+      header: "Celular",
+      accessorKey: "phone",
+    },
+    {
       header: "Fecha de creación",
       accessorKey: "lastname",
       cell: ({ row }) => formatFecha(row.original.createdAt),
@@ -199,7 +207,7 @@ function GenericList({
           {row.original.groups.map((group, index) => (
             <div key={index} className="t-name">
               <h4>{group.name}</h4>
-              <h4>{group.controllerId.mining.name}</h4>
+              <h4>{group.controllerId.mining?.name}</h4>
             </div>
           ))}
         </div>
@@ -234,28 +242,21 @@ function GenericList({
         <div className="td-user">
           <div className="t-name">
             <h4>{row.original.serie}</h4>
-            <h5>{row.original.mining.name}</h5>
+            <h5>{row.original.mining?.name}</h5>
           </div>
         </div>
       ),
     },
 
     {
-      header: "Nivel",
-      accessorKey: "level",
+      header: "Chip",
+      accessorKey: "chip",
     },
     {
-      header: "Left",
-      accessorKey: "left",
+      header: "Ip",
+      accessorKey: "ip",
     },
-    {
-      header: "Top",
-      accessorKey: "top",
-    },
-    {
-      header: "Ubicación",
-      accessorKey: "ubication",
-    },
+    
     {
       header: "Acciones",
       cell: ({ row }) => (
@@ -273,12 +274,12 @@ function GenericList({
   const instrumentColumns = [
     {
       header: "Controlador",
-      accessorKey: "controllerId",
+      accessorKey: "mining",
       cell: ({ row }) => (
         <div className="td-user">
           <div className="t-name">
             <h4>{row.original.controllerId.serie}</h4>
-            <h5>{row.original.controllerId.mining.name}</h5>
+            <h5>{row.original.controllerId.mining?.name}</h5>
           </div>
         </div>
       ),
@@ -353,7 +354,7 @@ function GenericList({
   const { columns, createComponent: CreateComponent } = selectedConfig;
 
   const handleEdit = (rowData, type) => {
-    console.log("Datos editados:", rowData);
+
     setUserToEdit(rowData);
     setCreate(true);
     setIsCreateUser(false);

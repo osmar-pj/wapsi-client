@@ -62,6 +62,7 @@ $break-desktop: 1540px;
   }
 }
 
+
 /*//////////////////////////////////////////////////////////////////
 [ IMPORTS]*/
 @import "modules/Login.scss";
@@ -114,7 +115,7 @@ html,
 body {
   margin: 0;
   background: #dfe6e9;
-  height: 100vh;
+  height: 100dvh;
   font-family: "__Sora_fdd6c4", "__Sora_Fallback_fdd6c4";
   font-style: normal;
   font-weight: 100;
@@ -334,8 +335,12 @@ button {
   color: var(--white);
 }
 
+ul {
+  list-style: none;
+}
+
 section {
-  min-height: 100vh;
+  min-height: 100dvh;
 }
 
 /*//////////////////////////////////////////////////////////////////
@@ -871,22 +876,7 @@ section {
 /*==========================================*/
 /*--------------LOADING-------------*/
 /*==========================================*/
-.container-chart {
-  width: 100%;
-  flex: 1 1;
-  border: 1px solid var(--white);
-  background-color: rgba(255, 255, 255, 0.438);
-  border-radius: 20px;
-  padding: 2rem;
-  z-index: 0;
-  position: relative;
-  overflow: hidden;
-}
 
-.chart-container {
-  width: 100%;
-  height: 100%;
-}
 
 .loader {
   width: 18px;
@@ -1658,5 +1648,13 @@ section {
 }
 
 
+.verify{
+  color: var(--red-black) !important;
+  font-weight: 600 !important;
+}
 
 
+
+.react-loading-skeleton{
+  background-color: red;
+}

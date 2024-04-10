@@ -14,11 +14,12 @@ export default function Home() {
     const instrument$ = new Subject();
 
     socket.on(`${authTokens?.empresa.toUpperCase()}`, (data) => {
-      console.log(data.value, data.name);
+      
       instrument$.next(data);
     });
 
     const subscription = instrument$.subscribe((updatedData) => {
+      if (updatedData && updatedData._id) {
       setInstruments((prevInstruments) => {
         const updatedInstruments = prevInstruments.map((instrument) => {
           if (instrument.groups && Array.isArray(instrument.groups)) {
@@ -39,6 +40,7 @@ export default function Home() {
         });
         return updatedInstruments;
       });
+    }
     });
 
     return () => {
@@ -51,7 +53,7 @@ export default function Home() {
     <section className="w-Home">
       <CardTitle/>
       <Mapa />
-      <Notification />
+      <Notification />      
     </section>
   );
 }

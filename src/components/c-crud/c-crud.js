@@ -28,7 +28,7 @@ function Crud(props) {
   };
 
   const handleCreateUser = async () => {
-    console.log(formData);
+   
     if (
       Object.values(formData).some((value) => value === "" || value === null)
     ) {
@@ -49,16 +49,15 @@ function Crud(props) {
 
         if (response.ok) {
           const data = await response.json();
-          console.log(data);
+      
           if (data.status === true) {
             refetchData();
             setSuccess(true);
             setTimeout(() => {
               setCreate(false);
-            }, 2000);
+            }, 1500);
           } else {
             setButtonClicked(false);
-            // console.log(data.message);
           }
         } else {
           console.error("Error al crear:", response.statusText);
@@ -70,7 +69,9 @@ function Crud(props) {
     }
   };
 
+  
   const handleUpdateUser = async () => {
+
     try {
       setButtonClicked(true);
       const response = await fetch(
@@ -89,17 +90,16 @@ function Crud(props) {
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
-      
+        
         if (data.status === true) {
           refetchData();
           setSuccess(true);
           setTimeout(() => {
             setCreate(false);
-          }, 1500);
+          }, 1000);
         } else {
           setButtonClicked(false);
-          // console.log(data.message);
+         
         }
       } else {
         setButtonClicked(false);

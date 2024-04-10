@@ -26,10 +26,10 @@ export default function Form({ roles }) {
     try {
       const response = await fetch(`${process.env.API_URL}/api/v1/advertiser`, {
         method: "POST",
-
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
+          "ngrok-skip-browser-warning": true,
         },
         body: JSON.stringify({ description: descript }),
       });

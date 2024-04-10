@@ -3,27 +3,23 @@ import { UpdateVentilator } from "@/src/libs/api";
 import { useRef, useState } from "react";
 
 const Mventilador = ({ selectedSensorId }) => {
-
   const { instruments, fetchInstruments, menuOpen, setMenuOpen } =
-  useMainContext();
-  
+    useMainContext();
+
   const [loading, setLoading] = useState(false);
   const [activeStates, setActiveStates] = useState({});
   const [valueStates, setValueStates] = useState({});
 
   const filteredInstrument =
-  instruments.find((instrument) => instrument._id === selectedSensorId._id)
-    ?.groups || [];
+    instruments.find((instrument) => instrument._id === selectedSensorId._id)
+      ?.groups || [];
 
   const ref = useRef(null);
-  
+
   if (!selectedSensorId) {
     return null;
   }
-  console.log("ingresando",instruments.map(i => i.groups.map(i => i.mode)));
-  // console.log(filteredInstrument[0].mode, filteredInstrument[0].signal);
   const updateValue = async (id, name) => {
- 
     setLoading(true);
     const newActive = !activeStates[id];
     setActiveStates((prevStates) => ({
@@ -38,7 +34,7 @@ const Mventilador = ({ selectedSensorId }) => {
 
     try {
       const data = await UpdateVentilator(id, newData);
-      if (data.status === true) {
+      if (data?.status === true) {
         fetchInstruments();
       }
     } finally {
@@ -48,11 +44,11 @@ const Mventilador = ({ selectedSensorId }) => {
     }
   };
 
-  const handleMouseUp = async (id, value) => {
+  const handleMouseUp = async (select) => {
     setLoading(true);
-    const newData = { value: value };
+    const newData = { value: select.value };
     try {
-      const data = await UpdateVentilator(id, newData);
+      const data = await UpdateVentilator(select.id, newData);
       if (data.status === true) {
         fetchInstruments();
       }
@@ -64,7 +60,11 @@ const Mventilador = ({ selectedSensorId }) => {
   };
 
   const handleInputChange = (event, id) => {
-    const newValue = parseFloat(event.target.value);
+    const newValue = parseInt(event.target.value);
+
+   
+
+    // const newValue = parseFloat(event.target.value);
     setValueStates((prevStates) => ({
       ...prevStates,
       [id]: newValue,
@@ -155,21 +155,24 @@ const Mventilador = ({ selectedSensorId }) => {
                     ) : i.mode === "manual" && i.signal === "analog" ? (
                       <div className="value-slider">
                         <span className="slider-num">
-                          {valueStates[i._id] || parseFloat(i.value)}%
+                           {valueStates[i._id] || i.value}% 
                         </span>
                         <input
                           type="range"
                           min="0"
                           max="100"
-                          value={valueStates[i._id] || parseFloat(i.value)}
+                          value={valueStates[i._id] || i.value}
                           onChange={(event) => handleInputChange(event, i._id)}
                           onMouseUp={() =>
-                            handleMouseUp(
-                              i._id,
-                              valueStates[i._id] || parseFloat(i.value)
-                            )
+                            handleMouseUp({
+                              id: i._id,
+                              value:
+                                valueStates[i._id] !== undefined
+                                  ? valueStates[i._id]
+                                  : 0,
+                            })
                           }
-                          style={{ width: "100%" }}
+                          style={{ padding: "0", cursor: "pointer" }}
                         />
                       </div>
                     ) : null}

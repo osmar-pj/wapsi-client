@@ -13,7 +13,6 @@ const CustomMarker = ({ sensorData, handleOnClick, index }) => {
   const handleClick = () => {
     handleOnClick(sensorData);
   };
-
   const getBackgroundColor = (groups) => {
     const priorityCategories = ["danger", "warning", "success"];
 
@@ -69,15 +68,13 @@ const CustomMarker = ({ sensorData, handleOnClick, index }) => {
       }
     }
 
-    return null; // Si no se encuentra ningún grupo actuator con señal analógica o digital
+    return null; 
   };
+
 
   const speed = getSeed(sensorData.groups) || 0;
   const IconComponent = iconComponentMap[sensorData.img];
   const backgroundColor = getBackgroundColor(sensorData.groups) || "#9C9C9C";
-
-
-  console.log("valor:",speed);
 
   return (
     <div
@@ -88,7 +85,8 @@ const CustomMarker = ({ sensorData, handleOnClick, index }) => {
       {IconComponent && <IconComponent color={backgroundColor} speed={speed} />}
       <div className="M-i-content">
         <div className="content-text">
-          <h2>{sensorData.ubication}</h2>
+          <span>{sensorData.ubication}</span>
+          <h2>{sensorData.name}</h2>
         </div>
       </div>
     </div>

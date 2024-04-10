@@ -13,11 +13,15 @@ export default function CreateCompany({
         ruc: "",
         name: "",
         address: "",
+        phone: "",
+        groupName: "",
       }
     : {
         ruc: userToEdit.ruc,
         name: userToEdit.name,
         address: userToEdit.address,
+        phone: userToEdit.phone,
+        groupName: userToEdit.groupName,
       };
 
   const [formData, setFormData] = useState(initialValues);
@@ -28,6 +32,8 @@ export default function CreateCompany({
         ruc: userToEdit.ruc,
         name: userToEdit.name,
         address: userToEdit.address,
+        phone: userToEdit.phone,
+        groupName: userToEdit.groupName,
       });
     }
   }, [isCreateUser, userToEdit]);
@@ -95,7 +101,38 @@ export default function CreateCompany({
           />
         </div>
       </div>
-        
+      <div className="mC-imputs-item">
+        <label>Ingrese Celular</label>
+        <div className="imputs-i-input">
+        <input
+            type="text"
+            name="phone"
+            inputMode="text"           
+            placeholder="Ej. +51923432334"
+            required
+            value={formData.phone}            
+            onChange={(e) => {
+              setFormData({ ...formData, phone: e.target.value })
+            }}
+          />
+        </div>
+      </div>
+      <div className="mC-imputs-item">
+        <label>Ingrese nombre de Grupo</label>
+        <div className="imputs-i-input">
+          <input
+            type="text"
+            name="groupName"
+            inputMode="text"
+            placeholder="Ej. GRUPO"
+            required
+            value={formData.groupName}
+            onChange={(e) =>
+              setFormData({ ...formData, groupName: e.target.value })
+            }
+          />
+        </div>
+      </div>
     </Crud>
   );
 }

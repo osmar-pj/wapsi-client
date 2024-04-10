@@ -4,6 +4,8 @@ import Select from "react-select";
 import DropLeft from "../Icons/drop-left";
 import DropRight from "../Icons/drop-right";
 import More from "../Icons/more";
+import { motion } from "framer-motion";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
 let ascIcon = "/imgs/i-up-arrow.svg";
 let descIcon = "/imgs/i-down-arrow.svg";
@@ -25,11 +27,13 @@ export default function View({
             <Reg />
           </div>
           <h2>{title} </h2>
-          
         </div>
         <div className="D-title-more">
-          <button className="btn-acept" onClick={() => setCreate(true) & setIsCreateUser(true)}>
-            <More/> Crear nuevo
+          <button
+            className="btn-acept"
+            onClick={() => setCreate(true) & setIsCreateUser(true)}
+          >
+            <More /> Crear nuevo
           </button>
         </div>
       </div>
@@ -52,17 +56,15 @@ export default function View({
               isSearchable={false}
               isClearable={false}
               placeholder="Seleccione..."
-              value={
-                {
-                  value: table.getState().pagination.pageSize,
-                  label: table.getState().pagination.pageSize.toString(),
-                }
-              }
+              value={{
+                value: table.getState().pagination.pageSize,
+                label: table.getState().pagination.pageSize.toString(),
+              }}
               onChange={(selectedOption) => {
                 table.setPageSize(Number(selectedOption.value));
               }}
               options={[
-                { value: 10, label: "10" },              
+                { value: 10, label: "10" },
                 { value: 20, label: "25" },
                 { value: 50, label: "50" },
               ]}
@@ -99,20 +101,33 @@ export default function View({
                 </tr>
               ))}
             </thead>
+
             <tbody>
               {loading
-                ? Array.from({ length: 8 }).map((i, index) => (
+                ? Array.from({ length: 8 }).map((_, index) => (
                     <tr key={index}>
                       <td>--</td>
                       {table
                         .getHeaderGroups()[0]
                         .headers.map((i, columnIndex) => (
-                          <td key={columnIndex}>--</td>
+                          <td key={columnIndex}>
+                            <SkeletonTheme
+                              baseColor="#3a80fa"
+                              highlightColor="#5E98FD"
+                            >
+                              <Skeleton height={10} />
+                            </SkeletonTheme>
+                          </td>
                         ))}
                     </tr>
                   ))
                 : table.getRowModel().rows.map((row, index) => (
-                    <tr key={row.id}>
+                    <motion.tr
+                      key={row.id}
+                      initial={{ opacity: 0, y: "-0.9em" }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4, delay: index * 0.04 }}
+                    >
                       <td>#{index + 1}</td>
                       {row.getVisibleCells().map((cell) => (
                         <td key={cell.id}>
@@ -122,10 +137,15 @@ export default function View({
                           )}
                         </td>
                       ))}
-                    </tr>
+                    </motion.tr>
                   ))}
             </tbody>
           </table>
+        </div>
+        <div>
+          <div style={{ display: "flex" }}>
+            <Skeleton containerClassName="flex-1" />
+          </div>
         </div>
         <div className="C-table-footer">
           <div className="c-t-footer-page">

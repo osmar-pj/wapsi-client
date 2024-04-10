@@ -1,7 +1,4 @@
-
-
 export async function DataInstruments(empresa) {
-
   try {
     const response = await fetch(
       `${process.env.API_URL}/api/v1/instrument?empresa=${empresa}`,
@@ -10,6 +7,7 @@ export async function DataInstruments(empresa) {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
+          "ngrok-skip-browser-warning": true,
         },
       }
     );
@@ -26,8 +24,6 @@ export async function DataInstruments(empresa) {
 }
 
 export async function DataGroups(empresa) {
-
-  
   try {
     const response = await fetch(
       `${process.env.API_URL}/api/v1/groupInstrument?empresa=${empresa}`,
@@ -36,6 +32,7 @@ export async function DataGroups(empresa) {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
+          "ngrok-skip-browser-warning": true,
         },
       }
     );
@@ -51,20 +48,17 @@ export async function DataGroups(empresa) {
   }
 }
 
-
 export async function DataControllers() {
   try {
-    const response = await fetch(
-      `${process.env.API_URL}/api/v1/controller`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          // "x-access-token": token,
-        },
-      }
-    );
+    const response = await fetch(`${process.env.API_URL}/api/v1/controller`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        // "x-access-token": token,
+        "ngrok-skip-browser-warning": true,
+      },
+    });
 
     if (response.ok) {
       const data = await response.json();
@@ -80,7 +74,16 @@ export async function DataControllers() {
 export async function DataGrafBasic(selectedOption, startDate, endDate) {
   try {
     const response = await fetch(
-      `${process.env.API_URL}/api/v1/bigData?instrumentId=${selectedOption}&start=${startDate}&end=${endDate}`
+      `${process.env.API_URL}/api/v1/bigdata?instrumentId=${selectedOption}&start=${startDate}&end=${endDate}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          // "x-access-token": token,
+          "ngrok-skip-browser-warning": true,
+        },
+      }
     );
     if (response.ok) {
       const data = await response.json();
@@ -94,9 +97,6 @@ export async function DataGrafBasic(selectedOption, startDate, endDate) {
 }
 
 export async function DataGrafAdvance(selectedOption) {
-  console.log(selectedOption)
-
-
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const start = new Date(today);
@@ -107,12 +107,21 @@ export async function DataGrafAdvance(selectedOption) {
     const response = await fetch(
       `${
         process.env.API_URL
-      }/api/v1/bigdata/analytics/advanced?instrumentId=${selectedOption}&start=${start.getTime()}&end=${end.getTime()}`
+      }/api/v1/bigdata/analytics/advanced?instrumentId=${selectedOption}&start=${start.getTime()}&end=${end.getTime()}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          // "x-access-token": token,
+          "ngrok-skip-browser-warning": true,
+        },
+      }
     );
 
     if (response.ok) {
       const data = await response.json();
-      console.log(data);
+
       return data;
     } else {
       console.error("Error en la petición");
@@ -132,6 +141,7 @@ export async function DataRelations(empresa) {
           "Content-Type": "application/json",
           Accept: "application/json",
           // "x-access-token": token,
+          "ngrok-skip-browser-warning": true,
         },
       }
     );
@@ -156,7 +166,8 @@ export async function DeleteRelations(id) {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          // "ngrok-skip-browser-warning": true,
+
+          "ngrok-skip-browser-warning": true,
         },
       }
     );
@@ -182,6 +193,7 @@ export async function UpdateInstrument(id, finalData) {
           "Content-Type": "application/json",
           Accept: "application/json",
           // "x-access-token": token,
+          "ngrok-skip-browser-warning": true,
         },
         body: JSON.stringify(finalData),
       }
@@ -200,17 +212,15 @@ export async function UpdateInstrument(id, finalData) {
 
 export async function UpdateRelations(dataToSend) {
   try {
-    const response = await fetch(
-      `${process.env.API_URL}/api/v1/relation`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify(dataToSend),
-      }
-    );
+    const response = await fetch(`${process.env.API_URL}/api/v1/relation`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "ngrok-skip-browser-warning": true,
+      },
+      body: JSON.stringify(dataToSend),
+    });
 
     if (response.ok) {
       const data = await response.json();
@@ -232,6 +242,7 @@ export async function UpdateVentilator(id, newData) {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
+          "ngrok-skip-browser-warning": true,
         },
         body: JSON.stringify(newData),
       }

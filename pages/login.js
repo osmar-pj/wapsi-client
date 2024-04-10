@@ -3,6 +3,7 @@ import { ValidLogin } from "@/src/hooks/ValidLogin";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 
+
 export default function Login() {
   const { login } = useMainContext();
   const [loading, setLoading] = useState(false);
@@ -118,27 +119,31 @@ export default function Login() {
           >
             <svg width="16" height="16" viewBox="0 0 16 16">
               <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
+                fillRule="evenodd"
+                clipRule="evenodd"
                 d="M8 15C11.866 15 15 11.866 15 8C15 4.13401 11.866 1 8 1C4.13401 1 1 4.13401 1 8C1 11.866 4.13401 15 8 15Z"
                 fill="#FD5B5D"
-                fill-opacity="0.18"
+                fillOpacity="0.18"
               ></path>
               <path
                 d="M8 5V9"
                 stroke="#FD5B5D"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               ></path>
               <path
                 d="M8 11H8.01"
                 stroke="#FD5B5D"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               ></path>
             </svg>
+
             <h4>Código inválido, inténtelo de nuevo</h4>
           </div>
+        </div>
+        <div>
+      
         </div>
         <button
           type="submit"

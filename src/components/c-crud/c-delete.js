@@ -26,16 +26,15 @@ export default function DeleteForm({ refetchData, setDelet, userToDeleteId }) {
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
+    
         if (data.status === true) {
           refetchData();
           setSuccess(true);
           setTimeout(() => {
             setDelet(false);
-          }, 3000);
+          }, 1000);
         } else {
           setButtonClicked(false);
-          // console.log(data.message);
         }
       } else {
         setButtonClicked(false);

@@ -7,7 +7,7 @@ import { useMainContext } from "@/src/contexts/Main-context";
 import { DataRelations, UpdateRelations } from "@/src/libs/api";
 import { useEffect, useState } from "react";
 
-export default function DragAndDrop({ setCreate,fetchRelations }) {
+export default function DragAndDrop({ setCreate, fetchRelations }) {
   const [buttonClicked, setButtonClicked] = useState(false);
   const [success, setSuccess] = useState(false);
   const [draggedSensors, setDraggedSensors] = useState([]);
@@ -77,25 +77,27 @@ export default function DragAndDrop({ setCreate,fetchRelations }) {
     try {
       setButtonClicked(true);
       const data = await UpdateRelations(dataToSend);
-      console.log(data)
-       if (data.status === true) {
+
+      if (data.status === true) {
         fetchRelations();
         setSuccess(true);
         setTimeout(() => {
           setCreate(false);
         }, 3000);
-       }
+      }
     } finally {
-      
     }
   };
 
   return (
     <div className="modalCreate-backg">
-      <form className="mCreate-content mC-Drag" style={{
+      <form
+        className="mCreate-content mC-Drag"
+        style={{
           userSelect: buttonClicked ? "none" : "auto",
           pointerEvents: buttonClicked ? "none" : "auto",
-        }}>
+        }}
+      >
         <div className="mC-c-header">
           <div className="mC-h-title">
             <div className="mC-c-title-icon">
@@ -137,7 +139,7 @@ export default function DragAndDrop({ setCreate,fetchRelations }) {
                       <div className="item-l-content">
                         <div className="item-l-detall">
                           <span>{item.name}</span>
-                          <h5>{item.controllerId.mining.name}</h5>
+                          <h5>{item.controllerId?.mining?.name}</h5>
                         </div>
                         <h6>{item.controllerId.ubication}</h6>
                       </div>
@@ -186,7 +188,7 @@ export default function DragAndDrop({ setCreate,fetchRelations }) {
                       <div className="item-l-content">
                         <div className="item-l-detall">
                           <span>{item.name}</span>
-                          <h5>{item.controllerId.mining.name}</h5>
+                          <h5>{item.controllerId?.mining?.name}</h5>
                         </div>
                         <h6>{item.controllerId.ubication}</h6>
                       </div>
@@ -228,7 +230,7 @@ export default function DragAndDrop({ setCreate,fetchRelations }) {
             Cancelar
           </button>
           <button
-             className={`btn-acept${
+            className={`btn-acept${
               buttonClicked && !success ? " sending" : ""
             }${success ? " success" : ""}`}
             type="button"
@@ -259,7 +261,6 @@ export default function DragAndDrop({ setCreate,fetchRelations }) {
             ) : (
               "Aceptar"
             )}
-            
           </button>
         </div>
       </form>

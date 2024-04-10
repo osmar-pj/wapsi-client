@@ -26,6 +26,7 @@ export default function CreateUser({
           "Content-Type": "application/json",
           Accept: "application/json",
           "x-access-token": authTokens.token,
+          "ngrok-skip-browser-warning": true,
         },
       });
 

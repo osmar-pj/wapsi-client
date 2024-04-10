@@ -14,14 +14,14 @@ export default function Group() {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          // "x-access-token": authTokens.token,
+          "ngrok-skip-browser-warning": true,
         },
       });
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
-        setInstruments(data);
+    
+        setGroupInstrument(data);
       } else {
         console.error("Error al obtener datos:", response.statusText);
       }

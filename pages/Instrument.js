@@ -1,6 +1,5 @@
 import GenericList from "@/src/components/c-crud/generic";
 import { useMainContext } from "@/src/contexts/Main-context";
-import { DataGroups, DataInstruments } from "@/src/libs/api";
 import { useEffect, useState } from "react";
 
 export default function Instrument() {
@@ -15,13 +14,12 @@ export default function Instrument() {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          // "x-access-token": authTokens.token,
+          "ngrok-skip-browser-warning": true,
         },
       });
 
       if (response.ok) {
-        const data = await response.json();
-        console.log(data);
+        const data = await response.json();       
         setInstruments(data);
       } else {
         console.error("Error al obtener datos:", response.statusText);

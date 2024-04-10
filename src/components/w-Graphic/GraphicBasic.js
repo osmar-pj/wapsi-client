@@ -8,17 +8,19 @@ import "react-datepicker/dist/react-datepicker.css";
 import { addDays, addMonths } from "date-fns";
 import ES from "date-fns/locale/es";
 import { useMainContext } from "@/src/contexts/Main-context";
+import { CSVLink } from "react-csv";
+import Download from "@/src/Icons/download";
+import { motion } from "framer-motion";
 
 export default function GraphicBasic() {
   const { authTokens } = useMainContext();
-  const [chart, setChart] = useState(null);
   const [instruments, setInstruments] = useState([]);
-  const [allData, setAllData] = useState([
-    { value: 8, ts: 1711987362 },
-    { value: 45, ts: 1711987462 },
-  ]);
-  const [baselineSeries, setBaselineSeries] = useState(null);
+  const [allData, setAllData] = useState([]);
+  const [dataCSV, setDataCSV] = useState([]);
+
+  const [chart, setChart] = useState(null);
   const chartContainerRef = useRef(null);
+  const [baselineSeries, setBaselineSeries] = useState(null);
   const [avgPriceLine, setAvgPriceLine] = useState(null);
   const [maxPriceLine, setMaxPriceLine] = useState(null);
   const [startDate, setStartDate] = useState(getYesterdayMidnight());
@@ -72,6 +74,12 @@ export default function GraphicBasic() {
             endDate.getTime()
           );
           setAllData(data);
+          const formattedData = data?.map((item) => ({
+            ts: new Date(item.ts * 1000).toLocaleString(), // Convertir el timestamp a formato de fecha
+            value: parseFloat(item.value.toFixed(2)), // Convertir el value a número y redondear a 2 decimales
+          }));
+
+          setDataCSV(formattedData);
         }
       } finally {
         setIsLoading(false);
@@ -82,7 +90,6 @@ export default function GraphicBasic() {
   }, [selectedOption, startDate, endDate]);
 
   useEffect(() => {
-    console.log("tercero");
     if (!allData || allData.length === 0) {
       return;
     }
@@ -154,7 +161,9 @@ export default function GraphicBasic() {
         time: timeToLocal(item.ts),
       }));
 
-      baselineSeries.setData(nuevoData);
+      if (baselineSeries) {
+        baselineSeries.setData(nuevoData);
+      }
 
       const maximumPrice = Math.max(...nuevoData.map((item) => item.value));
       const avgPrice =
@@ -185,13 +194,11 @@ export default function GraphicBasic() {
         });
         setMaxPriceLine(newMaxPriceLine);
       } else {
-        maxPriceLine.setData([
+        maxPriceLine?.setData([
           { time: nuevoData[0].time, value: maximumPrice },
           { time: nuevoData[nuevoData.length - 1].time, value: maximumPrice },
         ]);
       }
-
-     
     }
   }, [allData]);
 
@@ -226,7 +233,17 @@ export default function GraphicBasic() {
             formatOptionLabel={formatOptionLabel}
           />
         </div>
+        <div>
+          <CSVLink
+            className="btn-acept"
+            data={dataCSV}
+            filename={"mi_archivo.csv"}
+          >
+            <Download /> Descargar CSV
+          </CSVLink>
+        </div>
       </div>
+      <div className="container-grafs">
       <div className="container-chart">
         {isLoading ? (
           <div className="background-loader">
@@ -245,6 +262,33 @@ export default function GraphicBasic() {
             <p>No hay datos disponibles.</p>
           </div>
         )}
+      </div>
+      <div className="container-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Valor promedio</th>
+              <th>Tiempo de retraso</th>
+              <th>Duración</th>
+            </tr>
+          </thead>
+          <tbody>
+            {allData?.map((item, index) => (
+              <motion.tr key={index}  initial={{ opacity: 0, y: "-0.9em" }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: index * 0.04 }}>
+                <td>{parseFloat(item.value).toFixed(2)}</td>
+                <td>{new Date(item.ts * 1000).toLocaleString()}</td>
+                <td>
+                  {index > 0 && ( 
+                    <>{item.ts - allData[index - 1].ts} segundos</>
+                  )}
+                </td>
+              </motion.tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
       </div>
     </>
   );

@@ -18,12 +18,13 @@ export default function Users() {
           "Content-Type": "application/json",
           Accept: "application/json",
           "x-access-token": authTokens.token,
+          "ngrok-skip-browser-warning": true,
         },
       });
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
+     
         setUsers({
           usersFiltered2: data.usersFiltered2,
         });

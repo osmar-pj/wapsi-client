@@ -1,23 +1,26 @@
-import { useEffect, useMemo, useState } from "react";
+import Delete from "@/src/Icons/delete";
+import Download from "@/src/Icons/download";
+import Reg from "@/src/Icons/reg";
+import DragAndDrop from "@/src/components/w-Drag/DragAndDrop";
 import { useMainContext } from "@/src/contexts/Main-context";
 import {
   DataRelations,
   DeleteRelations,
   UpdateInstrument,
 } from "@/src/libs/api";
-import { io } from "socket.io-client";
+import { useEffect, useMemo, useState } from "react";
+import { CSVLink } from "react-csv";
 import { Subject } from "rxjs";
-import DragAndDrop from "@/src/components/w-Drag/DragAndDrop";
-import Delete from "@/src/Icons/delete";
-import Reg from "@/src/Icons/reg";
+import { io } from "socket.io-client";
+import { motion } from "framer-motion";
 
 export default function Control() {
   const { fetchInstruments, authTokens } = useMainContext();
   const [create, setCreate] = useState(false);
   const [relations, setRelations] = useState([]);
   const [columns, setColumns] = useState([]);
-  const [loadingModeMap, setLoadingModeMap] = useState({}); // Estado para el modo de carga de cada actuador
-  const [loadingSignalMap, setLoadingSignalMap] = useState({}); // Estado para la señal de carga de cada actuador
+  const [loadingModeMap, setLoadingModeMap] = useState({});
+  const [loadingSignalMap, setLoadingSignalMap] = useState({});
 
   const fetchRelations = async () => {
     try {
@@ -53,8 +56,7 @@ export default function Control() {
             signal: actuator.signal || "",
             type: actuator.type || "",
             symbol: actuator.symbol || "",
-            level: actuator.controllerId.level || "",
-            ubication: actuator.controllerId.ubication || "",
+            ubication: actuator.ubication || "",
             sensors: relation.sensors,
           };
           return actuadorRow;
@@ -68,6 +70,7 @@ export default function Control() {
     const controller$ = new Subject();
 
     socket.on(`${authTokens?.empresa.toUpperCase()}`, (data) => {
+     
       controller$.next(data);
     });
 
@@ -82,8 +85,19 @@ export default function Control() {
             return sensor;
           });
 
-          // Retornamos la relación con los sensores actualizados y los actuadores intactos
-          return { ...relation, sensors: updatedSensors };
+          // Actualizamos los actuadores
+          const updatedActuators = relation.actuators.map((actuator) => {
+            if (actuator._id === updatedData._id) {
+              return { ...actuator, ...updatedData };
+            }
+            return actuator;
+          });
+
+          return {
+            ...relation,
+            sensors: updatedSensors,
+            actuators: updatedActuators,
+          };
         });
         return updatedRelations;
       });
@@ -100,6 +114,7 @@ export default function Control() {
     const newMode = currentMode === "auto" ? "manual" : "auto";
     try {
       const data = await UpdateInstrument(actuatorId, { mode: newMode });
+   
       if (data.status === true) {
         fetchInstruments();
         fetchRelations();
@@ -119,6 +134,7 @@ export default function Control() {
     const newMode = currentMode === "digital" ? "analog" : "digital";
     try {
       const data = await UpdateInstrument(actuatorId, { signal: newMode });
+   
       if (data.status === true) {
         fetchInstruments();
         fetchRelations();
@@ -134,10 +150,8 @@ export default function Control() {
   };
 
   const deleteRelations = async (id) => {
-    console.log("ingresado", id);
     try {
       const data = await DeleteRelations(id);
-      console.log(data);
 
       if (data.status === true) {
         fetchInstruments();
@@ -152,8 +166,6 @@ export default function Control() {
     VENTILADOR: "/imgs/i-ventilador.svg",
     "3LED": "/imgs/i-led.svg",
   };
-
-  console.log(relations);
 
   return (
     <>
@@ -183,6 +195,16 @@ export default function Control() {
                   className="input-crud"
                 />
               </div>
+              <div>
+                <CSVLink
+                  className="btn-acept"
+                  data={formattedData}
+                  filename={"mi_archivo.csv"}
+                  href="#"
+                >
+                  <Download /> Descargar CSV
+                </CSVLink>
+              </div>
             </div>
 
             <div className="C-table-body">
@@ -191,10 +213,9 @@ export default function Control() {
                   <thead>
                     <tr>
                       <th>#</th>
+                      <th>Ubicación</th>
                       <th>Imagen</th>
                       <th>Tipo</th>
-                      <th>Nivel</th>
-                      <th>Ubicación</th>
                       <th>Nombre</th>
                       <th>Modo</th>
                       <th>Señal</th>
@@ -207,23 +228,34 @@ export default function Control() {
                   </thead>
                   <tbody>
                     {formattedData.map((item, index) => (
-                      <tr
+                      <motion.tr
                         key={index}
+                        initial={{ opacity: 0, y: "-0.9em" }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.4, delay: index * 0.04 }}
                         style={{
                           userSelect:
-                            Object.values(loadingModeMap).some(loading => loading) || // Comprobar si algún modo de carga está activo
-                            Object.values(loadingSignalMap).some(loading => loading) // Comprobar si alguna señal de carga está activa
+                            Object.values(loadingModeMap).some(
+                              (loading) => loading
+                            ) || // Comprobar si algún modo de carga está activo
+                            Object.values(loadingSignalMap).some(
+                              (loading) => loading
+                            ) // Comprobar si alguna señal de carga está activa
                               ? "none"
                               : "auto",
                           pointerEvents:
-                            Object.values(loadingModeMap).some(loading => loading) || // Comprobar si algún modo de carga está activo
-                            Object.values(loadingSignalMap).some(loading => loading) // Comprobar si alguna señal de carga está activa
+                            Object.values(loadingModeMap).some(
+                              (loading) => loading
+                            ) || // Comprobar si algún modo de carga está activo
+                            Object.values(loadingSignalMap).some(
+                              (loading) => loading
+                            ) // Comprobar si alguna señal de carga está activa
                               ? "none"
                               : "auto",
                         }}
-                        
                       >
                         <td>#{index + 1}</td>
+                        <td>{item.ubication}</td>
                         <td>
                           {iconMap[item.name] ? (
                             <img
@@ -240,12 +272,17 @@ export default function Control() {
                           )}
                         </td>
                         <td>{item.type}</td>
-                        <td>{item.level}</td>
-                        <td>{item.ubication}</td>
+
                         <td>{item.name}</td>
                         <td>
                           <button
-                            className="btn-auto"
+                            className={`btn-auto ${
+                              item.mode === "manual"
+                                ? "m-manual"
+                                : item.mode === "auto"
+                                ? "m-auto"
+                                : ""
+                            }`}
                             onClick={() =>
                               updateMode(item.actuatorId, item.mode)
                             }
@@ -262,7 +299,13 @@ export default function Control() {
                         </td>
                         <td>
                           <button
-                            className="btn-auto"
+                            className={`btn-auto ${
+                              item.signal === "digital"
+                                ? "m-digital"
+                                : item.signal === "analog"
+                                ? "m-analog"
+                                : ""
+                            }`}
                             onClick={() =>
                               updateSignal(item.actuatorId, item.signal)
                             }
@@ -302,7 +345,7 @@ export default function Control() {
                             <Delete />
                           </button>
                         </td>
-                      </tr>
+                      </motion.tr>
                     ))}
                   </tbody>
                 </table>

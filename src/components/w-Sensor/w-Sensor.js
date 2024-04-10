@@ -24,7 +24,7 @@ const Sensor = ({ selectedSensorId }) => {
       });
       setGroupDataUpdated(updatedGroups);
     }, 1000); // Ejecutar cada segundo
-    console.log("ejecutnado")
+  
     return () => clearInterval(interval);
   }, [filteredInstrument]);
 

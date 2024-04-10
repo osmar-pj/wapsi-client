@@ -10,6 +10,8 @@ import Select from "react-select";
 import { DataGrafAdvance, DataGroups } from "@/src/libs/api";
 import { formartTime } from "@/src/libs/utils";
 import { useMainContext } from "@/src/contexts/Main-context";
+import { CSVLink } from "react-csv";
+import Download from "@/src/Icons/download";
 
 if (typeof window !== "undefined") {
   moment.locale(navigator.language);
@@ -20,6 +22,7 @@ Chart.register(annotationPlugin);
 export default function GraphicAdvance() {
   const { authTokens } = useMainContext();
   const [allData, setAllData] = useState([]);
+  const [dataCSV, setDataCSV] = useState([]);
   const [instruments, setInstruments] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -71,6 +74,7 @@ export default function GraphicAdvance() {
         setIsLoading(true);
         const data = await DataGrafAdvance(selectedOption);
         setAllData(data);
+        setDataCSV(data.data_final)
       } catch (error) {
         console.error("Error al obtener datos:", error);
       } finally {
@@ -80,6 +84,7 @@ export default function GraphicAdvance() {
 
     fetchGrafAdvance();
   }, [selectedOption]);
+
 
   useEffect(() => {
     if (!allData || !allData.bars) {
@@ -230,6 +235,7 @@ export default function GraphicAdvance() {
     }
   }, [allData]);
 
+
   return (
     <>
       <div className="D-c-select"></div>
@@ -260,18 +266,31 @@ export default function GraphicAdvance() {
           />
         </div>
       </div>
-      <div className="leyend">
-        <div className="i-leyend">
-          <div className="i-leyend-circle ley-green"></div>
-          <span>OK</span>
+      <div className="container-button-advance">
+        <div className="btns">
+           <CSVLink
+            className="btn-acept"
+            data={dataCSV}
+            filename={"mi_archivo.csv"}
+            href="#"
+          >
+            <Download/> Descargar CSV
+          </CSVLink> 
         </div>
-        <div className="i-leyend">
-          <div className="i-leyend-circle ley-yellow"></div>
-          <span>ALERTA ALTO</span>
-        </div>
-        <div className="i-leyend">
-          <div className="i-leyend-circle ley-red"></div>
-          <span>ALERTA MUY ALTO</span>
+
+        <div className="leyend">
+          <div className="i-leyend">
+            <div className="i-leyend-circle ley-green"></div>
+            <span>OK</span>
+          </div>
+          <div className="i-leyend">
+            <div className="i-leyend-circle ley-yellow"></div>
+            <span>ALERTA ALTO</span>
+          </div>
+          <div className="i-leyend">
+            <div className="i-leyend-circle ley-red"></div>
+            <span>ALERTA MUY ALTO</span>
+          </div>
         </div>
       </div>
 

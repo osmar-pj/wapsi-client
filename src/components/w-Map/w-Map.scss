@@ -85,9 +85,11 @@
         cursor: pointer;
         z-index: 1;
         border-radius: 0;
-
+        background-color: white;
         padding: 0;
         transition: 0.35s ease-in-out;
+        box-shadow: 0 1px 4px 1px var(--grey-light-2),
+        0 1px 3px var(--grey-light-3);
         opacity: 1;
         position: relative;
         .content-text {
@@ -97,7 +99,8 @@
             font-size: clamp(5px, 6vw, 9px);
             display: none;
             font-weight: 600;
-            padding-top: 0.5rem;
+            color: var(--grey-2);
+            padding-bottom: .1rem;
             @include md {
               display: flex;
             }
@@ -169,7 +172,7 @@
 
         @media (hover: hover) {
           &:hover {
-            transform: scale(1.15);
+            transform: scale(1.1);
             &:hover::before,
             &:hover::after {
               width: calc(100% + 7px);
@@ -232,50 +235,50 @@
 /*===================================== COLORES =====================================*/
 /*===================================================================================*/
 
-.M-blue {
-  .M-i-content {
-    background-color: white;
+// .M-blue {
+//   .M-i-content {
+//     background-color: white;
    
-    .content-text {
-      span {
-        color: #1a96d4;
-      }
-    }
+//     .content-text {
+//       span {
+//         color: #1a96d4;
+//       }
+//     }
 
-    // .pulse {
-    //   background: #0a4f9c;
-    //   box-shadow: 0px 0px 1px 1px #0a4f9c;
-    //   animation: pulse-animation-blue 2s infinite;
-    //   &::before {
-    //     border: 0.5px solid #0a4f9c;
-    //   }
-    // }
+//     // .pulse {
+//     //   background: #0a4f9c;
+//     //   box-shadow: 0px 0px 1px 1px #0a4f9c;
+//     //   animation: pulse-animation-blue 2s infinite;
+//     //   &::before {
+//     //     border: 0.5px solid #0a4f9c;
+//     //   }
+//     // }
 
-    // @keyframes pulse-animation-blue {
-    //   0% {
-    //     box-shadow: 0 0 0 0px #0a4f9c;
-    //   }
-    //   100% {
-    //     box-shadow: 0 0 0 20px rgba(255, 0, 0, 0);
-    //   }
-    // }
-
-   
+//     // @keyframes pulse-animation-blue {
+//     //   0% {
+//     //     box-shadow: 0 0 0 0px #0a4f9c;
+//     //   }
+//     //   100% {
+//     //     box-shadow: 0 0 0 20px rgba(255, 0, 0, 0);
+//     //   }
+//     // }
 
    
+
    
-  }
-}
+   
+//   }
+// }
 
-.M-orange {
-  .M-i-content {
-    background-color: white;
-    border: none;
+// .M-orange {
+//   .M-i-content {
+//     background-color: white;
+//     border: none;
 
-    .content-text {
-      span {
-        color: #f6c427;
-      }
-    }
-  }
-}
+//     .content-text {
+//       span {
+//         color: #f6c427;
+//       }
+//     }
+//   }
+// }

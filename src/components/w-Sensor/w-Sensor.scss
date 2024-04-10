@@ -162,6 +162,11 @@
       font-size: clamp(6px, 8vw, 13.5px);
       line-height: .8rem;
       font-weight: normal;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 65px;
+      text-transform:uppercase;
     }
   }
   .s-w-ubi{

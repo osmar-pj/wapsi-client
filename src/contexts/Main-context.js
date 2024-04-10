@@ -55,7 +55,9 @@ export default function MainProvider({ children }) {
 
   const fetchInstruments = async () => {
     if (authTokens && authTokens.empresa) {
-      const data = await DataGroups(authTokens?.empresa);
+      
+      const data = await DataGroups(authTokens.empresa);
+     
       if (data !== null) {
         setInstruments(data);
       }
@@ -64,7 +66,7 @@ export default function MainProvider({ children }) {
 
   useEffect(() => {
     fetchInstruments();
-  }, []);
+  }, [authTokens]);
 
   useEffect(() => {
     if (menuOpen) {

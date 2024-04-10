@@ -43,6 +43,7 @@ export default function CreateController({
     : {
         name: userToEdit.name,
         description: userToEdit.description,
+        controllerId: userToEdit.controllerId._id,
         type: userToEdit.type,
         mode: userToEdit.mode,
         signal: userToEdit.signal,
@@ -57,6 +58,7 @@ export default function CreateController({
       setFormData({
         name: userToEdit.name,
         description: userToEdit.description,
+        controllerId: userToEdit.controllerId._id,
         type: userToEdit.type,
         mode: userToEdit.mode,
         signal: userToEdit.signal,
@@ -78,8 +80,7 @@ export default function CreateController({
     });
   };
 
-  //   console.log(userToEdit);
-
+ 
   const listType = [
     { id: "sensor", name: "Sensor" },
     { id: "actuator", name: "Actuador" },
@@ -153,6 +154,7 @@ export default function CreateController({
             value={optionsControllers.find(
               (opt) => opt.value === formData.controllerId
             )}
+            required
           />
         </div>
       </div>
@@ -189,7 +191,8 @@ export default function CreateController({
             placeholder="Seleccione..."
             getOptionLabel={(option) => option.name} // Solo obtenemos el nombre de la opción
             getOptionValue={(option) => option.id} // Obtenemos el ID de la opción
-          />
+            required
+         />
 
         </div>
       </div>
@@ -208,6 +211,7 @@ export default function CreateController({
             placeholder="Seleccione..."
             getOptionLabel={(option) => option.name} // Solo obtenemos el nombre de la opción
             getOptionValue={(option) => option.id} // Obtenemos el ID de la opción
+            required
           />
           
         </div>
@@ -227,6 +231,7 @@ export default function CreateController({
             placeholder="Seleccione..."
             getOptionLabel={(option) => option.name} // Solo obtenemos el nombre de la opción
             getOptionValue={(option) => option.id} // Obtenemos el ID de la opción
+            required
           />
           
         </div>
@@ -246,7 +251,7 @@ export default function CreateController({
         </div>
       </div>
       <div className="mC-imputs-item">
-        <label>Ingrese Serie</label>
+        <label className="verify">*Serie (Verificar)</label>
         <div className="imputs-i-input">
           <input
             type="text"

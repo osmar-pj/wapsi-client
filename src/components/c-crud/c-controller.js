@@ -21,12 +21,13 @@ export default function CreateController({
           "Content-Type": "application/json",
           Accept: "application/json",
           "x-access-token": authTokens.token,
+          "ngrok-skip-browser-warning": true,
         },
       });
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
+
         setCompanies(data.empresas);
       } else {
         console.error("Error al obtener datos:", response.statusText);
@@ -46,18 +47,14 @@ export default function CreateController({
     ? {
         serie: "",
         mining: "",
-        ubication: "",
-        level: "",
-        top: "",
-        left: "",
+        chip: "",
+        ip: "",
       }
     : {
         serie: userToEdit.serie,
-        mining: userToEdit.mining,
-        ubication: userToEdit.ubication,
-        level: userToEdit.level,
-        top: userToEdit.top,
-        left: userToEdit.left,
+        mining: userToEdit.mining?._id,
+        chip: userToEdit.chip,
+        ip: userToEdit.ip,
       };
 
   const [formData, setFormData] = useState(initialValues);
@@ -66,11 +63,9 @@ export default function CreateController({
     if (!isCreateUser && userToEdit) {
       setFormData({
         serie: userToEdit.serie,
-        mining: userToEdit.mining,
-        ubication: userToEdit.ubication,
-        level: userToEdit.level,
-        top: userToEdit.top,
-        left: userToEdit.left,
+        mining: userToEdit.mining?._id,
+        chip: userToEdit.chip,
+        ip: userToEdit.ip,
       });
     }
   }, [isCreateUser, userToEdit]);
@@ -86,8 +81,6 @@ export default function CreateController({
       mining: selectedOption.value,
     });
   };
-
-  console.log(userToEdit);
 
   return (
     <Crud
@@ -126,63 +119,34 @@ export default function CreateController({
             onChange={handleAreaChange}
             options={optionsEmpresas}
             value={optionsEmpresas.find((opt) => opt.value === formData.mining)}
-          />
-        </div>
-      </div>
-      <div className="mC-imputs-item">
-        <label>Ingrese Ubicación</label>
-        <div className="imputs-i-input">
-          <input
-            type="text"
-            name="ubication"
-            placeholder="Ej. Subterraneo"
             required
-            value={formData.ubication}
-            onChange={(e) =>
-              setFormData({ ...formData, ubication: e.target.value })
-            }
           />
         </div>
       </div>
 
       <div className="mC-imputs-item">
-        <label>Ingrese Nivel</label>
+        <label>Ingrese Chip</label>
         <div className="imputs-i-input">
           <input
             type="text"
-            name="level"
-            placeholder="Ej. Nivel 9"
+            name="chip"
+            placeholder="Ej. 100"
             required
-            value={formData.level}
-            onChange={(e) =>
-              setFormData({ ...formData, level: e.target.value })
-            }
+            value={formData.chip}
+            onChange={(e) => setFormData({ ...formData, chip: e.target.value })}
           />
         </div>
       </div>
       <div className="mC-imputs-item">
-        <label>Ingrese Top</label>
+        <label>Ingrese IP</label>
         <div className="imputs-i-input">
           <input
-            type="number"
-            name="top"
+            type="text"
+            name="ip"
             placeholder="Ej. 100"
             required
-            value={formData.top}
-            onChange={(e) => setFormData({ ...formData, top: e.target.value })}
-          />
-        </div>
-      </div>
-      <div className="mC-imputs-item">
-        <label>Ingrese Left</label>
-        <div className="imputs-i-input">
-          <input
-            type="number"
-            name="left"
-            placeholder="Ej. 100"
-            required
-            value={formData.left}
-            onChange={(e) => setFormData({ ...formData, left: e.target.value })}
+            value={formData.ip}
+            onChange={(e) => setFormData({ ...formData, ip: e.target.value })}
           />
         </div>
       </div>

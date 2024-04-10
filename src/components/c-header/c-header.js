@@ -32,8 +32,8 @@ export default function Header() {
     { path: "/", label: "Dashboard", vali: true },
     { path: "/Control", label: "Sistema de Control", vali: true },
     { path: "/Analysis", label: "Análisis", vali: true },
-    { path: "/Users", label: "Usuarios", vali: isAdmin },
     { path: "/Company", label: "Empresas", vali: isAdmin },
+    { path: "/Users", label: "Usuarios", vali: isAdmin },
     { path: "/Controller", label: "Controladores", vali: isAdmin },
     { path: "/Instrument", label: "Instrumentos", vali: isAdmin },
     { path: "/Group", label: "Agrupadores", vali: isAdmin },
@@ -47,6 +47,7 @@ export default function Header() {
     localStorage.removeItem("empresa");
     logout();
   };
+  
 
   return (
     <header className="c-header">
@@ -82,6 +83,7 @@ export default function Header() {
                 <span> {name} </span>
               </button>
               <div className="dropdownContent">
+                
                 <ul>
                   {routes.map((route) => {
                     // Mostrar la ruta si isAdmin es true o si vali es true

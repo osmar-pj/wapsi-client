@@ -4,7 +4,6 @@ import Crud from "./c-crud";
 import { useMainContext } from "@/src/contexts/Main-context";
 import { DataInstruments } from "@/src/libs/api";
 
-
 export default function CreateController({
   isCreateUser,
   setCreate,
@@ -16,24 +15,25 @@ export default function CreateController({
   const [loading, setLoading] = useState(true);
   const { authTokens } = useMainContext();
 
-  const fetchData = async (authTokens) => {
+  const fetchData = async () => {
     setLoading(true);
     try {
       const data = await DataInstruments(authTokens.empresa);
+
       setInstruments(data);
     } finally {
       setLoading(false);
     }
   };
-  
+
   useEffect(() => {
-    fetchData(authTokens);
-  }, [authTokens]);
-  
+    fetchData();
+  }, []);
 
   const initialValues = isCreateUser
     ? {
         groups: [],
+        //Name pertenece al TAG
         name: "",
         description: "",
         img: "",
@@ -82,11 +82,21 @@ export default function CreateController({
     .map((i) => ({
       value: i._id,
       label: i.name,
-      mining: i.controllerId.mining.name,
+      mining: i.controllerId.mining?.name,
       serie: i.controllerId.serie,
     }));
 
-  console.log(instruments);
+  const listType = [
+    { id: "interior", name: "interior" },
+    { id: "exterior", name: "exterior" },
+  ];
+
+  const handleTypeChange = (selectedOption) => {
+    setFormData({
+      ...formData,
+      installation: selectedOption.id,
+    });
+  };
 
   const handleRolesChange = (selectedOptions) => {
     const selectedRoleValues = selectedOptions.map((option) => option.value);
@@ -95,8 +105,6 @@ export default function CreateController({
       groups: selectedRoleValues,
     });
   };
-
-  console.log(userToEdit);
 
   const formatOptionLabel = ({ serie, label, mining }) => (
     <div>
@@ -136,7 +144,7 @@ export default function CreateController({
         </div>
       </div>
       <div className="mC-imputs-item">
-        <label>Ingrese Nombre</label>
+        <label>Ingrese Tag</label>
         <div className="imputs-i-input">
           <input
             type="text"
@@ -237,7 +245,22 @@ export default function CreateController({
       <div className="mC-imputs-item">
         <label>Ingrese Instalación</label>
         <div className="imputs-i-input">
-          <input
+          <Select
+            instanceId="react-select-instance"
+            name="installation"
+            classNamePrefix="custom-select"
+            isSearchable={false}
+            isClearable={false}
+            onChange={handleTypeChange}
+            options={listType}
+            value={listType.find((opt) => opt.id === formData.installation)}
+            placeholder="Seleccione..."
+            getOptionLabel={(option) => option.name} // Solo obtenemos el nombre de la opción
+            getOptionValue={(option) => option.id} // Obtenemos el ID de la opción
+            required
+          />
+
+          {/* <input
             type="text"
             name="installation"
             placeholder="Ej. Nivel 9"
@@ -246,7 +269,7 @@ export default function CreateController({
             onChange={(e) =>
               setFormData({ ...formData, installation: e.target.value })
             }
-          />
+          /> */}
         </div>
       </div>
     </Crud>
