@@ -7,7 +7,6 @@ export async function DataInstruments(empresa) {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          "ngrok-skip-browser-warning": true,
         },
       }
     );
@@ -32,7 +31,6 @@ export async function DataGroups(empresa) {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          "ngrok-skip-browser-warning": true,
         },
       }
     );
@@ -56,7 +54,6 @@ export async function DataControllers() {
         "Content-Type": "application/json",
         Accept: "application/json",
         // "x-access-token": token,
-        "ngrok-skip-browser-warning": true,
       },
     });
 
@@ -81,7 +78,6 @@ export async function DataGrafBasic(selectedOption, startDate, endDate) {
           "Content-Type": "application/json",
           Accept: "application/json",
           // "x-access-token": token,
-          "ngrok-skip-browser-warning": true,
         },
       }
     );
@@ -114,7 +110,6 @@ export async function DataGrafAdvance(selectedOption) {
           "Content-Type": "application/json",
           Accept: "application/json",
           // "x-access-token": token,
-          "ngrok-skip-browser-warning": true,
         },
       }
     );
@@ -141,7 +136,6 @@ export async function DataRelations(empresa) {
           "Content-Type": "application/json",
           Accept: "application/json",
           // "x-access-token": token,
-          "ngrok-skip-browser-warning": true,
         },
       }
     );
@@ -166,8 +160,6 @@ export async function DeleteRelations(id) {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-
-          "ngrok-skip-browser-warning": true,
         },
       }
     );
@@ -193,7 +185,6 @@ export async function UpdateInstrument(id, finalData) {
           "Content-Type": "application/json",
           Accept: "application/json",
           // "x-access-token": token,
-          "ngrok-skip-browser-warning": true,
         },
         body: JSON.stringify(finalData),
       }
@@ -217,7 +208,6 @@ export async function UpdateRelations(dataToSend) {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        "ngrok-skip-browser-warning": true,
       },
       body: JSON.stringify(dataToSend),
     });
@@ -242,7 +232,6 @@ export async function UpdateVentilator(id, newData) {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          "ngrok-skip-browser-warning": true,
         },
         body: JSON.stringify(newData),
       }

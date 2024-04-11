@@ -51,7 +51,7 @@ const Sensor = ({ selectedSensorId }) => {
                 <Circle />
                 <p>{renderNameWithSubscript(i.name)}</p>
                 <h3>{i.value.toFixed(2)}</h3>
-                <span>{i.und}</span>
+                <span>{i.measure}</span>
               </div>
             ) : (
               <div key={i._id} className="sensor-withC">

@@ -1,106 +1,43 @@
 import Close from "@/src/Icons/close";
-import Plus from "@/src/Icons/plus";
+import Delete from "@/src/Icons/delete";
 import { useMainContext } from "@/src/contexts/Main-context";
 import { useState } from "react";
 import { domAnimation, LazyMotion, m } from "framer-motion";
 
-function Crud(props) {
-  const {
-    isCreateUser,
-    setCreate,
-    formData,
-    refetchData,
-    userToEdit,
-    url,
-    handleUpdateUser: onUpdateUser,
-    handleCreateUser: onCreateUser,
-  } = props;
-
+export default function DeleteDrag({ fetchRelations, setDeleted, id }) {
   const [buttonClicked, setButtonClicked] = useState(false);
   const [success, setSuccess] = useState(false);
-  const { authTokens } = useMainContext();
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    if (isCreateUser) {
-      handleCreateUser();
-    } else {
-      handleUpdateUser();
-    }
-  };
 
-  const handleCreateUser = async () => {
-    if (
-      Object.values(formData).some((value) => value === "" || value === null)
-    ) {
-      console.log("Los datos estan vacios ");
-    } else {
-      try {
-        setButtonClicked(true);
-        const response = await fetch(`${process.env.API_URL}/api/v1/${url}`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            "x-access-token": authTokens.token,
-            "ngrok-skip-browser-warning": true,
-          },
-          body: JSON.stringify(formData),
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-
-          if (data.status === true) {
-            refetchData();
-            setSuccess(true);
-            setTimeout(() => {
-              setCreate(false);
-            }, 1500);
-          } else {
-            setButtonClicked(false);
-          }
-        } else {
-          console.error("Error al crear:", response.statusText);
-        }
-      } catch (error) {
-        setButtonClicked(false);
-        console.error("Error en la solicitud:", error);
-      }
-    }
-  };
-
-  const handleUpdateUser = async () => {
+  const handleDelete = async () => {
     try {
       setButtonClicked(true);
       const response = await fetch(
-        `${process.env.API_URL}/api/v1/${url}/${userToEdit._id}`,
+        `${process.env.API_URL}/api/v1/relation/${id}`,
         {
-          method: "PUT",
+          method: "DELETE",
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
-            "x-access-token": authTokens.token,
-            "ngrok-skip-browser-warning": true,
           },
-          body: JSON.stringify(formData),
         }
       );
 
       if (response.ok) {
         const data = await response.json();
+        console.log(data);
 
         if (data.status === true) {
-          refetchData();
+            fetchRelations();
           setSuccess(true);
           setTimeout(() => {
-            setCreate(false);
+            setDeleted(false);
           }, 1000);
         } else {
           setButtonClicked(false);
         }
       } else {
         setButtonClicked(false);
-        console.error("Error al actualizar", response.statusText);
+        console.error("Error al obtener datos:", response.statusText);
       }
     } catch (error) {
       setButtonClicked(false);
@@ -131,9 +68,8 @@ function Crud(props) {
           },
         }}
       >
-        <m.form
-          className="mCreate-content"
-          onSubmit={handleSubmit}
+        <m.div
+          className="mCreate-content mC-Delete "
           style={{
             userSelect: buttonClicked ? "none" : "auto",
             pointerEvents: buttonClicked ? "none" : "auto",
@@ -162,37 +98,32 @@ function Crud(props) {
           <div className="mC-c-header">
             <div className="mC-h-title">
               <div className="mC-c-title-icon">
-                <Plus />
+                <Delete />{" "}
               </div>
               <div className="mC-c-title-text">
-                <h3>
-                  {isCreateUser ? "Crear nuevo elemento" : "Actualizar dato"}
-                </h3>
-                <h4>
-                  {isCreateUser
-                    ? " Agregar información para un nuevo elemento"
-                    : " Modificar información existente"}
-                </h4>
+                <h3>Eliminar </h3>
+                <h4>Remover dato seleccionado</h4>
               </div>
             </div>
             <span
-              onClick={() => setCreate(false)}
+              onClick={() => setDeleted(false)}
               className="mC-h-close"
               type="button"
             >
               <Close />
             </span>
           </div>
+
           <div className="mC-c-body">
-            <div className="mC-b-imputs-Crud">{props.children}</div>
+            <p>¿Seguro que quieres eliminar de la lista?</p>
           </div>
           <div className="mC-c-footer">
             <button
               className="btn-cancel"
               type="button"
-              onClick={() => setCreate(false)}
+              onClick={() => setDeleted(false)}
             >
-              Cancelar
+              No
             </button>
 
             <button
@@ -201,7 +132,7 @@ function Crud(props) {
               }${success ? " success" : ""}`}
               type="submit"
               disabled={buttonClicked}
-              onClick={handleSubmit}
+              onClick={handleDelete}
             >
               {buttonClicked && !success ? (
                 <>
@@ -223,19 +154,28 @@ function Crud(props) {
                       ></polyline>
                     </svg>
                   </div>
-                  Proceso exitoso
+                  Éxito...
                 </>
-              ) : isCreateUser ? (
-                "Guardar"
               ) : (
-                "Actualizar"
+                "Si"
               )}
             </button>
           </div>
-        </m.form>
+        </m.div>
       </m.div>
     </LazyMotion>
   );
 }
 
-export default Crud;
+// <div className="F-c-footer">
+//             <button
+//               className="btn-cancel"
+//               type="button"
+//               onClick={() => setDelet(false)}
+//             >
+//               No
+//             </button>
+//             <button className="btn-acept" type="button" onClick={handleDelete}>
+//               Si
+//             </button>
+//           </div>

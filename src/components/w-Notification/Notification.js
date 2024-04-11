@@ -1,5 +1,7 @@
+import NotConect from "@/src/Icons/notConect";
 import { useMainContext } from "@/src/contexts/Main-context";
 import { DataInstruments } from "@/src/libs/api";
+import { formatRelativeTime, isDataUpdated } from "@/src/libs/utils";
 import { useEffect, useState } from "react";
 import { Subject } from "rxjs";
 import { io } from "socket.io-client";
@@ -51,23 +53,44 @@ export default function Notification() {
       socket.disconnect();
     };
   }, [authTokens]);
+  
 
   return (
     <div className="w-notify">
-      {instruments
-        .filter((device) => device.type !== "actuator") 
-        .map((device, index) => (
+  {instruments.length > 0 && instruments
+    .filter(device => device.type !== "actuator")
+    .map((device, index) => (
+      <div key={device._id}>
+        {isDataUpdated(device.updatedAt) ? (
           <div
-            key={device._id}
+            key={index}
             className={`notify-item c-${device.alarm && device.alarm.category}`}
           >
+            {/* <Circle /> */}
             <p>{device.name}</p>
             <h3>{device.value.toFixed(2)}</h3>
+            {/* <span>{device.und}</span> */}
             <div className="n-i-ubi">
-              <font>{device.ubication}</font>
+              <p>{device.ubication}</p>
             </div>
           </div>
-        ))}
-    </div>
+        ) : (
+          <div className="sensor-withC">
+            <div className="s-w-content">
+              <NotConect />
+              <h4>
+                <strong>{device.name}</strong>
+              </h4>
+            </div>
+            <font>{formatRelativeTime(device.updatedAt)}</font>
+            <div className="s-w-ubi">
+              <p>{device.ubication}</p>
+            </div>
+          </div>
+        )}
+      </div>
+    ))}
+</div>
+
   );
 }

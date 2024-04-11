@@ -12,6 +12,8 @@ import { CSVLink } from "react-csv";
 import Download from "@/src/Icons/download";
 import { motion } from "framer-motion";
 
+// Importaciones omitidas por brevedad
+
 export default function GraphicBasic() {
   const { authTokens } = useMainContext();
   const [instruments, setInstruments] = useState([]);
@@ -25,16 +27,21 @@ export default function GraphicBasic() {
   const [maxPriceLine, setMaxPriceLine] = useState(null);
   const [startDate, setStartDate] = useState(getYesterdayMidnight());
   const [endDate, setEndDate] = useState(new Date());
-  const [selectedOption, setSelectedOption] = useState("");
+  const [selectedOption, setSelectedOption] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     async function fetchInstruments() {
-      const data = await DataInstruments(authTokens?.empresa);
-      setInstruments(data);
+      try {
+        const data = await DataInstruments(authTokens?.empresa);
+        setInstruments(data);
 
-      if (data?.length > 0) {
-        setSelectedOption(data[0]._id);
+        if (data.length > 0) {
+          setSelectedOption(data[1]._id);
+          handleInstrumentChange({ value: data[0]._id });
+        }
+      } catch (error) {
+        console.error("Error fetching instruments:", error);
       }
     }
     fetchInstruments();
@@ -43,13 +50,23 @@ export default function GraphicBasic() {
   const optionsInstruments = instruments?.map((instrument) => ({
     value: instrument._id,
     label: instrument.name,
+    ubication: instrument.ubication,
   }));
 
-  const formatOptionLabel = ({ serie, label, mining }) => (
-    <div>
+  const formatOptionLabel = ({ label, ubication }) => (
+    <div className="option-container">
       <span>{label}</span>
-      <span style={{ color: "gray" }}> {mining} </span>
-      <span style={{ color: "gray" }}> {serie} </span>
+      <span
+        className=""
+        style={{
+          color: "gray",
+          fontSize: "clamp(3px, 4vw, 9.5px)",
+          fontWeight: 400,
+        }}
+      >
+        {" "}
+        {ubication}{" "}
+      </span>
     </div>
   );
 
@@ -64,23 +81,26 @@ export default function GraphicBasic() {
   };
 
   useEffect(() => {
+    if (!selectedOption) {
+      return;
+    }
+
     setIsLoading(true);
     const fetchGrafBasic = async () => {
       try {
-        if (selectedOption && startDate && endDate) {
-          const data = await DataGrafBasic(
-            selectedOption,
-            startDate.getTime(),
-            endDate.getTime()
-          );
-          setAllData(data);
-          const formattedData = data?.map((item) => ({
-            ts: new Date(item.ts * 1000).toLocaleString(), // Convertir el timestamp a formato de fecha
-            value: parseFloat(item.value.toFixed(2)), // Convertir el value a número y redondear a 2 decimales
-          }));
+        const data = await DataGrafBasic(
+          selectedOption,
+          startDate.getTime(),
+          endDate.getTime()
+        );
 
-          setDataCSV(formattedData);
-        }
+        setAllData(data);
+
+        const formattedData = data?.map((item) => ({
+          ts: new Date(item.ts * 1000).toLocaleString(),
+          value: parseFloat(item.value.toFixed(2)),
+        }));
+        setDataCSV(formattedData);
       } finally {
         setIsLoading(false);
       }
@@ -90,7 +110,7 @@ export default function GraphicBasic() {
   }, [selectedOption, startDate, endDate]);
 
   useEffect(() => {
-    if (!allData || allData.length === 0) {
+    if (!allData) {
       return;
     }
 
@@ -107,7 +127,6 @@ export default function GraphicBasic() {
           fontFamily: "__Sora_fdd6c4",
           fontBoldWeight: 600,
         },
-
         rightPriceScale: {
           scaleMargins: {
             top: 0,
@@ -171,34 +190,40 @@ export default function GraphicBasic() {
 
       const lineWidth = 2;
 
-      if (!avgPriceLine) {
-        const newAvgPriceLine = chart.addLineSeries({
-          color: "#5220DD",
-          lineWidth: lineWidth,
-          lineStyle: LineStyle.Solid,
-          title: "valor promedio",
-        });
-        setAvgPriceLine(newAvgPriceLine);
+      if (Array.isArray(allData) && allData.length === 0) {
+        console.log("Sin datos");
       } else {
-        avgPriceLine?.setData([
-          { time: nuevoData[0].time, value: avgPrice },
-          { time: nuevoData[nuevoData.length - 1].time, value: avgPrice },
-        ]);
+        if (!avgPriceLine) {
+          const newAvgPriceLine = chart.addLineSeries({
+            color: "#5220DD",
+            lineWidth: lineWidth,
+            lineStyle: LineStyle.Solid,
+            title: "valor promedio",
+          });
+          setAvgPriceLine(newAvgPriceLine);
+        } else {
+          avgPriceLine?.setData([
+            { time: nuevoData[0]?.time, value: avgPrice },
+            { time: nuevoData[nuevoData.length - 1]?.time, value: avgPrice },
+          ]);
+        }
+        if (!maxPriceLine) {
+          const newMaxPriceLine = chart.addLineSeries({
+            color: "#5220DD",
+            lineWidth: lineWidth,
+            lineStyle: LineStyle.Solid,
+            title: "valor máximo",
+          });
+          setMaxPriceLine(newMaxPriceLine);
+        } else {
+          maxPriceLine?.setData([
+            { time: nuevoData[0].time, value: maximumPrice },
+            { time: nuevoData[nuevoData.length - 1].time, value: maximumPrice },
+          ]);
+        }
       }
-      if (!maxPriceLine) {
-        const newMaxPriceLine = chart.addLineSeries({
-          color: "#5220DD",
-          lineWidth: lineWidth,
-          lineStyle: LineStyle.Solid,
-          title: "valor máximo",
-        });
-        setMaxPriceLine(newMaxPriceLine);
-      } else {
-        maxPriceLine?.setData([
-          { time: nuevoData[0].time, value: maximumPrice },
-          { time: nuevoData[nuevoData.length - 1].time, value: maximumPrice },
-        ]);
-      }
+
+      setIsLoading(false);
     }
   }, [allData]);
 
@@ -226,9 +251,9 @@ export default function GraphicBasic() {
             classNamePrefix="custom-select"
             isSearchable={false}
             isClearable={false}
+            onChange={handleInstrumentChange}
             options={optionsInstruments}
             value={optionsInstruments?.find((i) => i.value === selectedOption)}
-            onChange={handleInstrumentChange}
             placeholder="Seleccione..."
             formatOptionLabel={formatOptionLabel}
           />
@@ -244,52 +269,79 @@ export default function GraphicBasic() {
         </div>
       </div>
       <div className="container-grafs">
-      <div className="container-chart">
-        {isLoading ? (
-          <div className="background-loader">
-            <span className="loader"></span>Enviando...
-          </div>
-        ) : null}
-        {allData && allData.length > 0 ? (
-          <div
-            className={`chart-container ${
-              isLoading ? "chart-hidden" : "chart-visible"
-            }`}
-            ref={chartContainerRef}
-          ></div>
-        ) : (
-          <div className="chart-container chart-hidden" ref={chartContainerRef}>
-            <p>No hay datos disponibles.</p>
-          </div>
-        )}
-      </div>
-      <div className="container-table">
-        <table>
-          <thead>
-            <tr>
-              <th>Valor promedio</th>
-              <th>Tiempo de retraso</th>
-              <th>Duración</th>
-            </tr>
-          </thead>
-          <tbody>
-            {allData?.map((item, index) => (
-              <motion.tr key={index}  initial={{ opacity: 0, y: "-0.9em" }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: index * 0.04 }}>
-                <td>{parseFloat(item.value).toFixed(2)}</td>
-                <td>{new Date(item.ts * 1000).toLocaleString()}</td>
-                <td>
-                  {index > 0 && ( 
-                    <>{item.ts - allData[index - 1].ts} segundos</>
-                  )}
-                </td>
-              </motion.tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+        <div className="container-chart">
+          {isLoading ? (
+            <div className="background-loader">
+              <span className="loader"></span>Enviando...
+            </div>
+          ) : null}
+          {allData && allData.length > 0 ? (
+            <div
+              className={`chart-container ${
+                isLoading ? "chart-hidden" : "chart-visible"
+              }`}
+              ref={chartContainerRef}
+            ></div>
+          ) : (
+            <div
+              className="chart-container chart-visible"
+              ref={chartContainerRef}
+            >
+              <p>No hay datos disponibles.</p>
+            </div>
+          )}
+        </div>
+        <div className="container-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Valor promedio</th>
+                <th>Tiempo de retraso</th>
+                <th>Duración</th>
+              </tr>
+            </thead>
+            <tbody>
+              {allData?.map((item, index) => (
+                <motion.tr
+                  key={index}
+                  initial={{ opacity: 0, y: "-0.9em" }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: index * 0.04 }}
+                >
+                  <td>{parseFloat(item.value).toFixed(2)}</td>
+                  <td>{new Date(item.ts * 1000).toLocaleString()}</td>
+                  <td>
+                    {index > 0 && <>{item.ts - allData[index - 1].ts} seg</>}
+                  </td>
+                </motion.tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </>
   );
+}
+
+{
+  /* {isLoading ? (
+            <div className="background-loader">
+              <span className="loader"></span>Enviando...
+            </div>
+          ) : null}
+          {allData && allData.length > 0 ? (
+            <div
+              className={`chart-container ${
+                isLoading ? "chart-hidden" : "chart-visible"
+              }`}
+              ref={chartContainerRef}
+            ></div>
+          ) : (
+            <div
+              className="chart-container chart-hidden"
+              ref={chartContainerRef}
+            >
+              <p>No hay datos disponibles.</p>
+            </div>
+          )} */
 }

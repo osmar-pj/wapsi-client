@@ -1,5 +1,4 @@
 import { flexRender } from "@tanstack/react-table";
-import Reg from "../Icons/reg";
 import Select from "react-select";
 import DropLeft from "../Icons/drop-left";
 import DropRight from "../Icons/drop-right";
@@ -23,9 +22,6 @@ export default function View({
     <>
       <div className="Container-title">
         <div className="D-title-name">
-          <div>
-            <Reg />
-          </div>
           <h2>{title} </h2>
         </div>
         <div className="D-title-more">
@@ -75,30 +71,33 @@ export default function View({
           <table>
             <thead>
               {table.getHeaderGroups().map((headerGroup) => (
-                <tr key={headerGroup.id}>
-                  <th>IT</th>
-                  {headerGroup.headers.map((header) => (
-                    <th
-                      key={header.id}
-                      onClick={header.column.getToggleSortingHandler()}
-                    >
-                      {header.isPlaceholder ? null : (
-                        <div>
-                          {flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                          {header.column.getIsSorted() === "asc" && (
-                            <img src={ascIcon} alt="Ascending" />
-                          )}
-                          {header.column.getIsSorted() === "desc" && (
-                            <img src={descIcon} alt="Descending" />
-                          )}
-                        </div>
-                      )}
-                    </th>
-                  ))}
-                </tr>
+                <>
+                  <tr key={headerGroup.id}>
+                    <th>#</th>
+                    {headerGroup.headers.map((header) => (
+                      <th
+                        key={header.id}
+                        onClick={header.column.getToggleSortingHandler()}
+                      >
+                        {header.isPlaceholder ? null : (
+                          <div>
+                            {flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                            {header.column.getIsSorted() === "asc" && (
+                              <img src={ascIcon} alt="as" />
+                            )}
+                            {header.column.getIsSorted() === "desc" && (
+                              <img src={descIcon} alt="des" />
+                            )}
+                          </div>
+                        )}
+                      </th>
+                    ))}
+                  </tr>
+                  <tr className="nexrui"> </tr>
+                </>
               ))}
             </thead>
 
@@ -106,7 +105,7 @@ export default function View({
               {loading
                 ? Array.from({ length: 8 }).map((_, index) => (
                     <tr key={index}>
-                      <td>--</td>
+                      <td className="td-id">--</td>
                       {table
                         .getHeaderGroups()[0]
                         .headers.map((i, columnIndex) => (
@@ -128,7 +127,7 @@ export default function View({
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.4, delay: index * 0.04 }}
                     >
-                      <td>#{index + 1}</td>
+                      <td className="td-id"><span>#{index + 1}</span></td>
                       {row.getVisibleCells().map((cell) => (
                         <td key={cell.id}>
                           {flexRender(

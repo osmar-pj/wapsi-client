@@ -13,14 +13,18 @@ import { CSVLink } from "react-csv";
 import { Subject } from "rxjs";
 import { io } from "socket.io-client";
 import { motion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
+import DeleteDrag from "@/src/components/w-Drag/DeleteDrag";
 
 export default function Control() {
   const { fetchInstruments, authTokens } = useMainContext();
   const [create, setCreate] = useState(false);
+  const [deleted,setDeleted] = useState(false);
   const [relations, setRelations] = useState([]);
   const [columns, setColumns] = useState([]);
   const [loadingModeMap, setLoadingModeMap] = useState({});
   const [loadingSignalMap, setLoadingSignalMap] = useState({});
+  const [deletedId, setDeletedId] = useState(null);
 
   const fetchRelations = async () => {
     try {
@@ -149,16 +153,9 @@ export default function Control() {
     }
   };
 
-  const deleteRelations = async (id) => {
-    try {
-      const data = await DeleteRelations(id);
-
-      if (data.status === true) {
-        fetchInstruments();
-        fetchRelations();
-      }
-    } finally {
-    }
+  const handleDeleteClick = (id) => {
+    setDeletedId(id);
+    setDeleted(true);
   };
 
   const iconMap = {
@@ -225,6 +222,7 @@ export default function Control() {
                       ))}
                       <th>Acción</th>
                     </tr>
+                    <tr className="nexrui"> </tr>
                   </thead>
                   <tbody>
                     {formattedData.map((item, index) => (
@@ -340,7 +338,7 @@ export default function Control() {
                         <td className="btns">
                           <button
                             className="btn-tbl-edit"
-                            onClick={() => deleteRelations(item.id)}
+                            onClick={() => handleDeleteClick(item.id)}
                           >
                             <Delete />
                           </button>
@@ -354,9 +352,14 @@ export default function Control() {
           </div>
         </div>
       </section>
+      <AnimatePresence>
       {create && (
         <DragAndDrop setCreate={setCreate} fetchRelations={fetchRelations} />
       )}
+       {deleted && (
+        <DeleteDrag id={deletedId} setDeleted={setDeleted} fetchRelations={fetchRelations} />
+      )}
+      </AnimatePresence>
     </>
   );
 }

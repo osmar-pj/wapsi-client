@@ -19,7 +19,8 @@ export default function Instrument() {
       });
 
       if (response.ok) {
-        const data = await response.json();       
+        const data = await response.json();
+        
         setInstruments(data);
       } else {
         console.error("Error al obtener datos:", response.statusText);

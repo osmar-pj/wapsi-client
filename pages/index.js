@@ -14,7 +14,7 @@ export default function Home() {
     const instrument$ = new Subject();
 
     socket.on(`${authTokens?.empresa.toUpperCase()}`, (data) => {
-      
+    
       instrument$.next(data);
     });
 

@@ -22,4 +22,22 @@
       width: 1.2rem;     
     }
   }
+  .bs-edit{
+    svg{
+      color: #01b475;
+    }
+  }
+  .bs-delete{
+    svg{
+      color: #ff1437;
+    }
+  }
+}
+
+.td-id{
+  span{
+    font-size: clamp(6px, 8vw, 10.5px);
+      line-height: 1rem;
+      color: var(--grey);     
+  }
 }

@@ -1,14 +1,15 @@
-import { useState } from "react";
-import { TableConfig } from "@/src/hooks/tableConfig";
-import CreateUser from "./c-user";
-import DeleteForm from "./c-delete";
-import View from "@/src/hooks/view";
 import Delete from "@/src/Icons/delete";
 import Edit from "@/src/Icons/edit";
+import { TableConfig } from "@/src/hooks/tableConfig";
+import View from "@/src/hooks/view";
+import { AnimatePresence } from "framer-motion";
+import { useState } from "react";
 import CreateCompany from "./c-company";
 import CreateController from "./c-controller";
-import CreateInstrument from "./c-instrument";
+import DeleteForm from "./c-delete";
 import CreateGroupInstrument from "./c-group";
+import CreateInstrument from "./c-instrument";
+import CreateUser from "./c-user";
 
 function GenericList({
   url,
@@ -114,10 +115,10 @@ function GenericList({
       header: "Acciones",
       cell: ({ row }) => (
         <div className="btns">
-          <button onClick={() => handleEdit(row.original)}>
+          <button className="bs-edit"  onClick={() => handleEdit(row.original)}>
             <Edit />
           </button>
-          <button onClick={() => handleDelete(row.original._id, "user")}>
+          <button className="bs-delete" onClick={() => handleDelete(row.original._id, "user")}>
             <Delete />
           </button>
         </div>
@@ -155,10 +156,10 @@ function GenericList({
       header: "Acciones",
       cell: ({ row }) => (
         <div className="btns">
-          <button onClick={() => handleEdit(row.original)}>
+          <button className="bs-edit" onClick={() => handleEdit(row.original)}>
             <Edit />
           </button>
-          <button onClick={() => handleDelete(row.original._id, "empresa")}>
+          <button className="bs-delete" onClick={() => handleDelete(row.original._id, "empresa")}>
             <Delete />
           </button>
         </div>
@@ -222,10 +223,10 @@ function GenericList({
       header: "Acciones",
       cell: ({ row }) => (
         <div className="btns">
-          <button onClick={() => handleEdit(row.original, "groupInstrument")}>
+          <button className="bs-edit" onClick={() => handleEdit(row.original, "groupInstrument")}>
             <Edit />
           </button>
-          <button
+          <button className="bs-delete"
             onClick={() => handleDelete(row.original._id, "groupInstrument")}
           >
             <Delete />
@@ -261,10 +262,10 @@ function GenericList({
       header: "Acciones",
       cell: ({ row }) => (
         <div className="btns">
-          <button onClick={() => handleEdit(row.original)}>
+          <button className="bs-edit" onClick={() => handleEdit(row.original)}>
             <Edit />
           </button>
-          <button onClick={() => handleDelete(row.original._id, "controller")}>
+          <button className="bs-delete" onClick={() => handleDelete(row.original._id, "controller")}>
             <Delete />
           </button>
         </div>
@@ -309,13 +310,17 @@ function GenericList({
       accessorKey: "measure",
     },
     {
+      header: "Serie",
+      accessorKey: "serie",
+    },
+    {
       header: "Acciones",
       cell: ({ row }) => (
         <div className="btns">
-          <button onClick={() => handleEdit(row.original, "groupInstrument")}>
+          <button className="bs-edit" onClick={() => handleEdit(row.original, "groupInstrument")}>
             <Edit />
           </button>
-          <button onClick={() => handleDelete(row.original._id, "instrument")}>
+          <button className="bs-delete" onClick={() => handleDelete(row.original._id, "instrument")}>
             <Delete />
           </button>
         </div>
@@ -387,6 +392,7 @@ function GenericList({
 
   return (
     <>
+    <AnimatePresence>
       {create && (
         <CreateComponent
           setCreate={setCreate}
@@ -397,6 +403,8 @@ function GenericList({
           userId={userId}
         />
       )}
+      </AnimatePresence>
+      <AnimatePresence>
       {delet && (
         <DeleteForm
           setDelet={setDelet}
@@ -404,6 +412,7 @@ function GenericList({
           userToDeleteId={userToDeleteId}
         />
       )}
+      </AnimatePresence>
       <View
         filtering={filtering}
         table={table}

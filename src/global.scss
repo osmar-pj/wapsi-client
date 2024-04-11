@@ -199,13 +199,12 @@ html[dir] .dark ::-webkit-scrollbar-track {
 
 h1 {
   color: var(--black);
-  font-size: clamp(10px, 8vw, 20px);
-
-  line-height: 1.6rem;
+  font-size: clamp(10px, 8vw, 18px);
+  line-height: 1.2rem;
 
   @include md {
     font-size: clamp(11px, 8vw, 20px);
-    line-height: 1.5rem;
+    line-height: 1.3rem;
   }
 }
 
@@ -704,6 +703,12 @@ section {
 /* -----------------SELECT---------------------------*/
 /*---------------------------------------------------*/
 
+.option-container{
+  display: flex;
+  flex-direction: column;
+  min-width: 100px;
+}
+
 .css-b62m3t-container {
   width: 100% !important;
 }
@@ -1037,13 +1042,14 @@ section {
 /*--------------VENTILADOR-------------*/
 /*==========================================*/
 .D-ventilador {
-  width: 400px !important;
+  max-width: 350px !important;
   height: auto !important;
   background-color: rgba(255, 255, 255, 0.438);
   border-radius: 12px;
   border: 1px solid var(--white);
   top: 50%;
-  transform: translateY(-50%);
+  left: 50%;
+  transform: translate(-50%, -50%);
   padding: 1rem;
 
   .Details-close {
@@ -1061,6 +1067,13 @@ section {
       color: var(--black);
     }
   }
+  @include md {
+    max-width: 400px !important;
+    left: auto;
+    right: 3rem;
+    height: 70vh;
+    transform: translate(0, -50%);
+  }
 }
 
 .Container-Ventilador {
@@ -1075,6 +1088,7 @@ section {
   .C-container {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: 1rem;
     width: 100%;
     .C-Vent-img {
@@ -1267,11 +1281,13 @@ section {
 
 .Home-Drag {
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
   width: 100%;
   .content-drag {
     display: flex;
     flex-direction: column;
+   
     gap: 1rem;
     padding: 1rem;
     background-color: var(--grey-light-11);
@@ -1302,6 +1318,7 @@ section {
     .container-drag {
       flex: 1 1 150px;
       display: flex;
+      flex-wrap: wrap;
       gap: .5rem;
       .c-drag-items {
         flex: 1 1 150px;
@@ -1608,11 +1625,18 @@ section {
 }
 
 .mC-Drag {
-  max-width: 1000px !important;
+  max-width: 350px !important;
+
+  @include md{
+    max-width: 1000px !important;
+  }
 }
 
 .mC-Delete {
   max-width: 300px !important;
+  .mC-c-body{
+    height: auto !important;
+  }
 }
 
 .todo {

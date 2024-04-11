@@ -53,13 +53,11 @@ export default function GraphicAdvance() {
 
   const optionsInstruments = instruments?.map((i) => ({
     value: i._id,
-    label: i.name,
     ubication: i.ubication,
   }));
 
-  const formatOptionLabel = ({ label, ubication }) => (
+  const formatOptionLabel = ({ ubication }) => (
     <div>
-      {/* <span>Sistema de Monitoreo </span> */}
       <span style={{ color: "gray" }}> {ubication} </span>
     </div>
   );

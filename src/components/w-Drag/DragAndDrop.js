@@ -6,6 +6,7 @@ import Reg from "@/src/Icons/reg";
 import { useMainContext } from "@/src/contexts/Main-context";
 import { DataRelations, UpdateRelations } from "@/src/libs/api";
 import { useEffect, useState } from "react";
+import { domAnimation, LazyMotion, m } from "framer-motion";
 
 export default function DragAndDrop({ setCreate, fetchRelations }) {
   const [buttonClicked, setButtonClicked] = useState(false);
@@ -83,19 +84,57 @@ export default function DragAndDrop({ setCreate, fetchRelations }) {
         setSuccess(true);
         setTimeout(() => {
           setCreate(false);
-        }, 3000);
+        }, 1000);
       }
     } finally {
     }
   };
 
   return (
-    <div className="modalCreate-backg">
-      <form
+    <LazyMotion features={domAnimation}>
+    <m.div className="modalCreate-backg" initial={{
+          opacity: 0,
+        }}
+        animate={{
+          opacity: 1,
+          transition: {
+            ease: "easeOut",
+            duration: 0.15,
+          },
+        }}
+        exit={{
+          opacity: 0,
+          transition: {
+            ease: "easeOut",
+            duration: 0.15,
+            delay: 0.1,
+          },
+        }}>
+      <m.form
         className="mCreate-content mC-Drag"
         style={{
           userSelect: buttonClicked ? "none" : "auto",
           pointerEvents: buttonClicked ? "none" : "auto",
+        }}
+        initial={{
+          scale: 1,
+          opacity: 0,
+        }}
+        animate={{
+          opacity: 1,
+          scale: [0.8, 1],
+          transition: {
+            ease: "easeOut",
+            duration: 0.25,
+            delay: 0.05,
+          },
+        }}
+        exit={{
+          scale: [1, 0.8],
+          transition: {
+            ease: "easeOut",
+            duration: 0.25,
+          },
         }}
       >
         <div className="mC-c-header">
@@ -105,7 +144,7 @@ export default function DragAndDrop({ setCreate, fetchRelations }) {
             </div>
             <div className="mC-c-title-text">
               <h3>Relacionar </h3>
-              <h4>Selecionar los valores que desea relacionar</h4>
+              <h4>Click en los selectores</h4>
             </div>
           </div>
           <span
@@ -263,7 +302,8 @@ export default function DragAndDrop({ setCreate, fetchRelations }) {
             )}
           </button>
         </div>
-      </form>
-    </div>
+      </m.form>
+    </m.div>
+    </LazyMotion>
   );
 }

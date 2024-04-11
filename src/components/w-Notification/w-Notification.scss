@@ -1,19 +1,20 @@
 .w-notify {
   position: absolute;
-  left: 3rem;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 180px;
-  max-height: 85vh;
+  left: 50%;
+  bottom: 1.5rem;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-height: 120px;
   display: flex;
-  flex-direction: column;
+
+  flex-direction: row;
   align-items: center;
   gap: 0.5rem;
   overflow: auto;
   z-index: 2;
   border-radius: 12px;
   background-color: transparent;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 
   .w-n-info {
     display: flex;
@@ -74,12 +75,23 @@
     line-height: 0.8rem;
     color: var(--grey);
   }
+  @include md {
+    left: 3rem;
+    top: 50%;
+    transform: translate(0, -50%);
+    flex-direction: column;
+    justify-content: center;
+    width: 180px;
+    max-height: 85vh;
+    flex-wrap: wrap;
+  }
 }
 
 /* -----------------NOTIFY-SENSOR---------------------------*/
 /*---------------------------------------------------*/
 
-.c-success {
+.c-success,
+.c-undefined {
   display: none !important;
 }
 
@@ -92,6 +104,7 @@
 
 .c-danger {
   background-color: #d63232;
+  animation: tdError 0.25s ease-in-out infinite;
   .n-i-ubi {
     background-color: #321818;
   }
@@ -101,7 +114,7 @@
   border-radius: 12px;
   padding: 0.8rem 0.45rem 0.5rem 0.45rem;
   color: var(--white);
-  animation: tdError 0.25s ease-in-out infinite;
+  
   width: 80px;
   display: flex;
   flex-direction: column;
@@ -121,19 +134,22 @@
   }
   .n-i-ubi {
     width: 100%;
-
     border-radius: 8px;
-    padding: 0.2rem;
+    padding: 0.4rem 0.2rem;
     text-align: center;
     margin-top: 0.3rem;
-    font {
-      font-size: clamp(7px, 8vw, 10.5px);
-      line-height: 0.8rem;
-      color: var(--white);
-      white-space: nowrap;
+    display: grid;
+    p {
+      font-size: clamp(7px, 8vw, 10px);
+      line-height: 0.7rem;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
       overflow: hidden;
+      -webkit-line-clamp: 2;
       text-overflow: ellipsis;
-      max-width: 80px;
+      white-space: normal;
+      max-width: 60px;
+      margin-bottom: 0;
     }
   }
 }

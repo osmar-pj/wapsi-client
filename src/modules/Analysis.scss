@@ -265,15 +265,16 @@
 }
 
 .container-table {
-  flex: 0 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   height: 75vh;
+  padding: 1rem;
+  background-color: rgba(255, 255, 255, 0.4);
+  border-radius: 12px;
   border: 1px solid var(--white);
-  background-color: rgba(255, 255, 255, 0.438);
-  border-radius: 20px;
-  padding: 1.5rem;
-  z-index: 0;
-  position: relative;
-  overflow: auto;
   &::-webkit-scrollbar {
     width: 0.3rem !important;
     height: 0.3rem !important;
@@ -288,7 +289,7 @@
     thead {
       color: var(--grey-2);
       text-align: left;
-      background-color: var(--grey-light-1);
+      background-color: rgba(255, 255, 255, 0.6);
       position: sticky;
       top: 0;
       z-index: 1;
@@ -297,7 +298,7 @@
         font-size: clamp(5.5px, 8vw, 11px);
       }
       th {
-        padding: 20px 12px;
+        padding: 18px 12px;
         font-size: clamp(6px, 8vw, 10.5px);
         font-weight: 400;
         &:first-child {
@@ -312,21 +313,22 @@
     tbody {
       color: var(--black);
       font-size: clamp(5.5px, 8vw, 12px);
+      padding-bottom: 1rem;
       tr {
         overflow: auto;
-        transition: all ease-in 0.35s;
+        transition: all ease-in 0.25s;
         cursor: pointer;
         opacity: 0.9;
         &:hover {
-          background-color: var(--white);
-          box-shadow: 0 4px 8px 3px var(--grey-light-1),
-            0 1px 3px var(--grey-light-1);
+          background-color: rgba(255, 255, 255, 0.6);
+          box-shadow: 0 4px 8px 3px var(--grey-light-22),
+            0 1px 3px var(--grey-light-22);
           color: var(--black);
           opacity: 1;
         }
       }
       @include md {
-        font-size: clamp(6px, 8vw, 13.5px);
+        font-size: clamp(6px, 8vw, 13px);
         line-height: 1.1rem;
       }
     }
@@ -344,7 +346,7 @@
 
     th,
     td {
-      padding: 15px;
+      padding: 12px;
       vertical-align: middle;
     }
     th,
@@ -354,6 +356,13 @@
         text-align: center;
       }
     }
+    td:first-child {
+      width: 40px;
+    }
+  }
+
+  tbody:hover > tr:not(:hover) {
+    opacity: 0.8;
   }
 
   .t-siglas {
@@ -366,6 +375,7 @@
     place-items: center;
     font-size: clamp(5.5px, 8vw, 15px);
     font-weight: bold;
+    text-transform: uppercase;
     @include md {
       width: 38px;
       height: 38px;

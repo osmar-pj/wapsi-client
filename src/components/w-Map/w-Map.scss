@@ -9,13 +9,14 @@
     background-color: rgba(255, 255, 255, 0.438);
     border-radius: 15px;
     border: 1px solid var(--white); 
-    width: 20rem;
+    width: 18rem;
     display: flex;
+    justify-content: center;
+    align-items: center;
     flex-direction: column;
-   
     position: absolute;
     top: 12vh;
-    padding: 1rem;
+    padding: 1.2rem 1rem .8rem 1rem;
     gap: 0.3rem;
     z-index: 1;
     left: 50%;
@@ -28,25 +29,25 @@
     span {
       text-align: center;
       color: var(--grey);
-      font-size: clamp(5px, 8vw, 8px);
+      font-size: clamp(5px, 8vw, 11px);
       @include md {
         font-size: clamp(6px, 8vw, 12px);
+        line-height: .8rem;
       }
     }
     .img-warning{
       position: absolute;
-      top:115%;
+      top:120%;
       left: 50%;
-      height:2.5rem;
+      height:2rem;
       transform: translateX(-50%);
+      @include md {
+        height:2.5rem;
+      }
     }
     
     @include md {
-      // padding: 1.5rem;
-      // width: 11rem;
-      // text-align: left;
-      // left: 4vw;
-      // transform: translateX(0);
+      width: 20rem;
     }
   }
 
@@ -64,21 +65,15 @@
       align-items: center;
       flex-direction: column;
       animation: letter-flicker 0.45s linear;
-      img {
-        height: 2.3rem;
-        width: 2.3rem;
-        padding-bottom: 6px;
-        padding-left: 5px;
+     
+      svg {
+        width: 1.5rem;
+        height: 1.5rem;
         @include md {
           height: 3rem;
           width: 3rem;
-          padding-left: 8px;
+         
         }
-      }
-      svg {
-        width: 3rem;
-        height: 3rem;
-       
       }
 
       .M-i-content {
@@ -219,8 +214,12 @@
   display: flex;
   flex-direction: column;
   place-items: center;
-  justify-content: flex-end;
+  justify-content: center;
   position: relative;
+  padding-top: 15rem;
+  @include md{
+
+  }
 }
 
 @include md {
@@ -232,53 +231,8 @@
   }
 }
 
-/*===================================== COLORES =====================================*/
-/*===================================================================================*/
-
-// .M-blue {
-//   .M-i-content {
-//     background-color: white;
-   
-//     .content-text {
-//       span {
-//         color: #1a96d4;
-//       }
-//     }
-
-//     // .pulse {
-//     //   background: #0a4f9c;
-//     //   box-shadow: 0px 0px 1px 1px #0a4f9c;
-//     //   animation: pulse-animation-blue 2s infinite;
-//     //   &::before {
-//     //     border: 0.5px solid #0a4f9c;
-//     //   }
-//     // }
-
-//     // @keyframes pulse-animation-blue {
-//     //   0% {
-//     //     box-shadow: 0 0 0 0px #0a4f9c;
-//     //   }
-//     //   100% {
-//     //     box-shadow: 0 0 0 20px rgba(255, 0, 0, 0);
-//     //   }
-//     // }
-
-   
-
-   
-   
-//   }
-// }
-
-// .M-orange {
-//   .M-i-content {
-//     background-color: white;
-//     border: none;
-
-//     .content-text {
-//       span {
-//         color: #f6c427;
-//       }
-//     }
-//   }
+// .image-marker{
+//   height: 70vh;
+//   width: 1800px;
+//   overflow: auto;
 // }

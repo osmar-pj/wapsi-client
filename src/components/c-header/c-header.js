@@ -17,7 +17,7 @@ export default function Header() {
       if (empresa === "HUARON") {
         setEmpresa("/imgs/logo-Huaron.svg");
       } else {
-        setEmpresa("/imgs/buena.svg");
+        setEmpresa("/imgs/logo-buena.svg");
       }
       const userName = authTokens?.user;
       setName(userName);
