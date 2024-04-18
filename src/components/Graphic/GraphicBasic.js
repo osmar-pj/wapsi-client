@@ -154,8 +154,8 @@ export default function GraphicBasic() {
       x: timestamp7AM.getTime(),
       x2: timestamp7PM.getTime(), // Definir el final del primer rango
       strokeDashArray: 0,
-      fillColor: "#FEB019",
-      borderColor: "#FEB019",
+      fillColor: "white",
+      borderColor: "white",
       borderWidth: 5,
       yAxisIndex: 0,
       label: {
@@ -163,7 +163,7 @@ export default function GraphicBasic() {
         text: "7:00 hrs",
         style: {
           color: "#fff",
-          background: "#FEB019",
+          background: "#EF7B45",
         },
       },
     });
@@ -173,8 +173,8 @@ export default function GraphicBasic() {
       x: timestamp7PM.getTime(),
       x2: nextDay.getTime(),
       strokeDashArray: 0,
-      fillColor: "#00E396",
-      borderColor: "#00E396",
+      fillColor: "#D8DCFF",
+      borderColor: "#D8DCFF",
       borderWidth: 5,
       yAxisIndex: 0,
       label: {
@@ -182,7 +182,7 @@ export default function GraphicBasic() {
         text: "19:00 hrs",
         style: {
           color: "#fff",
-          background: "#00E396",
+          background: "#2667FF",
         },
       },
     });
