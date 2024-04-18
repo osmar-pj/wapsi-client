@@ -9,18 +9,20 @@ export default function Group() {
 
   const refetchData = async () => {
     try {
-      const response = await fetch(`${process.env.API_URL}/api/v1/groupInstrument?empresa=${authTokens.empresa}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          "ngrok-skip-browser-warning": true,
-        },
-      });
+      const response = await fetch(
+        `${process.env.API_URL}/api/v1/groupInstrument`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "x-access-token": authTokens.token,
+          },
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();
-    
         setGroupInstrument(data);
       } else {
         console.error("Error al obtener datos:", response.statusText);

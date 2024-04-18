@@ -1,56 +1,28 @@
 import { useEffect, useState } from "react";
-import Select from "react-select";
-import Crud from "./c-crud";
 import { useMainContext } from "@/src/contexts/Main-context";
+import { DataCompanys } from "@/src/libs/api";
+
+import { Select } from "antd";
+import Crud from "./c-crud";
 
 export default function CreateUser({
   isCreateUser,
   setCreate,
   refetchData,
-
   userToEdit,
   url,
 }) {
-  const [users, setUsers] = useState({
-    rolesFiltered: [],
-    empresas: [],
-  });
-  const [loading, setLoading] = useState(true);
   const { authTokens } = useMainContext();
-
-  const fecthData = async () => {
-    try {
-      const response = await fetch(`${process.env.API_URL}/api/v1/user`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          "x-access-token": authTokens.token,
-          "ngrok-skip-browser-warning": true,
-        },
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setUsers({
-          rolesFiltered: data.rolesFiltered,
-          empresas: data.empresas,
-        });
-      } else {
-        console.error("Error al obtener datos:", response.statusText);
-      }
-      setLoading(false);
-    } catch (error) {
-      console.error("Error en la solicitud:", error);
-      setLoading(false);
-    }
-  };
+  const [companys, setCompanys] = useState([]);
 
   useEffect(() => {
-    fecthData();
-  }, []);
+    const fetchDataCompanys = async () => {
+      const data = await DataCompanys(authTokens.token);
+      setCompanys(data);
+    };
 
-  const { rolesFiltered, empresas } = users;
+    fetchDataCompanys();
+  }, []);
 
   const initialValues = isCreateUser
     ? {
@@ -82,29 +54,32 @@ export default function CreateUser({
     }
   }, [isCreateUser, userToEdit]);
 
-  const optionsEmpresas = empresas.map((emp) => ({
+  const optionsEmpresas = companys?.map((emp) => ({
     value: emp.name,
     label: emp.name,
   }));
 
-  const optionsRoles = rolesFiltered.map((rol) => ({
-    value: rol._id,
-    label: rol.name,
-  }));
+
+  const optionsRoles = [
+    { value: "64b71f2871d55d7edf317942", label: "user" },
+    { value: "64b71f2871d55d7edf317943", label: "moderator" },
+  ];
 
   const handleRolesChange = (selectedOptions) => {
-    const selectedRoleValues = selectedOptions.map((option) => option.value);
+    const selectedRoleValues = selectedOptions.map((option) => option.id);
     setFormData({
       ...formData,
       roles: selectedRoleValues,
     });
   };
 
-  const handleAreaChange = (selectedOption) => {
-    setFormData({
-      ...formData,
+  console.log(formData)
+
+  const handleCompanyChange = (selectedOption) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
       empresa: selectedOption.value,
-    });
+    }));
   };
 
   return (
@@ -172,17 +147,12 @@ export default function CreateUser({
         <label>Empresa</label>
         <div className="imputs-i-input">
           <Select
-            instanceId="react-select-instance"
             name="period"
-            classNamePrefix="custom-select"
-            isSearchable={false}
-            isClearable={false}
-            onChange={handleAreaChange}
-            options={optionsEmpresas}
-            value={optionsEmpresas.find(
-              (opt) => opt.value === formData.empresa
-            )}
+            onSelect={handleCompanyChange}
+            value={optionsEmpresas ? optionsEmpresas.find((opt) => opt.value === formData.empresa) : null}
+
             placeholder="Seleccione..."
+            options={optionsEmpresas}
           />
         </div>
       </div>
@@ -190,18 +160,20 @@ export default function CreateUser({
         <label>Rol</label>
         <div className="imputs-i-input">
           <Select
-            instanceId="react-select-instance"
             name="roles"
-            classNamePrefix="custom-select"
-            isSearchable={false}
-            isClearable={false}
-            isMulti
+            mode="multiple"
+            maxCount={3}
+            style={{
+              width: '100%',
+            }}
             onChange={handleRolesChange}
-            options={optionsRoles}
-            value={optionsRoles.filter((opt) =>
-              formData.roles.includes(opt.value)
+            value={optionsRoles?.find((opt) =>
+              formData.roles.includes(opt.name)
             )}
             placeholder="Seleccione..."
+            
+            required
+            options={optionsRoles}
           />
         </div>
       </div>

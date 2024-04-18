@@ -53,11 +53,11 @@ export default function MainProvider({ children }) {
   //   setInstruments(data);
   // };
 
-  const fetchInstruments = async () => {
-    if (authTokens && authTokens.empresa) {
+   const fetchInstruments = async () => {
+    if (authTokens && authTokens.token) {
       
-      const data = await DataGroups(authTokens.empresa);
-     
+      const data = await DataGroups(authTokens.token);
+
       if (data !== null) {
         setInstruments(data);
       }

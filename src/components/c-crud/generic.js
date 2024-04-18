@@ -168,9 +168,18 @@ function GenericList({
   ];
 
   const groupInstrumentColumns = [
+   
     {
       header: "Nombre",
       accessorKey: "name",
+      cell: ({ row }) => (
+        <div className="td-user">
+          <div className="t-name">
+            <h4>{row.original.name}</h4>
+            <h5>{row.original.ubication}</h5>
+          </div>
+        </div>
+      ),
     },
     {
       header: "Descripción",
@@ -180,24 +189,33 @@ function GenericList({
       header: "Imagen",
       accessorKey: "img",
     },
+   
     {
-      header: "Ubicación",
-      accessorKey: "ubication",
-    },
-    {
-      header: "Instlación",
+      header: "Instalación",
       accessorKey: "installation",
     },
     {
-      header: "Posición X",
+      header: "InstP X",
       cell: ({ row }) => {
-        return <h4>{row.original.position.x}</h4>;
+        return <h4>{row.original.instrumentPosition.x}</h4>;
       },
     },
     {
-      header: "Posición Y",
+      header: "InstP Y",
       cell: ({ row }) => {
-        return <h4>{row.original.position.y}</h4>;
+        return <h4>{row.original.instrumentPosition.y}</h4>;
+      },
+    },
+    {
+      header: "CardP X",
+      cell: ({ row }) => {
+        return <h4>{row.original.cardPosition.x}</h4>;
+      },
+    },
+    {
+      header: "CardP Y",
+      cell: ({ row }) => {
+        return <h4>{row.original.cardPosition.y}</h4>;
       },
     },
     {
@@ -208,7 +226,7 @@ function GenericList({
           {row.original.groups.map((group, index) => (
             <div key={index} className="t-name">
               <h4>{group.name}</h4>
-              <h4>{group.controllerId.mining?.name}</h4>
+              <h5>{group.controllerId.mining?.name}</h5>
             </div>
           ))}
         </div>
@@ -257,7 +275,11 @@ function GenericList({
       header: "Ip",
       accessorKey: "ip",
     },
-    
+    {
+      header: "Fecha de creación",
+      accessorKey: "lastname",
+      cell: ({ row }) => formatFecha(row.original.createdAt),
+    },
     {
       header: "Acciones",
       cell: ({ row }) => (
@@ -312,6 +334,19 @@ function GenericList({
     {
       header: "Serie",
       accessorKey: "serie",
+    },
+    {
+      header: "V.Bajo",
+      accessorKey: "lowerLimit",
+    },
+    {
+      header: "V.Alto",
+      accessorKey: "upperLimit",
+    },
+    {
+      header: "Fecha de creación",
+      accessorKey: "lastname",
+      cell: ({ row }) => formatFecha(row.original.createdAt),
     },
     {
       header: "Acciones",

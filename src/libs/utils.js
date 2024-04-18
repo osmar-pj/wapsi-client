@@ -35,28 +35,16 @@ export const formatRelativeTime = (updatedAt) => {
 };
 
 export function timeToLocal(originalTime) {
-  const d = new Date(originalTime * 1000);
-  return (
-    Date.UTC(
-      d.getFullYear(),
-      d.getMonth(),
-      d.getDate(),
-      d.getHours(),
-      d.getMinutes(),
-      d.getSeconds(),
-      d.getMilliseconds()
-    ) / 1000
-  );
+  const d = new Date(originalTime * 1000); // Crear un objeto Date a partir del tiempo en segundos
+  return d.getTime(); // Devolver el tiempo local en milisegundos
 }
+
 
 export function formartTime(totalMinutos) {
   const horas = Math.floor(totalMinutos / 60);
   const minutos = totalMinutos % 60;
-
   const minutosFormateados = minutos.toFixed(0);
-
   const tiempoFormateado = `${horas}h ${minutosFormateados}min`;
-
   return tiempoFormateado;
 }
 
@@ -83,3 +71,61 @@ export function renderNameWithSubscript(name) {
 export function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
+
+export function getSeed(groups) {
+  const priorityCategories = ["danger", "warning", "success"];
+
+  for (const category of priorityCategories) {
+    const analogGroup = groups.find(
+      (group) =>
+        group.category === category &&
+        group.type === "actuator" &&
+        group.signal === "analog"
+    );
+    const digitalGroup = groups.find(
+      (group) =>
+        group.category === category &&
+        group.type === "actuator" &&
+        group.signal === "digital"
+    );
+
+    if (analogGroup) {
+      const value = analogGroup.value;
+      if (value === 0) {
+        return 0;
+      }
+      if (value <= 0) {
+        return 0; // Si es negativo, devuelve 0.3
+      } else if (value >= 100) {
+        return 0.2; // Si es mayor o igual a 100, devuelve 5
+      } else {
+        // Mapea el valor al rango de 0.2 a 0.3
+        return 1 - (value - 1) * 0.008;
+      }
+    }
+
+    if (digitalGroup) {
+      const value = digitalGroup.value;
+      if (value === 0) {
+        return 0;
+      } else if (value === 1) {
+        return 0.3;
+      }
+    }
+  }
+
+  return null;
+};
+
+export function getBackgroundColor (groups)  {
+  const priorityCategories = ["danger", "warning", "success"];
+
+  for (const category of priorityCategories) {
+    const group = groups.find((group) => group.category === category);
+    if (group) {
+      return group.color;
+    }
+  }
+
+  return "#9C9C9C";
+};

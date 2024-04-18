@@ -53,44 +53,45 @@ export default function Notification() {
       socket.disconnect();
     };
   }, [authTokens]);
-  
 
   return (
     <div className="w-notify">
-  {instruments.length > 0 && instruments
-    .filter(device => device.type !== "actuator")
-    .map((device, index) => (
-      <div key={device._id}>
-        {isDataUpdated(device.updatedAt) ? (
-          <div
-            key={index}
-            className={`notify-item c-${device.alarm && device.alarm.category}`}
-          >
-            {/* <Circle /> */}
-            <p>{device.name}</p>
-            <h3>{device.value.toFixed(2)}</h3>
-            {/* <span>{device.und}</span> */}
-            <div className="n-i-ubi">
-              <p>{device.ubication}</p>
+      {instruments.length > 0 &&
+        instruments
+          .filter((device) => device.type !== "actuator")
+          .map((device, index) => (
+            <div key={device._id}>
+              {isDataUpdated(device.updatedAt) ? (
+                <div
+                  key={index}
+                  className={`notify-item c-${
+                    device.alarm && device.alarm.category
+                  }`}
+                >
+                  {/* <Circle /> */}
+                  <p>{device.name}</p>
+                  <h3>{device.value.toFixed(2)}</h3>
+                  {/* <span>{device.und}</span> */}
+                  <div className="n-i-ubi">
+                    <p>{device.ubication}</p>
+                  </div>
+                </div>
+              ) : (
+                <div className="sensor-withC">
+                  <div className="s-w-content">
+                    <NotConect />
+                    <h4>
+                      <strong>{device.name}</strong>
+                    </h4>
+                  </div>
+                  <font>{formatRelativeTime(device.updatedAt)}</font>
+                  <div className="s-w-ubi">
+                    <p>{device.ubication}</p>
+                  </div>
+                </div>
+              )}
             </div>
-          </div>
-        ) : (
-          <div className="sensor-withC">
-            <div className="s-w-content">
-              <NotConect />
-              <h4>
-                <strong>{device.name}</strong>
-              </h4>
-            </div>
-            <font>{formatRelativeTime(device.updatedAt)}</font>
-            <div className="s-w-ubi">
-              <p>{device.ubication}</p>
-            </div>
-          </div>
-        )}
-      </div>
-    ))}
-</div>
-
+          ))}
+    </div>
   );
 }

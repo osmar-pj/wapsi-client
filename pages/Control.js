@@ -1,25 +1,21 @@
-import Delete from "@/src/Icons/delete";
-import Download from "@/src/Icons/download";
-import Reg from "@/src/Icons/reg";
-import DragAndDrop from "@/src/components/w-Drag/DragAndDrop";
-import { useMainContext } from "@/src/contexts/Main-context";
-import {
-  DataRelations,
-  DeleteRelations,
-  UpdateInstrument,
-} from "@/src/libs/api";
 import { useEffect, useMemo, useState } from "react";
-import { CSVLink } from "react-csv";
 import { Subject } from "rxjs";
 import { io } from "socket.io-client";
 import { motion } from "framer-motion";
 import { AnimatePresence } from "framer-motion";
-import DeleteDrag from "@/src/components/w-Drag/DeleteDrag";
+import { CSVLink } from "react-csv";
+import { useMainContext } from "@/src/contexts/Main-context";
+import { DataRelations, UpdateInstrument } from "@/src/libs/api";
+import DragAndDrop from "@/src/components/Drag/DragAndDrop"
+import DeleteDrag from "@/src/components/Drag/DeleteDrag"
+import Delete from "@/src/Icons/delete";
+import Download from "@/src/Icons/download";
+import Reg from "@/src/Icons/reg";
 
 export default function Control() {
   const { fetchInstruments, authTokens } = useMainContext();
   const [create, setCreate] = useState(false);
-  const [deleted,setDeleted] = useState(false);
+  const [deleted, setDeleted] = useState(false);
   const [relations, setRelations] = useState([]);
   const [columns, setColumns] = useState([]);
   const [loadingModeMap, setLoadingModeMap] = useState({});
@@ -28,7 +24,7 @@ export default function Control() {
 
   const fetchRelations = async () => {
     try {
-      const data = await DataRelations(authTokens?.empresa);
+      const data = await DataRelations(authTokens?.token);
       if (data && data.relations) {
         setRelations(data.relations);
       } else {
@@ -74,7 +70,6 @@ export default function Control() {
     const controller$ = new Subject();
 
     socket.on(`${authTokens?.empresa.toUpperCase()}`, (data) => {
-     
       controller$.next(data);
     });
 
@@ -117,8 +112,8 @@ export default function Control() {
     setLoadingModeMap((prevState) => ({ ...prevState, [actuatorId]: true }));
     const newMode = currentMode === "auto" ? "manual" : "auto";
     try {
-      const data = await UpdateInstrument(actuatorId, { mode: newMode });
-   
+      const data = await UpdateInstrument(authTokens.token,actuatorId, { mode: newMode });
+
       if (data.status === true) {
         fetchInstruments();
         fetchRelations();
@@ -137,8 +132,8 @@ export default function Control() {
     setLoadingSignalMap((prevState) => ({ ...prevState, [actuatorId]: true }));
     const newMode = currentMode === "digital" ? "analog" : "digital";
     try {
-      const data = await UpdateInstrument(actuatorId, { signal: newMode });
-   
+      const data = await UpdateInstrument(authTokens.token,actuatorId, { signal: newMode });
+      
       if (data.status === true) {
         fetchInstruments();
         fetchRelations();
@@ -175,11 +170,13 @@ export default function Control() {
                 <span>{formattedData?.length} </span>
               </div>
             </div>
-            <div className="D-title-more">
-              <button className="btn-acept" onClick={() => setCreate(true)}>
-                <Reg /> Relacionar
-              </button>
-            </div>
+            {formattedData.length > 0 && (
+              <div className="D-title-more">
+                <button className="btn-acept" onClick={() => setCreate(true)}>
+                  <Reg /> Relacionar
+                </button>
+              </div>
+            )}
           </div>
           <div className="Container-table">
             <div className="C-table-header">
@@ -205,27 +202,27 @@ export default function Control() {
             </div>
 
             <div className="C-table-body">
-              {formattedData.length > 0 && (
-                <table>
-                  <thead>
-                    <tr>
-                      <th>#</th>
-                      <th>Ubicación</th>
-                      <th>Imagen</th>
-                      <th>Tipo</th>
-                      <th>Nombre</th>
-                      <th>Modo</th>
-                      <th>Señal</th>
-                      <th>Value</th>
-                      {columns.map((i, index) => (
-                        <td key={index}>{i}</td>
-                      ))}
-                      <th>Acción</th>
-                    </tr>
-                    <tr className="nexrui"> </tr>
-                  </thead>
-                  <tbody>
-                    {formattedData.map((item, index) => (
+              <table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Ubicación</th>
+                    <th>Imagen</th>
+                    <th>Tipo</th>
+                    <th>Nombre</th>
+                    <th>Modo</th>
+                    <th>Señal</th>
+                    <th>Value</th>
+                    {columns.map((i, index) => (
+                      <td key={index}>{i}</td>
+                    ))}
+                    <th>Acción</th>
+                  </tr>
+                  <tr className="nexrui"> </tr>
+                </thead>
+                <tbody>
+                  {formattedData.length > 0 ? (
+                    formattedData.map((item, index) => (
                       <motion.tr
                         key={index}
                         initial={{ opacity: 0, y: "-0.9em" }}
@@ -252,7 +249,9 @@ export default function Control() {
                               : "auto",
                         }}
                       >
-                        <td>#{index + 1}</td>
+                        <td className="td-id">
+                          <span>#{index + 1}</span>
+                        </td>
                         <td>{item.ubication}</td>
                         <td>
                           {iconMap[item.name] ? (
@@ -344,21 +343,46 @@ export default function Control() {
                           </button>
                         </td>
                       </motion.tr>
-                    ))}
-                  </tbody>
-                </table>
-              )}
+                    ))
+                  ) : (
+                    <tr className="s-dates">
+                      <td colSpan="10">
+                        <div className="td-s-dates">
+                          <h4>Sin datos disponibles</h4>
+                          <p>
+                            Lo sentimos, no hay datos para mostrar en este
+                            momento. Por favor, verifica tu selección e intente
+                            de nuevo más tarde.
+                          </p>
+
+                          <button
+                            className="btn-acept"
+                            onClick={() => setCreate(true)}
+                            style={{ width: "130px" }}
+                          >
+                            <Reg /> Relacionar
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
       </section>
       <AnimatePresence>
-      {create && (
-        <DragAndDrop setCreate={setCreate} fetchRelations={fetchRelations} />
-      )}
-       {deleted && (
-        <DeleteDrag id={deletedId} setDeleted={setDeleted} fetchRelations={fetchRelations} />
-      )}
+        {create && (
+          <DragAndDrop setCreate={setCreate} fetchRelations={fetchRelations} />
+        )}
+        {deleted && (
+          <DeleteDrag
+            id={deletedId}
+            setDeleted={setDeleted}
+            fetchRelations={fetchRelations}
+          />
+        )}
       </AnimatePresence>
     </>
   );

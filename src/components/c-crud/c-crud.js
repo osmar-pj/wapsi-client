@@ -29,6 +29,7 @@ function Crud(props) {
   };
 
   const handleCreateUser = async () => {
+    console.log(formData);
     if (
       Object.values(formData).some((value) => value === "" || value === null)
     ) {
@@ -49,13 +50,13 @@ function Crud(props) {
 
         if (response.ok) {
           const data = await response.json();
-
+          
           if (data.status === true) {
             refetchData();
             setSuccess(true);
             setTimeout(() => {
               setCreate(false);
-            }, 1500);
+            }, 950);
           } else {
             setButtonClicked(false);
           }
@@ -70,6 +71,7 @@ function Crud(props) {
   };
 
   const handleUpdateUser = async () => {
+    console.log(formData);
     try {
       setButtonClicked(true);
       const response = await fetch(
@@ -88,13 +90,13 @@ function Crud(props) {
 
       if (response.ok) {
         const data = await response.json();
-
+        console.log(data);
         if (data.status === true) {
           refetchData();
           setSuccess(true);
           setTimeout(() => {
             setCreate(false);
-          }, 1000);
+          }, 950);
         } else {
           setButtonClicked(false);
         }
@@ -117,18 +119,11 @@ function Crud(props) {
         }}
         animate={{
           opacity: 1,
-          transition: {
-            ease: "easeOut",
-            duration: 0.15,
-          },
+         
         }}
         exit={{
           opacity: 0,
-          transition: {
-            ease: "easeOut",
-            duration: 0.15,
-            delay: 0.1,
-          },
+          
         }}
       >
         <m.form
@@ -139,23 +134,22 @@ function Crud(props) {
             pointerEvents: buttonClicked ? "none" : "auto",
           }}
           initial={{
-            scale: 1,
+            scale: 0.8,
             opacity: 0,
           }}
           animate={{
             opacity: 1,
-            scale: [0.8, 1],
+            scale: 1,
             transition: {
-              ease: "easeOut",
               duration: 0.25,
-              delay: 0.05,
+              ease: "easeInOut",      
             },
           }}
           exit={{
-            scale: [1, 0.8],
+            opacity: 0,
+            scale: 0.8,
             transition: {
-              ease: "easeOut",
-              duration: 0.25,
+              duration: 0.6,
             },
           }}
         >

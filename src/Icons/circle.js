@@ -17,7 +17,7 @@ export default function Circle(props) {
       <defs>
         <style>
           {
-            ".fil1{fill-rule:nonzero} .rotate {animation: rotate 40s ease-in-out infinite alternate;} @keyframes rotate { to {transform: rotate(360deg);}} "
+            ".rotate {animation: rotate 40s linear infinite;} @keyframes rotate { to {transform: rotate(360deg);}} "
           }
         </style>
       </defs>
@@ -26,7 +26,7 @@ export default function Circle(props) {
           d="M7.68 58.57H4.66c2.06 23.94 21.04 42.88 44.96 44.96v-3C27.3 98.72 9.73 80.8 7.68 58.58zm50.89 42.23v3.02c23.94-2.06 42.88-21.04 44.96-44.96h-3C98.72 81.18 80.8 98.75 58.58 100.8zM49.62 7.68V4.66C25.83 6.74 6.74 25.83 4.66 49.62h3.02C9.75 27.48 27.48 9.76 49.62 7.68zm51.18 41.94h3.02c-2.09-23.95-21.33-42.9-45.25-44.96v3.02c22.26 2.05 40.14 19.65 42.23 41.94z"
           style={{
             transformOrigin: "center center",
-            animation: "rotate 25s ease-in-out infinite alternate",
+            animation: "rotate 25s linear infinite",
           }}
           className="fil2"
         />

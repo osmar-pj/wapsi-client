@@ -17,7 +17,7 @@ export default function IconVentilator(props) {
       <defs>
         <style>
           {
-            ".fil1{fill-rule:nonzero} @keyframes Vrotate { to {transform: rotate(360deg);}} "
+            " @keyframes Vrotate { to {transform: rotate(360deg);}} "
           }
         </style>
       </defs>

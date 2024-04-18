@@ -24,7 +24,6 @@ function App({ Component, pageProps }) {
 
   return (
     <Layout>
-      
       {showHeader && <Header />}
       <main className={inter.className}>
         <Component {...pageProps} className={inter.className} />

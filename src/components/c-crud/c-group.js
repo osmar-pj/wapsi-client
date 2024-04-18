@@ -18,8 +18,8 @@ export default function CreateController({
   const fetchData = async () => {
     setLoading(true);
     try {
-      const data = await DataInstruments(authTokens.empresa);
-
+      const data = await DataInstruments(authTokens.token);
+      console.log(data);
       setInstruments(data);
     } finally {
       setLoading(false);
@@ -38,7 +38,11 @@ export default function CreateController({
         description: "",
         img: "",
         ubication: "",
-        position: {
+        instrumentPosition: {
+          x: "",
+          y: "",
+        },
+        cardPosition: {
           x: "",
           y: "",
         },
@@ -50,10 +54,13 @@ export default function CreateController({
         description: userToEdit.description,
         img: userToEdit.img,
         ubication: userToEdit.ubication,
-
-        position: {
-          x: userToEdit.position.x,
-          y: userToEdit.position.y,
+        instrumentPosition: {
+          x: userToEdit.instrumentPosition?.x,
+          y: userToEdit.instrumentPosition?.y,
+        },
+        cardPosition: {
+          x: userToEdit.cardPosition?.x,
+          y: userToEdit.cardPosition?.y,
         },
         installation: userToEdit.installation,
       };
@@ -68,17 +75,20 @@ export default function CreateController({
         description: userToEdit.description,
         img: userToEdit.img,
         ubication: userToEdit.ubication,
-        position: {
-          x: userToEdit.position.x,
-          y: userToEdit.position.y,
+        instrumentPosition: {
+          x: userToEdit.instrumentPosition?.x,
+          y: userToEdit.instrumentPosition?.y,
+        },
+        cardPosition: {
+          x: userToEdit.cardPosition?.x,
+          y: userToEdit.cardPosition?.y,
         },
         installation: userToEdit.installation,
       });
     }
   }, [isCreateUser, userToEdit]);
 
-  const optionsInstruments = instruments
-    .filter((i) => i.ubication === null)
+  const optionsInstruments = instruments?.filter((i) => i.ubication === null)
     .map((i) => ({
       value: i._id,
       label: i.name,
@@ -135,7 +145,7 @@ export default function CreateController({
             isMulti
             onChange={handleRolesChange}
             options={optionsInstruments}
-            value={optionsInstruments.find(
+            value={optionsInstruments?.find(
               (opt) => opt.value === formData.empresa
             )}
             placeholder="Seleccione..."
@@ -199,49 +209,6 @@ export default function CreateController({
           />
         </div>
       </div>
-
-      <div className="mC-imputs-item">
-        <label>Ingrese Top</label>
-        <div className="imputs-i-input">
-          <input
-            type="number"
-            name="x"
-            placeholder="Ej. 100"
-            required
-            value={formData.position.x}
-            onChange={(e) =>
-              setFormData({
-                ...formData,
-                position: {
-                  ...formData.position,
-                  x: e.target.value,
-                },
-              })
-            }
-          />
-        </div>
-      </div>
-      <div className="mC-imputs-item">
-        <label>Ingrese Left</label>
-        <div className="imputs-i-input">
-          <input
-            type="number"
-            name="y"
-            placeholder="Ej. 100"
-            required
-            value={formData.position.y}
-            onChange={(e) =>
-              setFormData({
-                ...formData,
-                position: {
-                  ...formData.position,
-                  y: e.target.value,
-                },
-              })
-            }
-          />
-        </div>
-      </div>
       <div className="mC-imputs-item">
         <label>Ingrese Instalación</label>
         <div className="imputs-i-input">
@@ -272,6 +239,91 @@ export default function CreateController({
           /> */}
         </div>
       </div>
+      <div className="mC-imputs-item">
+        <label>Ingrese Instru Top</label>
+        <div className="imputs-i-input">
+          <input
+            type="number"
+            name="x"
+            placeholder="Ej. 100"
+            required
+            value={formData.instrumentPosition.x}
+            onChange={(e) =>
+              setFormData({
+                ...formData,
+                instrumentPosition: {
+                  ...formData.instrumentPosition,
+                  x: e.target.value,
+                },
+              })
+            }
+          />
+        </div>
+      </div>
+      <div className="mC-imputs-item">
+        <label>Ingrese Instru Left</label>
+        <div className="imputs-i-input">
+          <input
+            type="number"
+            name="y"
+            placeholder="Ej. 100"
+            required
+            value={formData.instrumentPosition.y}
+            onChange={(e) =>
+              setFormData({
+                ...formData,
+                instrumentPosition: {
+                  ...formData.instrumentPosition,
+                  y: e.target.value,
+                },
+              })
+            }
+          />
+        </div>
+      </div>
+      <div className="mC-imputs-item">
+        <label>Ingrese Card Top</label>
+        <div className="imputs-i-input">
+          <input
+            type="text"
+            name="x"
+            placeholder="Ej. 100"
+            required
+            value={formData.cardPosition.x}
+            onChange={(e) =>
+              setFormData({
+                ...formData,
+                cardPosition: {
+                  ...formData.cardPosition,
+                  x: e.target.value,
+                },
+              })
+            }
+          />
+        </div>
+      </div>
+      <div className="mC-imputs-item">
+        <label>Ingrese Card Right</label>
+        <div className="imputs-i-input">
+          <input
+            type="text"
+            name="y"
+            placeholder="Ej. 100"
+            required
+            value={formData.cardPosition.y}
+            onChange={(e) =>
+              setFormData({
+                ...formData,
+                cardPosition: {
+                  ...formData.cardPosition,
+                  y: e.target.value,
+                },
+              })
+            }
+          />
+        </div>
+      </div>
+     
     </Crud>
   );
 }

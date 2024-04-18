@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Select from "react-select";
 import Crud from "./c-crud";
 import { DataControllers } from "@/src/libs/api";
+import { useMainContext } from "@/src/contexts/Main-context";
 
 export default function CreateController({
   isCreateUser,
@@ -10,16 +11,18 @@ export default function CreateController({
   userToEdit,
   url,
 }) {
+  const { authTokens } = useMainContext();
   const [controller, setController] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const fetchData = async () => {
     setLoading(true);
     try {
-      const data = await DataControllers();
+      const data = await DataControllers(authTokens.token);
+      console.log(data);
       if (data !== null) {
-      setController(data.controllers);
-    }
+        setController(data.controllers);
+      }
     } finally {
       setLoading(false);
     }
@@ -39,6 +42,8 @@ export default function CreateController({
         signal: "",
         measure: "",
         serie: "",
+        lowerLimit: 0,
+        upperLimit: 0,
       }
     : {
         name: userToEdit.name,
@@ -49,6 +54,8 @@ export default function CreateController({
         signal: userToEdit.signal,
         measure: userToEdit.measure,
         serie: userToEdit.serie,
+        lowerLimit:userToEdit.lowerLimit,
+        upperLimit: userToEdit.upperLimit,
       };
 
   const [formData, setFormData] = useState(initialValues);
@@ -64,11 +71,13 @@ export default function CreateController({
         signal: userToEdit.signal,
         measure: userToEdit.measure,
         serie: userToEdit.serie,
+        lowerLimit:userToEdit.lowerLimit,
+        upperLimit: userToEdit.upperLimit,
       });
     }
   }, [isCreateUser, userToEdit]);
 
-  const optionsControllers = controller.map((controller) => ({
+  const optionsControllers = controller?.map((controller) => ({
     value: controller._id,
     label: controller.serie,
   }));
@@ -80,7 +89,6 @@ export default function CreateController({
     });
   };
 
- 
   const listType = [
     { id: "sensor", name: "Sensor" },
     { id: "actuator", name: "Actuador" },
@@ -115,12 +123,10 @@ export default function CreateController({
     });
   };
 
-
   return (
     <Crud
       isCreateUser={isCreateUser}
       setCreate={setCreate}
-    
       userToEdit={userToEdit}
       formData={formData}
       refetchData={refetchData}
@@ -192,14 +198,13 @@ export default function CreateController({
             getOptionLabel={(option) => option.name} // Solo obtenemos el nombre de la opción
             getOptionValue={(option) => option.id} // Obtenemos el ID de la opción
             required
-         />
-
+          />
         </div>
       </div>
       <div className="mC-imputs-item">
         <label>Ingrese Modo</label>
         <div className="imputs-i-input">
-        <Select
+          <Select
             instanceId="react-select-instance"
             name="mode"
             classNamePrefix="custom-select"
@@ -213,13 +218,12 @@ export default function CreateController({
             getOptionValue={(option) => option.id} // Obtenemos el ID de la opción
             required
           />
-          
         </div>
       </div>
       <div className="mC-imputs-item">
         <label>Ingrese Señal</label>
         <div className="imputs-i-input">
-        <Select
+          <Select
             instanceId="react-select-instance"
             name="signal"
             classNamePrefix="custom-select"
@@ -233,7 +237,6 @@ export default function CreateController({
             getOptionValue={(option) => option.id} // Obtenemos el ID de la opción
             required
           />
-          
         </div>
       </div>
       <div className="mC-imputs-item">
@@ -261,6 +264,38 @@ export default function CreateController({
             required
             onChange={(e) =>
               setFormData({ ...formData, serie: e.target.value })
+            }
+          />
+        </div>
+      </div>
+      <div className="mC-imputs-item">
+        <label>Ingrese bajo</label>
+        <div className="imputs-i-input">
+          <input
+            type="number"
+            name="lowerLimit"
+            inputMode="text"
+            placeholder="Ej. 30"
+            required
+            value={formData.lowerLimit}
+            onChange={(e) =>
+              setFormData({ ...formData, lowerLimit: e.target.value })
+            }
+          />
+        </div>
+      </div>
+      <div className="mC-imputs-item">
+        <label>Ingrese alto</label>
+        <div className="imputs-i-input">
+          <input
+            type="number"
+            name="upperLimit"
+            inputMode="text"
+            placeholder="Ej. 50"
+            required
+            value={formData.upperLimit}
+            onChange={(e) =>
+              setFormData({ ...formData, upperLimit: e.target.value })
             }
           />
         </div>

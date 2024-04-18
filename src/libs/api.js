@@ -1,12 +1,13 @@
-export async function DataInstruments(empresa) {
+export async function DataInstruments(token) {
   try {
     const response = await fetch(
-      `${process.env.API_URL}/api/v1/instrument?empresa=${empresa}`,
+      `${process.env.API_URL}/api/v1/instrument`,
       {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
+          "x-access-token": token,
         },
       }
     );
@@ -22,15 +23,16 @@ export async function DataInstruments(empresa) {
   }
 }
 
-export async function DataGroups(empresa) {
+export async function DataGroups(token) {
   try {
     const response = await fetch(
-      `${process.env.API_URL}/api/v1/groupInstrument?empresa=${empresa}`,
+      `${process.env.API_URL}/api/v1/groupInstrument`,
       {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
+          "x-access-token": token,
         },
       }
     );
@@ -46,14 +48,14 @@ export async function DataGroups(empresa) {
   }
 }
 
-export async function DataControllers() {
+export async function DataControllers(token) {
   try {
     const response = await fetch(`${process.env.API_URL}/api/v1/controller`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        // "x-access-token": token,
+        "x-access-token": token,
       },
     });
 
@@ -126,16 +128,16 @@ export async function DataGrafAdvance(selectedOption) {
   }
 }
 
-export async function DataRelations(empresa) {
+export async function DataRelations(token) {
   try {
     const response = await fetch(
-      `${process.env.API_URL}/api/v1/relation?empresa=${empresa}`,
+      `${process.env.API_URL}/api/v1/relation`,
       {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          // "x-access-token": token,
+          "x-access-token": token,
         },
       }
     );
@@ -175,7 +177,7 @@ export async function DeleteRelations(id) {
   }
 }
 
-export async function UpdateInstrument(id, finalData) {
+export async function UpdateInstrument(token, id, finalData) {
   try {
     const response = await fetch(
       `${process.env.API_URL}/api/v1/instrument/${id}`,
@@ -184,7 +186,7 @@ export async function UpdateInstrument(id, finalData) {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          // "x-access-token": token,
+          "x-access-token": token,
         },
         body: JSON.stringify(finalData),
       }
@@ -201,13 +203,14 @@ export async function UpdateInstrument(id, finalData) {
   }
 }
 
-export async function UpdateRelations(dataToSend) {
+export async function UpdateRelations(token, dataToSend) {
   try {
     const response = await fetch(`${process.env.API_URL}/api/v1/relation`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
+        "x-access-token": token,
       },
       body: JSON.stringify(dataToSend),
     });
@@ -247,3 +250,51 @@ export async function UpdateVentilator(id, newData) {
     console.error("Error:", error);
   }
 }
+
+export async function DataCompanys (token) {
+  try {
+    const response = await fetch(`${process.env.API_URL}/api/v1/empresa`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "x-access-token": token,
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    } else {
+      console.error("Error al obtener datos:", response.statusText);
+    }
+   
+  } catch (error) {
+    console.error("Error en la solicitud:", error);
+    
+  }
+};
+
+export async function DataUsers (token) {
+  try {
+    const response = await fetch(`${process.env.API_URL}/api/v1/user`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "x-access-token": token,
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    } else {
+      console.error("Error al obtener datos:", response.statusText);
+    }
+   
+  } catch (error) {
+    console.error("Error en la solicitud:", error);
+    
+  }
+};

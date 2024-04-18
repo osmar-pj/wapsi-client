@@ -1,9 +1,11 @@
 import GenericList from "@/src/components/c-crud/generic";
+import { useMainContext } from "@/src/contexts/Main-context";
 import { useEffect, useState } from "react";
 
 export default function Controllers() {
   const [controllers, setControllers] = useState({});
   const [loading, setLoading] = useState(true);
+  const { authTokens } = useMainContext();
 
   const refetchData = async () => {
     try {
@@ -12,7 +14,7 @@ export default function Controllers() {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          "ngrok-skip-browser-warning": true,
+          "x-access-token": authTokens.token,
         },
       });
 

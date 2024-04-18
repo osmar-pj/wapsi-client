@@ -7,6 +7,7 @@ import { domAnimation, LazyMotion, m } from "framer-motion";
 export default function DeleteDrag({ fetchRelations, setDeleted, id }) {
   const [buttonClicked, setButtonClicked] = useState(false);
   const [success, setSuccess] = useState(false);
+  const { authTokens } = useMainContext();
 
   const handleDelete = async () => {
     try {
@@ -18,21 +19,27 @@ export default function DeleteDrag({ fetchRelations, setDeleted, id }) {
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
+            "x-access-token": authTokens.token,
           },
         }
       );
-
+  
       if (response.ok) {
-        const data = await response.json();
-        console.log(data);
-
-        if (data.status === true) {
+        try {
+          const data = await response.json();
+          console.log(data);
+  
+          if (data.status === true) {
             fetchRelations();
-          setSuccess(true);
-          setTimeout(() => {
-            setDeleted(false);
-          }, 1000);
-        } else {
+            setSuccess(true);
+            setTimeout(() => {
+              setDeleted(false);
+            }, 1000);
+          } else {
+            setButtonClicked(false);
+          }
+        } catch (error) {
+          console.error("Error al analizar la respuesta JSON:", error);
           setButtonClicked(false);
         }
       } else {
@@ -44,6 +51,7 @@ export default function DeleteDrag({ fetchRelations, setDeleted, id }) {
       console.error("Error en la solicitud:", error);
     }
   };
+  
 
   return (
     <LazyMotion features={domAnimation}>

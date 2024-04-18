@@ -1,9 +1,10 @@
 import GenericList from "@/src/components/c-crud/generic";
-import Header from "@/src/components/c-header/c-header";
+import { useMainContext } from "@/src/contexts/Main-context";
 import { useEffect, useState } from "react";
 
 export default function Company() {
-  const [usersFiltered2, setCompany] = useState("");
+  const [company, setCompany] = useState([]);
+  const { authTokens } = useMainContext();
 
   const [loading, setLoading] = useState(true);
   const refetchData = async () => {
@@ -13,7 +14,7 @@ export default function Company() {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          "ngrok-skip-browser-warning": true,
+          "x-access-token": authTokens.token,
         },
       });
 
@@ -40,7 +41,7 @@ export default function Company() {
         <GenericList
           url="empresa"
           title="Lista de Empresas"
-          usersFiltered2={usersFiltered2}
+          usersFiltered2={company}
           loading={loading}
           refetchData={refetchData}
         />

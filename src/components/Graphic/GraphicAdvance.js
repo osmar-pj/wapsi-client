@@ -12,6 +12,7 @@ import { formartTime } from "@/src/libs/utils";
 import { useMainContext } from "@/src/contexts/Main-context";
 import { CSVLink } from "react-csv";
 import Download from "@/src/Icons/download";
+import { he } from "date-fns/locale";
 
 if (typeof window !== "undefined") {
   moment.locale(navigator.language);
@@ -30,7 +31,7 @@ export default function GraphicAdvance() {
 
   useEffect(() => {
     async function fetchInstruments() {
-      const data = await DataGroups(authTokens?.empresa);
+      const data = await DataGroups(authTokens.token);
       const newData = data
         .map((item) =>
           item.groups
@@ -44,12 +45,13 @@ export default function GraphicAdvance() {
         .flat();
 
       setInstruments(newData);
+      
       if (newData.length > 0) {
         setSelectedOption(newData[0]._id);
       }
     }
     fetchInstruments();
-  }, [authTokens]);
+  }, []);
 
   const optionsInstruments = instruments?.map((i) => ({
     value: i._id,
@@ -71,8 +73,9 @@ export default function GraphicAdvance() {
       try {
         setIsLoading(true);
         const data = await DataGrafAdvance(selectedOption);
+        console.log(data)
         setAllData(data);
-        setDataCSV(data.data_final)
+        setDataCSV(data.data_final);
       } catch (error) {
         console.error("Error al obtener datos:", error);
       } finally {
@@ -82,7 +85,6 @@ export default function GraphicAdvance() {
 
     fetchGrafAdvance();
   }, [selectedOption]);
-
 
   useEffect(() => {
     if (!allData || !allData.bars) {
@@ -134,6 +136,8 @@ export default function GraphicAdvance() {
       barThickness: 60,
       maxBarThickness: 65,
     }));
+
+    console.log(data);
 
     const formatSpanishDate = (date) => {
       return moment(date).format("ddd, DD MMM");
@@ -233,20 +237,9 @@ export default function GraphicAdvance() {
     }
   }, [allData]);
 
-
   return (
     <>
-      <div className="D-c-select"></div>
-      <div className="graf-dates">
-        <div className="graf-dates-pro">
-          <span>Tiempo promedio</span>
-          <h2>
-            {allData && !isNaN(allData.mean)
-              ? formartTime(allData.mean)
-              : "0h 0min"}
-          </h2>
-        </div>
-
+      <div className="container-selects">
         <div className="select-g">
           <Select
             instanceId="react-select-instance"
@@ -263,36 +256,57 @@ export default function GraphicAdvance() {
             formatOptionLabel={formatOptionLabel}
           />
         </div>
-      </div>
-      <div className="container-button-advance">
-        <div className="btns">
-           <CSVLink
+        <div>
+          <CSVLink
             className="btn-acept"
             data={dataCSV}
             filename={"mi_archivo.csv"}
             href="#"
           >
-            <Download/> Descargar CSV
-          </CSVLink> 
-        </div>
-
-        <div className="leyend">
-          <div className="i-leyend">
-            <div className="i-leyend-circle ley-green"></div>
-            <span>OK</span>
-          </div>
-          <div className="i-leyend">
-            <div className="i-leyend-circle ley-yellow"></div>
-            <span>ALERTA ALTO</span>
-          </div>
-          <div className="i-leyend">
-            <div className="i-leyend-circle ley-red"></div>
-            <span>ALERTA MUY ALTO</span>
-          </div>
+            <Download /> Descargar CSV
+          </CSVLink>
         </div>
       </div>
 
       <div className="graf-A">
+        <div className="graf-dates">
+          <h2>
+            {allData && !isNaN(allData.mean)
+              ? formartTime(allData.mean)
+              : "0h 0min"}
+          </h2>
+          <span>Tiempo promedio</span>
+        </div>
+        <div className="leyend">
+          <div className="i-leyend">
+            <div
+              className="i-leyend-circle"
+              style={{ backgroundColor: "#b3b3b3" }}
+            ></div>
+            <span>INOPERATIVO</span>
+          </div>
+          <div className="i-leyend">
+            <div
+              className="i-leyend-circle"
+              style={{ backgroundColor: "#0bb97d" }}
+            ></div>
+            <span>OK</span>
+          </div>
+          <div className="i-leyend">
+            <div
+              className="i-leyend-circle"
+              style={{ backgroundColor: "#b9a50c" }}
+            ></div>
+            <span>ALTO</span>
+          </div>
+          <div className="i-leyend">
+            <div
+              className="i-leyend-circle"
+              style={{ backgroundColor: "#ff1437" }}
+            ></div>
+            <span>MUY ALTO</span>
+          </div>
+        </div>
         {isLoading ? (
           <>
             <span className="loader"></span>
@@ -301,6 +315,8 @@ export default function GraphicAdvance() {
         <canvas
           id="Chart"
           className={isLoading ? "chart-hidden" : "chart-visible"}
+          style={{ height: "600px" }}
+
         ></canvas>
         {/* <div
           className={

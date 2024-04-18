@@ -19,13 +19,13 @@ export default function DragAndDrop({ setCreate, fetchRelations }) {
 
   useEffect(() => {
     async function fetchInstruments() {
-      const data = await DataRelations(authTokens.empresa);
+      const data = await DataRelations(authTokens.token);
       setSensorItems(data.sensors);
       setActuatorsItems(data.actuators);
     }
 
     fetchInstruments();
-  }, [authTokens]);
+  }, []);
 
   const handleSensorItemClick = (clickedItem) => {
     setSensorItems((prevItems) =>
@@ -36,7 +36,7 @@ export default function DragAndDrop({ setCreate, fetchRelations }) {
       {
         ...clickedItem,
         mining: clickedItem.controllerId.mining.name,
-        ubication: clickedItem.controllerId.ubication,
+        ubication: clickedItem.ubication,
       },
     ]);
   };
@@ -50,7 +50,7 @@ export default function DragAndDrop({ setCreate, fetchRelations }) {
       {
         ...clickedItem,
         mining: clickedItem.controllerId.mining.name,
-        ubication: clickedItem.controllerId.ubication,
+        ubication: clickedItem.ubication,
       },
     ]);
   };
@@ -77,7 +77,7 @@ export default function DragAndDrop({ setCreate, fetchRelations }) {
 
     try {
       setButtonClicked(true);
-      const data = await UpdateRelations(dataToSend);
+      const data = await UpdateRelations(authTokens.token,dataToSend);
 
       if (data.status === true) {
         fetchRelations();
@@ -180,7 +180,7 @@ export default function DragAndDrop({ setCreate, fetchRelations }) {
                           <span>{item.name}</span>
                           <h5>{item.controllerId?.mining?.name}</h5>
                         </div>
-                        <h6>{item.controllerId.ubication}</h6>
+                        <h6>{item.ubication}</h6>
                       </div>
                     </div>
                   ))}
@@ -229,7 +229,7 @@ export default function DragAndDrop({ setCreate, fetchRelations }) {
                           <span>{item.name}</span>
                           <h5>{item.controllerId?.mining?.name}</h5>
                         </div>
-                        <h6>{item.controllerId.ubication}</h6>
+                        <h6>{item.ubication}</h6>
                       </div>
                     </div>
                   ))}

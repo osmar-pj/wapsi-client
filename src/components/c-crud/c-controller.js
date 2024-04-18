@@ -15,20 +15,20 @@ export default function CreateController({
   const { authTokens } = useMainContext();
   const fecthData = async () => {
     try {
-      const response = await fetch(`${process.env.API_URL}/api/v1/user`, {
+      const response = await fetch(`${process.env.API_URL}/api/v1/empresa`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
           "x-access-token": authTokens.token,
-          "ngrok-skip-browser-warning": true,
+         
         },
       });
 
       if (response.ok) {
         const data = await response.json();
 
-        setCompanies(data.empresas);
+        setCompanies(data);
       } else {
         console.error("Error al obtener datos:", response.statusText);
       }

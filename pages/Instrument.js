@@ -9,12 +9,12 @@ export default function Instrument() {
 
   const refetchData = async () => {
     try {
-      const response = await fetch(`${process.env.API_URL}/api/v1/instrument?empresa=${authTokens.empresa}`, {
+      const response = await fetch(`${process.env.API_URL}/api/v1/instrument`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          "ngrok-skip-browser-warning": true,
+          "x-access-token": authTokens.token,
         },
       });
 

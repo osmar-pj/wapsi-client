@@ -3,9 +3,7 @@ import { useMainContext } from "@/src/contexts/Main-context";
 import { useEffect, useState } from "react";
 
 export default function Users() {
-  const [users, setUsers] = useState({
-    usersFiltered2: [],
-  });
+  const [users, setUsers] = useState([]);
 
   const { authTokens } = useMainContext();
 
@@ -18,16 +16,13 @@ export default function Users() {
           "Content-Type": "application/json",
           Accept: "application/json",
           "x-access-token": authTokens.token,
-          "ngrok-skip-browser-warning": true,
         },
       });
 
       if (response.ok) {
         const data = await response.json();
-     
-        setUsers({
-          usersFiltered2: data.usersFiltered2,
-        });
+        console.log(data);
+        setUsers(data);
       } else {
         console.error("Error al obtener datos:", response.statusText);
       }
@@ -42,14 +37,14 @@ export default function Users() {
     refetchData();
   }, []);
 
-  const { usersFiltered2 } = users;
+
   return (
     <section className="w-FormUser">
       <div className="Cont">
         <GenericList
           url="user"
           title="Lista de Usuarios"
-          usersFiltered2={usersFiltered2}
+          usersFiltered2={users}
           loading={loading}
           refetchData={refetchData}
         />

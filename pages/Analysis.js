@@ -1,5 +1,6 @@
-import GraphicAdvance from "@/src/components/w-Graphic/GraphicAdvance";
-import GraphicBasic from "@/src/components/w-Graphic/GraphicBasic";
+import GrapHig from "@/src/components/Graphic/Grap";
+import GraphicAdvance from "@/src/components/Graphic/GraphicAdvance";
+import GraphicBasic from "@/src/components/Graphic/GraphicBasic";
 import { useState } from "react";
 
 export default function Analysis() {
@@ -34,7 +35,10 @@ export default function Analysis() {
         </div>
       </div>
       {selectedTab === "avanzado" && <GraphicAdvance />}
-      {selectedTab === "basico" && <GraphicBasic />}
+       {selectedTab === "basico" && <GraphicBasic />} 
+       {/* <div>
+        <GrapHig/>
+      </div>  */}
     </section>
   );
 }

@@ -77,23 +77,22 @@ export default function DeleteForm({ refetchData, setDelet, userToDeleteId }) {
             pointerEvents: buttonClicked ? "none" : "auto",
           }}
           initial={{
-            scale: 1,
+            scale: 0.7,
             opacity: 0,
           }}
           animate={{
             opacity: 1,
-            scale: [0.8, 1],
+            scale: 1,
             transition: {
-              ease: "easeOut",
-              duration: 0.25,
-              delay: 0.05,
+              type: "spring",
+              stiffness: 300,
             },
           }}
           exit={{
-            scale: [1, 0.8],
+            opacity: 0,
+            scale: 0.8,
             transition: {
-              ease: "easeOut",
-              duration: 0.25,
+              duration: 0.6,
             },
           }}
         >

@@ -1,6 +1,6 @@
-import CardTitle from "@/src/components/w-Map/CardTitle";
-import Mapa from "@/src/components/w-Map/w-Map";
-import Notification from "@/src/components/w-Notification/Notification";
+import CardTitle from "@/src/components/Map/CardTitle";
+import Legend from "@/src/components/Map/Legend";
+import Map from "@/src/components/Map/Map";
 import { useMainContext } from "@/src/contexts/Main-context";
 import { useEffect } from "react";
 import { Subject } from "rxjs";
@@ -12,9 +12,9 @@ export default function Home() {
   useEffect(() => {
     const socket = io(process.env.API_URL);
     const instrument$ = new Subject();
-
-    socket.on(`${authTokens?.empresa.toUpperCase()}`, (data) => {
     
+    socket.on(`${authTokens?.empresa.toUpperCase()}`, (data) => {
+      console.log(data.name, data.value)    
       instrument$.next(data);
     });
 
@@ -52,8 +52,9 @@ export default function Home() {
   return (
     <section className="w-Home">
       <CardTitle/>
-      <Mapa />
-      <Notification />      
+      <Map />
+      {/* <Notification />       */}
+      <Legend/>
     </section>
   );
 }

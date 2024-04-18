@@ -1,24 +1,13 @@
 import { useMainContext } from "@/src/contexts/Main-context";
 import { UpdateVentilator } from "@/src/libs/api";
-import { useRef, useState } from "react";
+import { useState } from "react";
 
-const Mventilador = ({ selectedSensorId }) => {
-  const { instruments, fetchInstruments, menuOpen, setMenuOpen } =
-    useMainContext();
-
+export default function DetailsVentilator({ sensorData }) {
+  const { fetchInstruments } = useMainContext();
   const [loading, setLoading] = useState(false);
   const [activeStates, setActiveStates] = useState({});
   const [valueStates, setValueStates] = useState({});
 
-  const filteredInstrument =
-    instruments.find((instrument) => instrument._id === selectedSensorId._id)
-      ?.groups || [];
-
-  const ref = useRef(null);
-
-  if (!selectedSensorId) {
-    return null;
-  }
   const updateValue = async (id, name) => {
     setLoading(true);
     const newActive = !activeStates[id];
@@ -61,10 +50,6 @@ const Mventilador = ({ selectedSensorId }) => {
 
   const handleInputChange = (event, id) => {
     const newValue = parseInt(event.target.value);
-
-   
-
-    // const newValue = parseFloat(event.target.value);
     setValueStates((prevStates) => ({
       ...prevStates,
       [id]: newValue,
@@ -72,18 +57,9 @@ const Mventilador = ({ selectedSensorId }) => {
   };
 
   return (
-    <div className="w-Details D-ventilador">
-      <div className="Details-header">
-        <h2>
-          <strong>{selectedSensorId.ubication}</strong>
-          <small> /Ubicación</small>
-        </h2>
-      </div>
-      <div className="Details-close">
-        <span onClick={() => setMenuOpen(!menuOpen)}>&times;</span>
-      </div>
-      <div className="Details-body Container-Ventilador" ref={ref}>
-        {filteredInstrument.map((i) => (
+    <div className="Details-body Container-Ventilador">
+      {sensorData &&
+        sensorData.groups.map((i) => (
           <div className="C-container" key={i._id}>
             <div className="C-Vent-img">
               <img src="/imgs/img-ventilador.png" alt="" />
@@ -155,7 +131,7 @@ const Mventilador = ({ selectedSensorId }) => {
                     ) : i.mode === "manual" && i.signal === "analog" ? (
                       <div className="value-slider">
                         <span className="slider-num">
-                           {valueStates[i._id] || i.value}% 
+                          {valueStates[i._id] || i.value}%
                         </span>
                         <input
                           type="range"
@@ -182,9 +158,6 @@ const Mventilador = ({ selectedSensorId }) => {
             </div>
           </div>
         ))}
-      </div>
     </div>
   );
-};
-
-export default Mventilador;
+}
