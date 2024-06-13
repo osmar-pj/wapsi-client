@@ -35,10 +35,10 @@ export default function Analysis() {
         </div>
       </div>
       {selectedTab === "avanzado" && <GraphicAdvance />}
-       {selectedTab === "basico" && <GraphicBasic />} 
-       {/* <div>
-        <GrapHig/>
-      </div>  */}
+      {selectedTab === "basico" && <GraphicBasic />}
+      
+        {/* <GrapHig /> */}
+      
     </section>
   );
 }

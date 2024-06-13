@@ -1,46 +1,48 @@
+import LegendIcon from "@/src/Icons/LegendIcon";
 import CardTitle from "@/src/components/Map/CardTitle";
 import Legend from "@/src/components/Map/Legend";
 import Map from "@/src/components/Map/Map";
 import { useMainContext } from "@/src/contexts/Main-context";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Subject } from "rxjs";
 import { io } from "socket.io-client";
 
 export default function Home() {
   const { authTokens, setInstruments } = useMainContext();
+  const [showInfo, setShowInfo] = useState(false);
 
   useEffect(() => {
     const socket = io(process.env.API_URL);
     const instrument$ = new Subject();
-    
+
     socket.on(`${authTokens?.empresa.toUpperCase()}`, (data) => {
-      console.log(data.name, data.value)    
+      // console.log(data.name, data.serie, data.ubication, new Date());
       instrument$.next(data);
     });
 
     const subscription = instrument$.subscribe((updatedData) => {
       if (updatedData && updatedData._id) {
-      setInstruments((prevInstruments) => {
-        const updatedInstruments = prevInstruments.map((instrument) => {
-          if (instrument.groups && Array.isArray(instrument.groups)) {
-            const foundIndex = instrument.groups.findIndex(
-              (group) => group._id === updatedData._id
-            );
-            if (foundIndex !== -1) {
-              const updatedGroup = {
-                ...instrument.groups[foundIndex],
-                ...updatedData,
-              };
-              const updatedGroups = [...instrument.groups];
-              updatedGroups[foundIndex] = updatedGroup;
-              return { ...instrument, groups: updatedGroups };
+        setInstruments((prevInstruments) => {
+          const updatedInstruments = prevInstruments.map((instrument) => {
+            if (instrument.groups && Array.isArray(instrument.groups)) {
+              const foundIndex = instrument.groups.findIndex(
+                (group) => group._id === updatedData._id
+              );
+              if (foundIndex !== -1) {
+                const updatedGroup = {
+                  ...instrument.groups[foundIndex],
+                  ...updatedData,
+                };
+                const updatedGroups = [...instrument.groups];
+                updatedGroups[foundIndex] = updatedGroup;
+                return { ...instrument, groups: updatedGroups };
+              }
             }
-          }
-          return instrument;
+            return instrument;
+          });
+          return updatedInstruments;
         });
-        return updatedInstruments;
-      });
-    }
+      }
     });
 
     return () => {
@@ -49,12 +51,23 @@ export default function Home() {
     };
   }, [authTokens, setInstruments]);
 
+  const handleClick = () => {
+    setShowInfo(!showInfo);
+  };
+
+  const handleCloseInfo = () => {
+    setShowInfo(false);
+  };
+
   return (
     <section className="w-Home">
-      <CardTitle/>
+      <CardTitle />
       <Map />
       {/* <Notification />       */}
-      <Legend/>
+      <button className="button-legend" onClick={handleClick}>
+       <LegendIcon/>  Leyenda
+      </button>
+      {showInfo && <Legend onClose={handleCloseInfo} />}
     </section>
   );
 }

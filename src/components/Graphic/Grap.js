@@ -1,105 +1,113 @@
 import { useEffect, useState } from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { DataGrafBasic, DataInstruments } from "@/src/libs/api";
-import { getYesterdayMidnight } from "@/src/libs/utils";
-import { addDays } from "date-fns";
+import { DataGrafBasic } from "@/src/libs/api";
 
 export default function GrapHig() {
-  const [instruments, setInstruments] = useState([]);
   const [allData, setAllData] = useState([]);
-  const [dataCSV, setDataCSV] = useState([]);
-  const [selectedOption, setSelectedOption] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [startDate, setStartDate] = useState(getYesterdayMidnight());
-  const [endDate, setEndDate] = useState(new Date());
 
   useEffect(() => {
-    async function fetchInstruments() {
-      try {
-        const data = await DataInstruments(authTokens?.token);
-        const dataFiltrada = data.filter((i) => i.type === "sensor");
-        setInstruments(dataFiltrada);
-        if (dataFiltrada.length > 0) {
-          handleInstrumentChange({ value: dataFiltrada[0]._id });
-        }
-      } catch (error) {
-        console.error("Error fetching instruments:", error);
-      }
-    }
-    fetchInstruments();
-  }, [authTokens]);
-
-  const handleInstrumentChange = (option) => {
-    setSelectedOption(option.value);
-  };
-
-  useEffect(() => {
-    if (!selectedOption || !startDate || !endDate) {
-      return;
-    }
     const fetchGrafBasic = async () => {
       setIsLoading(true);
       try {
         const data = await DataGrafBasic(
-          selectedOption,
-          startDate.getTime(),
-          endDate.getTime()
+          "661571e837aa86c1166f14eb",
+          1712725200000,
+          1713416400000
         );
-        setAllData(data);
-        const formattedData = data.data?.map((item) => ({
-          x: item.ts * 1000, // Convertir el timestamp a milisegundos
-          y: parseFloat(item.value.toFixed(2)),
-        }));
-        setDataCSV(formattedData);
+        console.log(data);
+        setAllData(data?.data);
       } finally {
         setIsLoading(false);
       }
     };
     fetchGrafBasic();
-  }, [selectedOption, startDate, endDate]);
+  }, []);
+
+  const newData = allData?.map((item) => [item.ts * 1000, item.value]);
+
+  // Calcular las fechas únicas de la data
+  const uniqueDates = [
+    ...new Set(allData?.map((item) => new Date(item.ts * 1000).toDateString())),
+  ];
+
+  // Crear las bandas para cada día
+  const plotBands = uniqueDates.map((dateString) => {
+    const date = new Date(dateString);
+
+    const startOfDay = new Date(date);
+    startOfDay.setHours(7, 0, 0, 0);
+    startOfDay.setTime(startOfDay.getTime() - 5 * 60 * 60 * 1000);
+
+    const endOfDay = new Date(date);
+    endOfDay.setHours(19, 0, 0, 0);
+    endOfDay.setTime(endOfDay.getTime() - 5 * 60 * 60 * 1000);
+
+    return {
+      from: startOfDay.getTime(),
+      to: endOfDay.getTime(),
+      color: "#D8DCFFbb",
+      label: {
+        zIndex: 6,
+        text: "07:00 hrs",
+        align: "left",
+        x: 0,
+        y: 60,
+        rotation: -90,
+
+        style: {
+          fontSize: "10px",
+          padding: "3px",
+        },
+        format:
+          '<div style="background-color: #FEB019; padding: 2px; border-radius: 3px;">{value}</div>',
+      },
+    };
+  });
 
   const options = {
     chart: {
-      type: "line",
-      fontFamily: "'__Sora_fdd6c4', '__Sora_Fallback_fdd6c4'",
-      margin: 0,
-      timezone: "America/Lima",
+      zoomType: "x",
+      style: {
+        fontFamily: "'__Sora_fdd6c4', '__Sora_Fallback_fdd6c4'",
+      },
+    },
+    rangeSelector: {
+      selected: 1,
     },
     title: {
-      text: "Ejemplo de gráfico de línea con anotaciones",
+      text: "Ejemplo",
     },
     xAxis: {
       type: "datetime",
+      plotBands: plotBands,
       labels: {
         style: {
-          color: "#6e6d7a",
+          colors: "#6e6d7a",
           fontSize: "10px",
         },
       },
-      tickInterval: 24 * 3600 * 1000, // Intervalo entre las etiquetas en milisegundos (en este caso, 1 día)
     },
     yAxis: {
       title: {
-        text: "Valor",
+        enabled: false,
       },
       labels: {
         style: {
-          color: "#6e6d7a",
+          colors: "#6e6d7a",
           fontSize: "10px",
         },
       },
-      min: allData.range?.min,
-      max: allData.range?.max,
     },
-    plotOptions: {
+    navigator: {
       series: {
-        marker: {
-          enabled: true,
-          symbol: "circle",
+        accessibility: {
+          exposeAsGroupOnly: true,
         },
       },
     },
+
     tooltip: {
       xDateFormat: "%d/%m/%Y %H:%M",
       formatter: function () {
@@ -113,24 +121,39 @@ export default function GrapHig() {
       },
     },
     legend: {
-      enabled: true,
-      layout: "horizontal",
-      align: "center",
-      verticalAlign: "top",
+      enabled: false,
     },
     series: [
       {
-        name: "Series 1",
-        data: allData?.data?.map((item) => ({
-          x: item.ts * 1000, // Convertir el timestamp a milisegundos
-          y: parseFloat(item.value.toFixed(2)),
-        })),
+        name: "AAPL Stock Price",
+        data: newData,
+        type: "line",
+        threshold: null,
+        tooltip: {
+          valueDecimals: 2,
+        },
+        zones: [
+          {
+            value: 0,  // Valor más pequeño posible
+            color: "red",
+          },
+          {
+            value: 21,
+            color: "yellow",
+          },
+          {
+            value: 17,
+            color: "green",
+          },
+        ],
+        
+        
       },
     ],
   };
 
   return (
-    <div>
+    <div className="container-chart highcharts-figure">
       <HighchartsReact highcharts={Highcharts} options={options} />
     </div>
   );

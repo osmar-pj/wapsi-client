@@ -71,6 +71,7 @@ export async function DataControllers(token) {
 }
 
 export async function DataGrafBasic(selectedOption, startDate, endDate) {
+
   try {
     const response = await fetch(
       `${process.env.API_URL}/api/v1/bigdata?instrumentId=${selectedOption}&start=${startDate}&end=${endDate}`,
@@ -271,13 +272,36 @@ export async function DataCompanys (token) {
    
   } catch (error) {
     console.error("Error en la solicitud:", error);
-    
   }
 };
 
 export async function DataUsers (token) {
   try {
     const response = await fetch(`${process.env.API_URL}/api/v1/user`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "x-access-token": token,
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    } else {
+      console.error("Error al obtener datos:", response.statusText);
+    }
+   
+  } catch (error) {
+    console.error("Error en la solicitud:", error);
+    
+  }
+};
+
+export async function DataRoles (token) {
+  try {
+    const response = await fetch(`${process.env.API_URL}/api/v1/role`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

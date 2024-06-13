@@ -3,7 +3,6 @@ import { ValidLogin } from "@/src/hooks/ValidLogin";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 
-
 export default function Login() {
   const { login } = useMainContext();
   const [loading, setLoading] = useState(false);
@@ -142,9 +141,7 @@ export default function Login() {
             <h4>Código inválido, inténtelo de nuevo</h4>
           </div>
         </div>
-        <div>
-      
-        </div>
+        <div></div>
         <button
           type="submit"
           className="btn-success"
@@ -158,7 +155,11 @@ export default function Login() {
             "Ingresar"
           )}
         </button>
-        <span></span>
+        {showError && (
+          <div className="error-message">
+            Por favor ingresa todos los códigos.
+          </div>
+        )}
       </form>
     </section>
   );

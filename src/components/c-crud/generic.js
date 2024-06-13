@@ -59,6 +59,7 @@ function GenericList({
     return ` ${day} ${monthNames[monthIndex]} ${year}, ${formattedHours}:${formattedMinutes}`;
   }
 
+
   const userColumns = [
     {
       header: "Usuario",
@@ -90,7 +91,7 @@ function GenericList({
       header: "Roles",
       accessorKey: "roles",
       cell: ({ row }) => {
-        return <h4>{row.original.roles[0].name}</h4>;
+        return <h4>{row.original.roles[0]?.name}</h4>;
       },
     },
 

@@ -32,8 +32,7 @@ export default function GraphicAdvance() {
   useEffect(() => {
     async function fetchInstruments() {
       const data = await DataGroups(authTokens.token);
-      const newData = data
-        .map((item) =>
+      const newData = data?.map((item) =>
           item.groups
             .filter((group) => group.name === "CO")
             .map((group) => ({
@@ -46,7 +45,7 @@ export default function GraphicAdvance() {
 
       setInstruments(newData);
       
-      if (newData.length > 0) {
+      if (newData?.length > 0) {
         setSelectedOption(newData[0]._id);
       }
     }
@@ -249,7 +248,7 @@ export default function GraphicAdvance() {
             isClearable={false}
             onChange={handleChange}
             options={optionsInstruments}
-            value={optionsInstruments.find(
+            value={optionsInstruments?.find(
               (option) => option.value === selectedOption
             )}
             placeholder="Seleccione..."

@@ -194,7 +194,7 @@ html[dir] .dark ::-webkit-scrollbar-track {
 
 h1 {
   color: var(--black);
-  font-size: clamp(10px, 8vw, 18px);
+  font-size: clamp(10px, 8vw, 16px);
   line-height: 1.2rem;
 
   @include md {

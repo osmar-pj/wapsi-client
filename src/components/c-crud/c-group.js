@@ -19,7 +19,6 @@ export default function CreateController({
     setLoading(true);
     try {
       const data = await DataInstruments(authTokens.token);
-      console.log(data);
       setInstruments(data);
     } finally {
       setLoading(false);

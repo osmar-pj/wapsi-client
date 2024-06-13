@@ -19,6 +19,7 @@ export default function View({
   setIsCreateUser,
   loading,
 }) {
+  
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
   const pageSize = table.getState().pagination.pageSize;
   const pageCount = table.getPageCount();
@@ -151,40 +152,40 @@ export default function View({
             </thead>
 
             <tbody>
-              {loading
-                ? Array.from({ length: 9 }).map((_, index) => (
-                    <tr key={`loading-row-${index}`}>
-                      {table
-                        .getHeaderGroups()[0]
-                        .headers.map((i, columnIndex) => (
-                          <td key={`loading-cell-${index}-${columnIndex}`}>
-                            <div className="thumb pulse"></div>
-                          </td>
-                        ))}
-                    </tr>
-                  ))
-                : table
-                    .getRowModel()
-                    .rows.map((row, index) => (
-                      <motion.tr
-                        key={`data-row-${row.id}`}
-                        initial={{ opacity: 0, y: "-0.9em" }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.4, delay: index * 0.04 }}
-                      >
-                        <td className="td-id">
-                          <span>#{index + 1}</span>
+              {loading ? (
+                Array.from({ length: 9 }).map((_, index) => (
+                  <tr key={`loading-row-${index}`}>
+                    {table
+                      .getHeaderGroups()[0]
+                      .headers.map((i, columnIndex) => (
+                        <td key={`loading-cell-${index}-${columnIndex}`}>
+                          <div className="thumb pulse"></div>
                         </td>
-                        {row.getVisibleCells().map((cell) => (
-                          <td key={cell.id}>
-                            {flexRender(
-                              cell.column.columnDef.cell,
-                              cell.getContext()
-                            )}
-                          </td>
-                        ))}
-                      </motion.tr>
+                      ))}
+                  </tr>
+                ))
+              ) : (
+                table.getRowModel().rows.map((row, index) => (
+                  <motion.tr
+                    key={`data-row-${row.id}`}
+                    initial={{ opacity: 0, y: "-0.9em" }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: index * 0.04 }}
+                  >
+                    <td className="td-id">
+                      <span>#{index + 1}</span>
+                    </td>
+                    {row.getVisibleCells().map((cell) => (
+                      <td key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </td>
                     ))}
+                  </motion.tr>
+                ))
+              ) }
             </tbody>
           </table>
         </div>

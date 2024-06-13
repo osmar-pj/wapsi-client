@@ -1,9 +1,9 @@
 .w-Foot {
   width: auto;
-  height: 5vh;
+  height: 3vh;
   bottom: 0;
   position: fixed;
-  padding: 0 4vw;
+  left: 6vw;
   z-index: 1;
   display: flex;
   justify-content: flex-start;
@@ -15,5 +15,9 @@
     @include md {
       font-size: clamp(6px, 8vw, 10px);
     }
+  }
+  @include md {
+    height: 5vh;
+    left: 4vw;
   }
 }

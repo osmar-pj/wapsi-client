@@ -1,8 +1,9 @@
 import { useMainContext } from "@/src/contexts/Main-context";
-import { useEffect, useState } from "react";
 import ImageMarker from "react-image-marker";
 import { ImageMap } from "./ImageMap";
 import Marker from "./Marker";
+import { useState, useEffect } from "react";
+import SensorsMobile from "../SensorMobile";
 
 export default function Map() {
   const machineImage = ImageMap();
@@ -26,18 +27,21 @@ export default function Map() {
           <span className="loader"></span>
         </>
       ) : (
-        <div className="Map-content">
-          <ImageMarker
-            src={machineImage}
-            markers={instruments?.map((sensorData, index) => ({
-              top: parseInt(sensorData.instrumentPosition.x),
-              left: parseInt(sensorData.instrumentPosition.y),
-              sensorData: sensorData,
-              index,
-            }))}
-            markerComponent={Marker}
-          />
-        </div>
+        <>
+          <div className="Map-content">
+            <ImageMarker
+              src={machineImage}
+              markers={instruments?.map((sensorData, index) => ({
+                top: parseInt(sensorData.instrumentPosition.x),
+                left: parseInt(sensorData.instrumentPosition.y),
+                sensorData: sensorData,
+                index,
+              }))}
+              markerComponent={Marker}
+            />
+          </div>
+          <SensorsMobile />
+        </>
       )}
     </div>
   );

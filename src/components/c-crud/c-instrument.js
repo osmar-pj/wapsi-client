@@ -19,7 +19,6 @@ export default function CreateController({
     setLoading(true);
     try {
       const data = await DataControllers(authTokens.token);
-      console.log(data);
       if (data !== null) {
         setController(data.controllers);
       }

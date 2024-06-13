@@ -63,7 +63,7 @@ export default function GraphicBasic() {
   }, [selectedUbication, instruments]);
   
 
-  console.log(selectedUbication, selectedInstrument);
+  // console.log(selectedUbication, selectedInstrument);
 
   const optionsUbications = [
     ...new Set(instruments.map((instrument) => instrument.ubication)),

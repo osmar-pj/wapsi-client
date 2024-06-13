@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useMainContext } from "@/src/contexts/Main-context";
-import { DataCompanys } from "@/src/libs/api";
+import { DataCompanys, DataRoles } from "@/src/libs/api";
 
-import { Select } from "antd";
+import Select from "react-select";
 import Crud from "./c-crud";
 
 export default function CreateUser({
@@ -14,14 +14,20 @@ export default function CreateUser({
 }) {
   const { authTokens } = useMainContext();
   const [companys, setCompanys] = useState([]);
-
+  const [listRoles, setlistRoles] = useState([]);
+  
   useEffect(() => {
     const fetchDataCompanys = async () => {
       const data = await DataCompanys(authTokens.token);
       setCompanys(data);
     };
 
+    const fetchDataRoles = async () => {
+      const data = await DataRoles(authTokens.token);
+      setlistRoles(data);
+    };
     fetchDataCompanys();
+    fetchDataRoles();
   }, []);
 
   const initialValues = isCreateUser
@@ -37,7 +43,7 @@ export default function CreateUser({
         name: userToEdit.name,
         lastname: userToEdit.lastname,
         dni: userToEdit.dni,
-        roles: userToEdit.roles.map((rol) => rol._id),
+        roles: userToEdit,
       };
 
   const [formData, setFormData] = useState(initialValues);
@@ -49,7 +55,7 @@ export default function CreateUser({
         name: userToEdit.name,
         lastname: userToEdit.lastname,
         dni: userToEdit.dni,
-        roles: userToEdit.roles.map((rol) => rol._id),
+        roles: userToEdit
       });
     }
   }, [isCreateUser, userToEdit]);
@@ -59,27 +65,30 @@ export default function CreateUser({
     label: emp.name,
   }));
 
+  const optionsRoles = listRoles?.map((emp) => ({
+    value: emp._id,
+    label: emp.name,
+  }));
 
-  const optionsRoles = [
-    { value: "64b71f2871d55d7edf317942", label: "user" },
-    { value: "64b71f2871d55d7edf317943", label: "moderator" },
-  ];
+  // const optionsRoles = [
+  //   { value: "64b71f2871d55d7edf317942", label: "user" },
+  //   { value: "64b71f2871d55d7edf317943", label: "moderator" },
+  // ];
 
-  const handleRolesChange = (selectedOptions) => {
-    const selectedRoleValues = selectedOptions.map((option) => option.id);
+  console.log(formData);
+
+  const handleCompanyChange = (selectedOption) => {
     setFormData({
       ...formData,
-      roles: selectedRoleValues,
+      empresa: selectedOption.value,
     });
   };
 
-  console.log(formData)
-
-  const handleCompanyChange = (selectedOption) => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      empresa: selectedOption.value,
-    }));
+  const handleRolesChange = (selectedOptions) => {
+    setFormData({
+      ...formData,
+      roles: selectedOptions.value,
+    });
   };
 
   return (
@@ -147,10 +156,15 @@ export default function CreateUser({
         <label>Empresa</label>
         <div className="imputs-i-input">
           <Select
-            name="period"
-            onSelect={handleCompanyChange}
-            value={optionsEmpresas ? optionsEmpresas.find((opt) => opt.value === formData.empresa) : null}
-
+            instanceId="react-select-instance"
+            name="empresa"
+            classNamePrefix="custom-select"
+            isSearchable={false}
+            isClearable={false}
+            onChange={handleCompanyChange}
+            value={optionsEmpresas?.find(
+              (opt) => opt.value === formData.empresa
+            )}
             placeholder="Seleccione..."
             options={optionsEmpresas}
           />
@@ -160,18 +174,21 @@ export default function CreateUser({
         <label>Rol</label>
         <div className="imputs-i-input">
           <Select
+            instanceId="react-select-instance"
             name="roles"
-            mode="multiple"
+            classNamePrefix="custom-select"
+            isSearchable={false}
+            isClearable={false}
             maxCount={3}
             style={{
-              width: '100%',
+              width: "100%",
             }}
             onChange={handleRolesChange}
-            value={optionsRoles?.find((opt) =>
-              formData.roles.includes(opt.name)
-            )}
+            // value={optionsRoles?.find((opt) =>
+            //   formData.roles.includes(opt.name)
+            // )}
+            value={optionsRoles?.find((opt) => opt.value === formData.roles)}
             placeholder="Seleccione..."
-            
             required
             options={optionsRoles}
           />

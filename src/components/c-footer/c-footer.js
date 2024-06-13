@@ -6,7 +6,7 @@ export default function Foot() {
       <footer className="w-Foot">
         <p className="marquee-text">
           Derechos reservados
-          <br />© 2024 Gunjop
+         © 2024 Gunjop
         </p>
       </footer>
     </>

@@ -3,9 +3,10 @@ import { useMainContext } from "@/src/contexts/Main-context";
 import IconVentilator from "@/src/IconsMap/IconVentilator";
 import IconSensor from "@/src/IconsMap/IconSensor";
 import IconLed from "@/src/IconsMap/IconLed";
+import Close from "@/src/Icons/close";
 
 
-export default function Legend() {
+export default function Legend({onClose}) {
   const { authTokens } = useMainContext();
   const [empresa, setEmpresa] = useState("");
 
@@ -17,7 +18,12 @@ export default function Legend() {
 
   return (
     <div className="container-legend">
-      <h3>Leyenda del Mapa</h3>
+      <h3>Leyenda de Instrumentos</h3>
+      <div className="Details-close">
+        <button className="btn-close" onClick={onClose}>
+          <Close/>
+        </button>
+      </div>
       <div className="c-l-icons">
         <div className="icon-item">
           <IconVentilator color={"#0bb97d"} />

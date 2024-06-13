@@ -1,9 +1,9 @@
 .c-header {
   width: 100%;
-  height: 10vh;
+  height: 8vh;
   top: 0;
   padding: 2vh 2vw;
-  z-index: 2;
+  z-index: 9;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -82,11 +82,11 @@
     }
   }
   .admAvatar {
-    height: 45px;
+    height: auto;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 1.25rem;
+    padding: .5rem 1.25rem;
     gap: 0.5rem;
     background-color: var(--black);
     border-radius: 12px;
@@ -156,7 +156,7 @@
             min-width: 150px;
             top: 170%;
             right: 0;
-            z-index: 1;
+            z-index: 9;
 
             padding: 5px;
             box-shadow: 0 1px 4px 1px var(--grey-light-2),
@@ -207,7 +207,12 @@
 
     @include md {
       gap: 1rem;
+      padding: .8rem 1.25rem;
+      height: 45px;
     }
+  }
+  @include md {
+    height: 10vh;
   }
 }
 

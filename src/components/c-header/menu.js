@@ -68,7 +68,7 @@ export default function Menu() {
         className="dropdownButton"
         onClick={() => {
           setOpen((prevOpen) => !prevOpen);
-          console.log("val:", open);
+         
         }}
         style={open ? { transform: "scale(0.95)" } : {}}
       >
