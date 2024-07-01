@@ -392,7 +392,6 @@ export default function GraphicBasic() {
           <Chart options={options} series={series} type="line" height={700} />
           {/* <Chart options={brushOptions} series={series} type="area" height={70} /> */}
         </div>
-
         <div className="container-table">
           <table>
             <thead>

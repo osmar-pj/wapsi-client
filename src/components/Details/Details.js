@@ -13,6 +13,9 @@ const DynamicComponent = React.memo(({ sensorData }) => {
     case "ventilador":
       Component = DetailsVentilator;
       break;
+    case "caja":
+      Component = DetailsSensor;
+      break;
     default:
       break;
   }
@@ -20,20 +23,27 @@ const DynamicComponent = React.memo(({ sensorData }) => {
   return Component ? <Component sensorData={sensorData} /> : null;
 });
 
-export default function Details({ sensorData, onClose,closeDisabled }) {
-
-
-
+export default function Details({ sensorData, onClose, closeDisabled }) {
   return (
-    <div className="w-Details" style={{ bottom: `${sensorData.cardPosition.x}`, right: `${sensorData.cardPosition.y}` }}>
+    <div
+      className="w-Details"
+      style={{
+        bottom: `${sensorData.cardPosition.x}`,
+        right: `${sensorData.cardPosition.y}`,
+      }}
+    >
       <div className="Details-header">
         <h2>
           {sensorData.ubication} <small>/Ubicación</small>
         </h2>
       </div>
       <div className="Details-close">
-        <button className="btn-close" onClick={onClose} disabled={closeDisabled}>
-          <Close/>
+        <button
+          className="btn-close"
+          onClick={onClose}
+          disabled={closeDisabled}
+        >
+          <Close />
         </button>
       </div>
       <div className="Details-body">

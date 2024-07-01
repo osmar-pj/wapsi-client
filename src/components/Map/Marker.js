@@ -4,11 +4,13 @@ import IconSensor from "@/src/IconsMap/IconSensor";
 import IconVentilator from "@/src/IconsMap/IconVentilator";
 import Details from "../Details/Details";
 import { getBackgroundColor, getSeed } from "@/src/libs/utils";
+import IconCaja from "@/src/IconsMap/IconCaja";
 
 const iconComponentMap = {
   monitor: IconSensor,
   ventilador: IconVentilator,
   "3led": IconLed,
+  caja: IconCaja,
 };
 
 const Marker = ({ sensorData, index }) => {
@@ -48,16 +50,15 @@ const Marker = ({ sensorData, index }) => {
     }
   };
 
-useEffect(() => {
-  const modalType = getModal(sensorData.groups);
-  if (modalType === "encontre alerta") {
-    setShowInfo(true);
-    setCloseDisabled(true);
-  } else {
-    setCloseDisabled(false); 
-  }
-}, [sensorData.groups]);
-
+  useEffect(() => {
+    const modalType = getModal(sensorData.groups);
+    if (modalType === "encontre alerta") {
+      setShowInfo(true);
+      setCloseDisabled(true);
+    } else {
+      setCloseDisabled(false);
+    }
+  }, [sensorData.groups]);
 
   const speed = getSeed(sensorData.groups) || 0;
   const IconComponent = iconComponentMap[sensorData.img];
@@ -83,7 +84,11 @@ useEffect(() => {
         </div>
       </div>
       {showInfo && (
-        <Details sensorData={sensorData} onClose={handleCloseInfo} closeDisabled={closeDisabled}/>
+        <Details
+          sensorData={sensorData}
+          onClose={handleCloseInfo}
+          closeDisabled={closeDisabled}
+        />
       )}
     </>
   );

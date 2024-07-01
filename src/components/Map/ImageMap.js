@@ -15,6 +15,7 @@ export const ImageMap = () => {
       JULCANI: "/imgs/mapJulcani.svg",
       YUMPAG: "/imgs/mapYumpag.svg",
       HUARON: "/imgs/mapHuaron.svg",
+      LUNDING: "/imgs/mapLUNDING.svg",
     };
   
     const imageSrc = empresaImageMap[empresa] || "/imgs/mapYumpag.svg";

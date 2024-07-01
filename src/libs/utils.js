@@ -39,7 +39,6 @@ export function timeToLocal(originalTime) {
   return d.getTime(); // Devolver el tiempo local en milisegundos
 }
 
-
 export function formartTime(totalMinutos) {
   const horas = Math.floor(totalMinutos / 60);
   const minutos = totalMinutos % 60;
