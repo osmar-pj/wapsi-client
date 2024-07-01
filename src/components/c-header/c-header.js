@@ -11,10 +11,11 @@ export default function Header() {
 
   useEffect(() => {
     if (authTokens) {
+      console.log(authTokens);
       const empresa = authTokens?.empresa;
       if (empresa === "HUARON") {
         setEmpresa("/imgs/logo-Huaron.svg");
-      } else if (empresa === "LUNDING") {
+      } else if (empresa.includes("LUNDIN")) {
         setEmpresa("/imgs/logo-LUNDING.svg");
        } else {
         setEmpresa("/imgs/logo-buena.svg");
