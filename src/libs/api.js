@@ -132,7 +132,7 @@ export async function DataGrafAdvance(selectedOption) {
 export async function DataRelations(token) {
   try {
     const response = await fetch(
-      `${process.env.API_URL}/api/v1/relation`,
+      `${process.env.API_URL}/api/v1/ `,
       {
         method: "GET",
         headers: {
