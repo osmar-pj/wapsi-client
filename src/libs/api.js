@@ -253,7 +253,7 @@ export async function UpdateVentilator(id, newData) {
 }
 
 export async function UpdateVentilatorSC(token, newData) {
-  console.log(newData);
+
   try {
     const response = await fetch(
       `${process.env.API_URL}/api/v1/image/vent`,

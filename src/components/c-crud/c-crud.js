@@ -90,7 +90,7 @@ function Crud(props) {
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
+        // console.log(data);
         if (data.status === true) {
           refetchData();
           setSuccess(true);

@@ -27,7 +27,7 @@ export default function DeleteDrag({ fetchRelations, setDeleted, id }) {
       if (response.ok) {
         try {
           const data = await response.json();
-          console.log(data);
+       
   
           if (data.status === true) {
             fetchRelations();

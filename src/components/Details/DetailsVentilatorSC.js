@@ -24,10 +24,10 @@ export default function DetailsVentilatorSC({ sensorData }) {
       };
     }
 
-    console.log(newData);
+    // console.log(newData);
     try {
       const data = await UpdateVentilatorSC(authTokens.token, newData);
-      console.log(data);
+      // console.log(data);
       //   if (data.status === true) {
       //     fetchInstruments();
       //   }
@@ -47,10 +47,10 @@ export default function DetailsVentilatorSC({ sensorData }) {
       stop: true,
     };
 
-    console.log(newData);
+   
     try {
       const data = await UpdateVentilatorSC(authTokens.token, newData);
-      console.log(data);
+     
       if (data.status === true) {
         fetchInstruments();
       }

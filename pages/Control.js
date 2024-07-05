@@ -25,7 +25,7 @@ export default function Control() {
   const fetchRelations = async () => {
     try {
       const data = await DataRelations(authTokens?.token);
-      console.log(data);
+      // console.log(data);
       if (data && data.relations) {
         setRelations(data.relations);
       } else {
