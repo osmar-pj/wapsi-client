@@ -20,6 +20,8 @@ export default function Map() {
     image.src = machineImage;
   }, [machineImage]);
 
+  // console.log(instruments)
+
   return (
     <div className="Home-image">
       {isLoading ? (

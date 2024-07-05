@@ -1,6 +1,6 @@
-# FROM --platform=amd64 node:18
+FROM --platform=amd64 node:20
 # to work in mac
-FROM node:18
+# FROM node:20
 
 # Directorio de trabajo dentro del contenedor
 WORKDIR /app
