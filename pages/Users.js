@@ -21,7 +21,7 @@ export default function Users() {
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
+        // console.log(data);
         setUsers(data);
       } else {
         console.error("Error al obtener datos:", response.statusText);

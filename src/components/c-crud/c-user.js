@@ -75,7 +75,7 @@ export default function CreateUser({
   //   { value: "64b71f2871d55d7edf317943", label: "moderator" },
   // ];
 
-  console.log(formData);
+  // console.log(formData);
 
   const handleCompanyChange = (selectedOption) => {
     setFormData({

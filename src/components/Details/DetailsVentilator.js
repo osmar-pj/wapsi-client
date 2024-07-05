@@ -1,12 +1,13 @@
 import { useMainContext } from "@/src/contexts/Main-context";
-import { UpdateVentilator } from "@/src/libs/api";
+import { UpdateInstrument, UpdateVentilator } from "@/src/libs/api";
 import { useState } from "react";
 
 export default function DetailsVentilator({ sensorData }) {
-  const { fetchInstruments } = useMainContext();
+  const { fetchInstruments, authTokens } = useMainContext();
   const [loading, setLoading] = useState(false);
   const [activeStates, setActiveStates] = useState({});
   const [valueStates, setValueStates] = useState({});
+  const [message, setMessage] = useState("Nombre")
 
   const updateValue = async (id, name) => {
     setLoading(true);
@@ -23,13 +24,15 @@ export default function DetailsVentilator({ sensorData }) {
 
     try {
       const data = await UpdateVentilator(id, newData);
+      console.log(data.instrument.value);
       if (data?.status === true) {
         fetchInstruments();
       }
+      setMessage("")
     } finally {
       setTimeout(() => {
         setLoading(false);
-      }, 1000);
+      }, 10000);
     }
   };
 
@@ -54,6 +57,24 @@ export default function DetailsVentilator({ sensorData }) {
       ...prevStates,
       [id]: newValue,
     }));
+  };
+
+  const updateMode = async (id, currentMode) => {
+    setLoading(true);
+    const newMode = currentMode === "auto" ? "manual" : "auto";
+    try {
+      const data = await UpdateInstrument(authTokens.token, id, {
+        mode: newMode,
+      });
+    
+      if (data.status === true) {
+        fetchInstruments();
+      }
+    } finally {
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
+    }
   };
 
   return (
@@ -119,13 +140,11 @@ export default function DetailsVentilator({ sensorData }) {
                       <>
                         <button
                           className={`btn-switch ${
-                            activeStates[i._id] ? "b-azul" : ""
+                            i.value === 1 ? "b-azul" : ""
                           }`}
                           onClick={() => updateValue(i._id, i.name)}
                         >
-                          <span>
-                            {activeStates[i._id] ? "Encendido" : "Prender"}
-                          </span>
+                          <span>{i.value === 1 ? "Encendido" : "Prender"}</span>
                         </button>
                       </>
                     ) : i.mode === "manual" && i.signal === "analog" ? (
@@ -155,6 +174,34 @@ export default function DetailsVentilator({ sensorData }) {
                   </>
                 )}
               </div>
+             
+              {/* <div className="">{i.value === 0 ? "apagado " : "prendido "}
+              {message}{i.value}
+              </div> */}
+              {loading ? (
+                <div className="background-loader">
+                  <span className="loader"></span>
+                </div>
+              ) : (
+                <>
+                  <div className="boton-venti">
+                    <button
+                      className={`btn-mode ${
+                        i.mode === "manual" ? "sw-ac" : ""
+                      }`}
+                      onClick={() => updateMode(i._id, i.mode)}
+                    >
+                      <span>Manual</span>
+                    </button>
+                    <button
+                      className={`btn-mode ${i.mode === "auto" ? "sw-ac" : ""}`}
+                      onClick={() => updateMode(i._id, i.mode)}
+                    >
+                      <span>Auto</span>
+                    </button>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         ))}

@@ -12,11 +12,21 @@ export default function CardTitle() {
     }
   }, [authTokens]);
 
+
+  let imageSrc = "/imgs/slogan-DEFAULT.png";
+
+  if (empresa.includes("LUNDIN")) {
+    imageSrc = "/imgs/slogan-LUNDING.png";
+  } else if (empresa.includes("YUMPAG")) {
+    imageSrc = "/imgs/slogan-DEFAULT.png";
+  } 
+
   return (
     <div className="Home-title">
-      <h1>Unidad Minera {empresa}</h1>
-      <span>Monitoreo de gases en tiempo real </span>
-      <img src="imgs/warning.svg" className="img-warning" alt="" />
+      <h1>Sistema Wapsi Control </h1>
+      {/* <h3>{empresa}</h3> */}
+      <span>Ubicación en tiempo real </span>
+      <img src={imageSrc} className="img-warning" alt="" />
     </div>
   );
 }

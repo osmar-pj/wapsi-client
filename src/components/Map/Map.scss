@@ -25,7 +25,15 @@
     h1 {
       text-transform: capitalize;
       text-align: center;
+     
+    }
+    h3{
+      font-size: clamp(5px, 8vw, 11px);
+      font-weight: bold;
+      text-align: center;
       @include md {
+        font-size: clamp(6px, 8vw, 15px);
+        line-height: 1rem;
       }
     }
     span {
@@ -44,7 +52,8 @@
       height: 2rem;
       transform: translateX(-50%);
       @include md {
-        height: 2.5rem;
+        height: auto;
+        width: 15rem;
       }
     }
 
@@ -203,7 +212,7 @@
 
         @include md {
           border-radius: 8px;
-          padding: 0.8rem;
+          padding: 0.5rem;
         }
       }
     }

@@ -1,9 +1,10 @@
 .w-Details {
   position: absolute;
-  z-index: 8;
+  z-index: 12;
 
   width: 300px;
-  height: 35vh;
+ 
+  max-height: 48vh;
   bottom: 0;
   right: 0;
 

@@ -845,12 +845,11 @@ section {
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3) !important;
 
   z-index: 50 !important;
-  overflow: auto !important; 
+  overflow: auto !important;
   overscroll-behavior: contain !important;
- 
-  
+
   transform-origin: top !important;
- 
+
   transition-property: opacity, scale, translate !important;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
   transition-duration: 100ms !important;
@@ -1126,14 +1125,14 @@ section {
     gap: 1rem;
     width: 100%;
     .C-Vent-img {
-      width: 120px;
-      height: 120px;
+      width: 80px;
+      height: 80px;
       overflow: hidden;
       display: grid;
       place-items: center;
       img {
-        width: 100px;
-        height: 100px;
+        width: 80px;
+        height: 80px;
       }
     }
     .C-Vent-info {
@@ -1773,20 +1772,18 @@ section {
   border-radius: 6px;
 }
 
-
 .App {
   font-family: sans-serif;
   top: 0;
   position: absolute;
 }
 
-
-.ant-select{
+.ant-select {
   width: 100%;
   height: 40px;
 }
 
-.ant-select-selector{
+.ant-select-selector {
   border-radius: 10px !important;
   font-family: "__Sora_fdd6c4", "__Sora_Fallback_fdd6c4" !important;
   font-size: clamp(7px, 8vw, 12.5px) !important;
@@ -1798,6 +1795,26 @@ section {
   font-size: clamp(7px, 8vw, 12.5px) !important;
 }
 
-.ant-select-selection-item{
+.boton-venti {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2;
+  
+  background-color: #edf1f3;
+  border-radius: 10px;
+  padding: .25rem;
+  button{
+    border-radius: 8px;
+    height: 30px;
+    font-size: clamp(7px, 8vw, 11.5px);
+    width: 50%;
 
+  }
+}
+.sw-ac{
+  background-color: var(--white);
+}
+.sw-des{
+  color: var(--grey-2);
 }

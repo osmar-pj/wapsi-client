@@ -29,7 +29,7 @@ function Crud(props) {
   };
 
   const handleCreateUser = async () => {
-    console.log(formData);
+    // console.log(formData);
     if (
       Object.values(formData).some((value) => value === "" || value === null)
     ) {
@@ -71,7 +71,7 @@ function Crud(props) {
   };
 
   const handleUpdateUser = async () => {
-    console.log(formData);
+    // console.log(formData);
     try {
       setButtonClicked(true);
       const response = await fetch(

@@ -48,7 +48,7 @@ export default function CreateController({
         installation: "",
       }
     : {
-        groups: userToEdit.groups.map((i) => i._id),
+        groups: [],
         name: userToEdit.name,
         description: userToEdit.description,
         img: userToEdit.img,
@@ -69,7 +69,7 @@ export default function CreateController({
   useEffect(() => {
     if (!isCreateUser && userToEdit) {
       setFormData({
-        groups: userToEdit.groups.map((i) => i._id),
+        groups: [],
         name: userToEdit.name,
         description: userToEdit.description,
         img: userToEdit.img,

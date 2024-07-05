@@ -132,7 +132,7 @@ export async function DataGrafAdvance(selectedOption) {
 export async function DataRelations(token) {
   try {
     const response = await fetch(
-      `${process.env.API_URL}/api/v1/ `,
+      `${process.env.API_URL}/api/v1/relation`,
       {
         method: "GET",
         headers: {
@@ -236,6 +236,33 @@ export async function UpdateVentilator(id, newData) {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
+        },
+        body: JSON.stringify(newData),
+      }
+    );
+
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    } else {
+      console.error("Error en la petición");
+    }
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+
+export async function UpdateVentilatorSC(token, newData) {
+  console.log(newData);
+  try {
+    const response = await fetch(
+      `${process.env.API_URL}/api/v1/image/vent`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          "x-access-token": token,
         },
         body: JSON.stringify(newData),
       }

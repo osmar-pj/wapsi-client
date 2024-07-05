@@ -72,7 +72,7 @@ export default function GraphicAdvance() {
       try {
         setIsLoading(true);
         const data = await DataGrafAdvance(selectedOption);
-        console.log(data)
+        // console.log(data)
         setAllData(data);
         setDataCSV(data.data_final);
       } catch (error) {
@@ -136,7 +136,7 @@ export default function GraphicAdvance() {
       maxBarThickness: 65,
     }));
 
-    console.log(data);
+    // console.log(data);
 
     const formatSpanishDate = (date) => {
       return moment(date).format("ddd, DD MMM");

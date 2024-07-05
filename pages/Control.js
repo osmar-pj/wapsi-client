@@ -25,6 +25,7 @@ export default function Control() {
   const fetchRelations = async () => {
     try {
       const data = await DataRelations(authTokens?.token);
+      console.log(data);
       if (data && data.relations) {
         setRelations(data.relations);
       } else {
@@ -109,6 +110,7 @@ export default function Control() {
   }, [authTokens]);
 
   const updateMode = async (actuatorId, currentMode) => {
+    console.log(actuatorId, currentMode)
     setLoadingModeMap((prevState) => ({ ...prevState, [actuatorId]: true }));
     const newMode = currentMode === "auto" ? "manual" : "auto";
     try {
@@ -155,7 +157,9 @@ export default function Control() {
 
   const iconMap = {
     monitor: "/imgs/i-sensor.svg",
+    caja: "/imgs/i-caja.svg",
     VENTILADOR: "/imgs/i-ventilador.svg",
+    ventiladorsc: "/imgs/i-ventilador.svg",
     "3LED": "/imgs/i-led.svg",
   };
 

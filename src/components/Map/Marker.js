@@ -5,15 +5,18 @@ import IconVentilator from "@/src/IconsMap/IconVentilator";
 import Details from "../Details/Details";
 import { getBackgroundColor, getSeed } from "@/src/libs/utils";
 import IconCaja from "@/src/IconsMap/IconCaja";
+import IconVentilatorSC from "@/src/IconsMap/IconVentilatorSC";
 
 const iconComponentMap = {
   monitor: IconSensor,
   ventilador: IconVentilator,
   "3led": IconLed,
   caja: IconCaja,
+  ventiladorsc: IconVentilatorSC,
 };
 
 const Marker = ({ sensorData, index }) => {
+  // console.log("sen",sensorData);
   const [showInfo, setShowInfo] = useState(false);
   const [closeDisabled, setCloseDisabled] = useState(false);
 
@@ -63,6 +66,7 @@ const Marker = ({ sensorData, index }) => {
   const speed = getSeed(sensorData.groups) || 0;
   const IconComponent = iconComponentMap[sensorData.img];
   const backgroundColor = getBackgroundColor(sensorData.groups) || "#9C9C9C";
+  const time = sensorData.groups[0].value;
 
   // console.log(getModal(sensorData.groups));
 
@@ -70,11 +74,11 @@ const Marker = ({ sensorData, index }) => {
     <>
       <div
         onClick={handleClick}
-        className={`Map-info ${index % 2 === 0 ? "M-blue" : "M-orange"}`}
+        className="Map-info"
         key={sensorData._id}
       >
         {IconComponent && (
-          <IconComponent color={backgroundColor} speed={speed} />
+          <IconComponent color={backgroundColor} speed={speed} time={time}/>
         )}
         <div className="M-i-content">
           <div className="content-text">

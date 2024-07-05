@@ -16,7 +16,7 @@ export default function GrapHig() {
           1712725200000,
           1713416400000
         );
-        console.log(data);
+        // console.log(data);
         setAllData(data?.data);
       } finally {
         setIsLoading(false);

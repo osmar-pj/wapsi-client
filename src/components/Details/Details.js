@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import DetailsSensor from "./DetailsSensor";
 import DetailsVentilator from "./DetailsVentilator";
 import Close from "@/src/Icons/close";
+import DetailsVentilatorSC from "./DetailsVentilatorSC";
 
 const DynamicComponent = React.memo(({ sensorData }) => {
   let Component;
@@ -15,6 +16,9 @@ const DynamicComponent = React.memo(({ sensorData }) => {
       break;
     case "caja":
       Component = DetailsSensor;
+      break;
+    case "ventiladorsc":
+      Component = DetailsVentilatorSC;
       break;
     default:
       break;

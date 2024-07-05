@@ -42,8 +42,9 @@ export default function DeleteForm({ refetchData, setDelet, userToDeleteId }) {
         console.error("Error al obtener datos:", response.statusText);
       }
     } catch (error) {
-      setButtonClicked(false);
       console.error("Error en la solicitud:", error);
+    } finally{
+      setButtonClicked(false);
     }
   };
 

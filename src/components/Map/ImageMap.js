@@ -20,7 +20,7 @@ export const ImageMap = () => {
   } else if (empresa.includes("HUARON")) {
     imageSrc = "/imgs/mapHuaron.svg";
   } else if (empresa.includes("LUNDIN")) {
-    imageSrc = "/imgs/mapLUNDING.svg";
+    imageSrc = "/imgs/mapLUNDING.png";
   }
 
   return imageSrc;
