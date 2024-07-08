@@ -7,7 +7,6 @@ export default function DetailsVentilator({ sensorData }) {
   const [loading, setLoading] = useState(false);
   const [activeStates, setActiveStates] = useState({});
   const [valueStates, setValueStates] = useState({});
-  const [message, setMessage] = useState("Nombre")
 
   const updateValue = async (id, name) => {
     setLoading(true);
@@ -28,7 +27,6 @@ export default function DetailsVentilator({ sensorData }) {
       if (data?.status === true) {
         fetchInstruments();
       }
-      setMessage("")
     } finally {
       setTimeout(() => {
         setLoading(false);
@@ -59,7 +57,6 @@ export default function DetailsVentilator({ sensorData }) {
     }));
   };
 
-
   const updateMode = async (id, currentMode) => {
     setLoading(true);
     const newMode = currentMode === "auto" ? "manual" : "auto";
@@ -67,7 +64,7 @@ export default function DetailsVentilator({ sensorData }) {
       const data = await UpdateInstrument(authTokens.token, id, {
         mode: newMode,
       });
-    
+
       if (data.status === true) {
         fetchInstruments();
       }
@@ -77,6 +74,8 @@ export default function DetailsVentilator({ sensorData }) {
       }, 1000);
     }
   };
+
+  console.log(sensorData);
 
   return (
     <div className="Details-body Container-Ventilador">
@@ -88,8 +87,11 @@ export default function DetailsVentilator({ sensorData }) {
             </div>
             <div className="C-Vent-info">
               <div className="c-v-i-title">
-                <h3>{i.name}</h3>
-                <h5>{i.serie}</h5>
+                <h3>VENTILADOR</h3>
+                <div className="t-ventil">
+                  <h4 className="">V-210</h4>
+                  <h5 className="serie">{i.serie}</h5>
+                </div>
               </div>
               <div
                 className="valor-st"
@@ -144,8 +146,14 @@ export default function DetailsVentilator({ sensorData }) {
                             i.value === 1 ? "b-azul" : ""
                           }`}
                           onClick={() => updateValue(i._id, i.name)}
-                          disabled={authTokens && authTokens.roles && authTokens.roles.length > 0 && authTokens.roles[0].name === "moderator" ? false : true}
-
+                          disabled={
+                            authTokens &&
+                            authTokens.roles &&
+                            authTokens.roles.length > 0 &&
+                            authTokens.roles[0].name === "moderator"
+                              ? false
+                              : true
+                          }
                         >
                           <span>{i.value === 1 ? "Encendido" : "Prender"}</span>
                         </button>
@@ -177,7 +185,7 @@ export default function DetailsVentilator({ sensorData }) {
                   </>
                 )}
               </div>
-             
+
               {/* <div className="">{i.value === 0 ? "apagado " : "prendido "}
               {message}{i.value}
               </div> */}
@@ -193,16 +201,29 @@ export default function DetailsVentilator({ sensorData }) {
                         i.mode === "manual" ? "sw-ac" : ""
                       }`}
                       onClick={() => updateMode(i._id, i.mode)}
-                      disabled={authTokens && authTokens.roles && authTokens.roles.length > 0 && authTokens.roles[0].name === "moderator" ? false : true}
-
+                      disabled={
+                        authTokens &&
+                        authTokens.roles &&
+                        authTokens.roles.length > 0 &&
+                        authTokens.roles[0].name === "moderator"
+                          ? false
+                          : true
+                      }
                     >
                       <span>Manual</span>
                     </button>
                     <button
                       className={`btn-mode ${i.mode === "auto" ? "sw-ac" : ""}`}
                       onClick={() => updateMode(i._id, i.mode)}
-                      disabled={authTokens && authTokens.roles && authTokens.roles.length > 0 && authTokens.roles[0].name === "moderator" ? false : true}
-                      >
+                      disabled={
+                        authTokens &&
+                        authTokens.roles &&
+                        authTokens.roles.length > 0 &&
+                        authTokens.roles[0].name === "moderator"
+                          ? false
+                          : true
+                      }
+                    >
                       <span>Auto</span>
                     </button>
                   </div>

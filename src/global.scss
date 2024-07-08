@@ -1828,3 +1828,15 @@ button:disabled {
 .sw-des{
   color: var(--grey-2);
 }
+
+.t-ventil{
+  display: flex;
+  justify-content: space-between;
+  margin-top: .2rem;
+  h4{
+    font-weight:600;
+  }
+  .serie{
+    color: var(--grey);
+  }
+}
