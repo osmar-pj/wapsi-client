@@ -117,6 +117,7 @@ export function getSeed(groups) {
 };
 
 export function getBackgroundColor (groups)  {
+
   const priorityCategories = ["danger", "warning", "success"];
 
   for (const category of priorityCategories) {

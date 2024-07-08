@@ -1071,6 +1071,16 @@ section {
   width: 180px;
 }
 
+
+button:disabled {
+
+  cursor: not-allowed;
+  pointer-events: none;
+  opacity: .4;
+  user-select: none;
+}
+
+
 /*==========================================*/
 /*--------------VENTILADOR-------------*/
 /*==========================================*/

@@ -11,6 +11,8 @@ export default function Map() {
 
   const { instruments } = useMainContext();
 
+  // console.log(instruments)
+
   useEffect(() => {
     setIsLoading(true);
     const image = new Image();

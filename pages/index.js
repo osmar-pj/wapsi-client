@@ -16,7 +16,7 @@ export default function Home() {
     const instrument$ = new Subject();
 
     socket.on(`${authTokens?.empresa.toUpperCase()}`, (data) => {
-      // console.log(data.name, data.serie, data.ubication, data);
+      // console.log(data.name, data.serie, data);
       instrument$.next(data);
     });
 

@@ -6,8 +6,8 @@ import { AnimatePresence } from "framer-motion";
 import { CSVLink } from "react-csv";
 import { useMainContext } from "@/src/contexts/Main-context";
 import { DataRelations, UpdateInstrument } from "@/src/libs/api";
-import DragAndDrop from "@/src/components/Drag/DragAndDrop"
-import DeleteDrag from "@/src/components/Drag/DeleteDrag"
+import DragAndDrop from "@/src/components/Drag/DragAndDrop";
+import DeleteDrag from "@/src/components/Drag/DeleteDrag";
 import Delete from "@/src/Icons/delete";
 import Download from "@/src/Icons/download";
 import Reg from "@/src/Icons/reg";
@@ -110,11 +110,13 @@ export default function Control() {
   }, [authTokens]);
 
   const updateMode = async (actuatorId, currentMode) => {
-    console.log(actuatorId, currentMode)
+    console.log(actuatorId, currentMode);
     setLoadingModeMap((prevState) => ({ ...prevState, [actuatorId]: true }));
     const newMode = currentMode === "auto" ? "manual" : "auto";
     try {
-      const data = await UpdateInstrument(authTokens.token,actuatorId, { mode: newMode });
+      const data = await UpdateInstrument(authTokens.token, actuatorId, {
+        mode: newMode,
+      });
 
       if (data.status === true) {
         fetchInstruments();
@@ -134,8 +136,10 @@ export default function Control() {
     setLoadingSignalMap((prevState) => ({ ...prevState, [actuatorId]: true }));
     const newMode = currentMode === "digital" ? "analog" : "digital";
     try {
-      const data = await UpdateInstrument(authTokens.token,actuatorId, { signal: newMode });
-      
+      const data = await UpdateInstrument(authTokens.token, actuatorId, {
+        signal: newMode,
+      });
+
       if (data.status === true) {
         fetchInstruments();
         fetchRelations();
@@ -176,7 +180,11 @@ export default function Control() {
             </div>
             {formattedData.length > 0 && (
               <div className="D-title-more">
-                <button className="btn-acept" onClick={() => setCreate(true)}>
+                <button
+                  className="btn-acept"
+                  onClick={() => setCreate(true)}
+                  disabled={!authTokens || authTokens.roles[0].name !== "moderator"}
+                >
                   <Reg /> Relacionar
                 </button>
               </div>
@@ -287,7 +295,11 @@ export default function Control() {
                             onClick={() =>
                               updateMode(item.actuatorId, item.mode)
                             }
-                            disabled={loadingModeMap[item.actuatorId]} // Desactivar el botón si está en estado de carga
+                            disabled={
+                              loadingModeMap[item.actuatorId] ||
+                              !authTokens ||
+                              authTokens.roles[0].name !== "moderator"
+                            }
                           >
                             {loadingModeMap[item.actuatorId] ? ( // Mostrar el indicador de carga si está en estado de carga
                               <>
@@ -310,9 +322,13 @@ export default function Control() {
                             onClick={() =>
                               updateSignal(item.actuatorId, item.signal)
                             }
-                            disabled={loadingSignalMap[item.actuatorId]} // Desactivar el botón si está en estado de carga
+                            disabled={
+                              loadingSignalMap[item.actuatorId] ||
+                              !authTokens ||
+                              authTokens.roles[0].name !== "moderator"
+                            }
                           >
-                            {loadingSignalMap[item.actuatorId] ? ( // Mostrar el indicador de carga si está en estado de carga
+                            {loadingSignalMap[item.actuatorId] ? (
                               <>
                                 <span className="loader"></span>Env...
                               </>
@@ -342,6 +358,14 @@ export default function Control() {
                           <button
                             className="btn-tbl-edit"
                             onClick={() => handleDeleteClick(item.id)}
+                            disabled={
+                              authTokens &&
+                              authTokens.roles &&
+                              authTokens.roles.length > 0 &&
+                              authTokens.roles[0].name === "moderator"
+                                ? false
+                                : true
+                            }
                           >
                             <Delete />
                           </button>
@@ -363,6 +387,14 @@ export default function Control() {
                             className="btn-acept"
                             onClick={() => setCreate(true)}
                             style={{ width: "130px" }}
+                            disabled={
+                              authTokens &&
+                              authTokens.roles &&
+                              authTokens.roles.length > 0 &&
+                              authTokens.roles[0].name === "moderator"
+                                ? false
+                                : true
+                            }
                           >
                             <Reg /> Relacionar
                           </button>

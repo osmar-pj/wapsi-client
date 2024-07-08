@@ -59,6 +59,7 @@ export default function DetailsVentilator({ sensorData }) {
     }));
   };
 
+
   const updateMode = async (id, currentMode) => {
     setLoading(true);
     const newMode = currentMode === "auto" ? "manual" : "auto";
@@ -143,6 +144,8 @@ export default function DetailsVentilator({ sensorData }) {
                             i.value === 1 ? "b-azul" : ""
                           }`}
                           onClick={() => updateValue(i._id, i.name)}
+                          disabled={authTokens && authTokens.roles && authTokens.roles.length > 0 && authTokens.roles[0].name === "moderator" ? false : true}
+
                         >
                           <span>{i.value === 1 ? "Encendido" : "Prender"}</span>
                         </button>
@@ -190,13 +193,16 @@ export default function DetailsVentilator({ sensorData }) {
                         i.mode === "manual" ? "sw-ac" : ""
                       }`}
                       onClick={() => updateMode(i._id, i.mode)}
+                      disabled={authTokens && authTokens.roles && authTokens.roles.length > 0 && authTokens.roles[0].name === "moderator" ? false : true}
+
                     >
                       <span>Manual</span>
                     </button>
                     <button
                       className={`btn-mode ${i.mode === "auto" ? "sw-ac" : ""}`}
                       onClick={() => updateMode(i._id, i.mode)}
-                    >
+                      disabled={authTokens && authTokens.roles && authTokens.roles.length > 0 && authTokens.roles[0].name === "moderator" ? false : true}
+                      >
                       <span>Auto</span>
                     </button>
                   </div>

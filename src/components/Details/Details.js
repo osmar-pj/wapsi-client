@@ -17,9 +17,7 @@ const DynamicComponent = React.memo(({ sensorData }) => {
     case "caja":
       Component = DetailsSensor;
       break;
-    case "ventiladorsc":
-      Component = DetailsVentilatorSC;
-      break;
+   
     default:
       break;
   }
