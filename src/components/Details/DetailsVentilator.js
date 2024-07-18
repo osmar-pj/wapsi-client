@@ -23,7 +23,7 @@ export default function DetailsVentilator({ sensorData }) {
 
     try {
       const data = await UpdateVentilator(id, newData);
-      console.log(data.instrument.value);
+      // console.log(data.instrument.value);
       if (data?.status === true) {
         fetchInstruments();
       }
@@ -75,7 +75,7 @@ export default function DetailsVentilator({ sensorData }) {
     }
   };
 
-  console.log(sensorData);
+  // console.log(sensorData);
 
   return (
     <div className="Details-body Container-Ventilador">

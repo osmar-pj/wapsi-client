@@ -21,6 +21,8 @@ export const ImageMap = () => {
     imageSrc = "/imgs/mapHuaron.svg";
   } else if (empresa.includes("LUNDIN")) {
     imageSrc = "/imgs/mapLUNDING.png";
+  } else if (empresa.includes("CONDESTABLE")) {
+    imageSrc = "/imgs/mapLUNDING.png";
   }
 
   return imageSrc;

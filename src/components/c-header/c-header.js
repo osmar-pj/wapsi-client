@@ -16,7 +16,9 @@ export default function Header() {
         setEmpresa("/imgs/logo-Huaron.svg");
       } else if (empresa.includes("LUNDIN")) {
         setEmpresa("/imgs/logo-LUNDING.png");
-       } else {
+      } else if (empresa.includes("CONDESTABLE")) {
+        setEmpresa("/imgs/logo-CONDESTABLE.png");
+      } else {
         setEmpresa("/imgs/logo-buena.svg");
       }
 
