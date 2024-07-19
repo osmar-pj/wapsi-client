@@ -1071,15 +1071,12 @@ section {
   width: 180px;
 }
 
-
 button:disabled {
-
   cursor: not-allowed;
   pointer-events: none;
-  opacity: .4;
+  opacity: 0.4;
   user-select: none;
 }
-
 
 /*==========================================*/
 /*--------------VENTILADOR-------------*/
@@ -1810,33 +1807,92 @@ button:disabled {
   align-items: center;
   justify-content: center;
   gap: 2;
-  
+
   background-color: #edf1f3;
   border-radius: 10px;
-  padding: .25rem;
-  button{
+  padding: 0.25rem;
+  button {
     border-radius: 8px;
     height: 30px;
     font-size: clamp(7px, 8vw, 11.5px);
     width: 50%;
-
   }
 }
-.sw-ac{
+.sw-ac {
   background-color: var(--white);
 }
-.sw-des{
+.sw-des {
   color: var(--grey-2);
 }
 
-.t-ventil{
+.t-ventil {
   display: flex;
   justify-content: space-between;
-  margin-top: .2rem;
-  h4{
-    font-weight:600;
+  margin-top: 0.2rem;
+  h4 {
+    font-weight: 600;
   }
-  .serie{
+  .serie {
     color: var(--grey);
+  }
+}
+
+.C-container-mob{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.C-Vent-img-mobile {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  img {
+    width: 5rem;
+    aspect-ratio: auto 1 / 1; 
+  }
+  .c-v-i-title{
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    h3 {
+      font-size: clamp(6px, 8vw, 15px);
+      line-height: 1rem;
+      font-weight: 600;
+      color: var(--black);
+      text-transform: capitalize;
+    }
+    .t-ventil{
+      display: flex;
+      align-items: center;
+      gap: 0.2rem;
+      h4 {
+        font-size: clamp(5px, 8vw, 12px);
+        color: var(--grey);
+        font-weight:bold;
+      }
+      h5 {
+        font-size: clamp(4px, 6vw, 11px);
+        color: var(--grey-2);
+      }
+    }
+  }
+}
+.C-Vent-info-mobile {
+  flex: 1 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  .c-v-i-title {
+    h3 {
+      font-size: clamp(6px, 8vw, 15px);
+      line-height: 1rem;
+      font-weight: 600;
+      color: var(--black);
+      text-transform: capitalize;
+    }
   }
 }
