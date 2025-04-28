@@ -45,7 +45,9 @@ export default function Header() {
   return (
     <header className="c-header">
       <div className="logo">
+        <Link href="/">
         <img src={empresa} className="Products-banner-desk" alt="" />
+        </Link> 
       </div>
       <div className="navbar">
         <ul className="menu">
